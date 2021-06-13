@@ -112,9 +112,7 @@ public final class GeometricIntersection {
 
         boolean finalRes1 = ifLinesIntersect( res1, res2 );
         boolean finalRes2 = ifLinesIntersect( res3, res4 );
-        // verify the answer.
-        assert finalRes1 == finalRes2;
-        return finalRes1;
+        return finalRes1 && finalRes2;
     }
 
     /**

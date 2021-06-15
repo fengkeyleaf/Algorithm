@@ -72,16 +72,29 @@ public final class GeometricIntersection {
     }
 
     /**
+     * if the two lines Overlap But Have Common EndPoint
+     */
+
+    private static
+    boolean isOverlapButHavingCommonEndPoint( Line line1, Line line2 ) {
+        return line1.startPoint.equalsXAndY( line2.endPoint ) ||
+                line1.endPoint.equalsXAndY( line2.startPoint ) ||
+                line1.startPoint.equalsXAndY( line2.startPoint ) ||
+                line1.endPoint.equalsXAndY( line2.endPoint );
+    }
+
+    /**
      * toLeft test to check if two lines intersect
      */
 
     private static
-    boolean ifLinesIntersect( float res1, float res2 ) {
+    boolean ifLinesIntersect( Line line1, Line line2,
+                              double res1, double res2 ) {
         // parallel cases:
-        // case 1: overlap.
-        if ( MyMath.equalFloats( res1, 0 ) &&
-                MyMath.equalFloats( res2, 0 ) )
-            return false;
+        // case 1: overlap or on the same line.
+        if ( MyMath.equalZero( res1 ) &&
+                MyMath.equalZero( res2 ) )
+            return isOverlapButHavingCommonEndPoint( line1, line2 );
         // case 2: parallel on the right side.
         if ( res1 < 0 && res2 < 0 )
             return false;
@@ -100,18 +113,18 @@ public final class GeometricIntersection {
      */
 
     public static
-    boolean ifLinesIntersect( Line<Vector> line1, Line<Vector> line2 ) {
+    boolean ifLinesIntersect( Line line1, Line line2 ) {
         if ( line1 == null || line2 == null ) return false;
 
         // to left test based on line1.
-        float res1 = Triangle.areaTwo( line1.endPoint, line1.startPoint, line2.endPoint );
-        float res2 = Triangle.areaTwo( line1.endPoint, line1.startPoint, line2.startPoint );
+        double res1 = Triangle.areaTwo( line1.endPoint, line1.startPoint, line2.endPoint );
+        double res2 = Triangle.areaTwo( line1.endPoint, line1.startPoint, line2.startPoint );
         // to left test based on line2.
-        float res3 = Triangle.areaTwo( line2.endPoint, line2.startPoint, line1.endPoint );
-        float res4 = Triangle.areaTwo( line2.endPoint, line2.startPoint, line1.startPoint );
+        double res3 = Triangle.areaTwo( line2.endPoint, line2.startPoint, line1.endPoint );
+        double res4 = Triangle.areaTwo( line2.endPoint, line2.startPoint, line1.startPoint );
 
-        boolean finalRes1 = ifLinesIntersect( res1, res2 );
-        boolean finalRes2 = ifLinesIntersect( res3, res4 );
+        boolean finalRes1 = ifLinesIntersect( line1, line2, res1, res2 );
+        boolean finalRes2 = ifLinesIntersect( line1, line2, res3, res4 );
         return finalRes1 && finalRes2;
     }
 
@@ -123,27 +136,27 @@ public final class GeometricIntersection {
      */
 
     public static
-    Vector linesIntersect( Line<Vector> line1, Line<Vector> line2 ) {
+    Vector linesIntersect( Line line1, Line line2 ) {
         if ( !ifLinesIntersect( line1, line2 ) ) return null;
 
         Vector base = line2.getVector();
-        float d1 = Math.abs( Vector.cross(
+        double d1 = Math.abs( Vector.cross(
                 base, line1.startPoint.subtract( line2.startPoint ) ) );
-        float d2 = Math.abs( Vector.cross(
+        double d2 = Math.abs( Vector.cross(
                 base, line1.endPoint.subtract( line2.startPoint ) ) );
-        float t = d1 / ( d1 + d2 );
+        double t = d1 / ( d1 + d2 );
         Vector intersection = line1.getVector().multiply( t );
 
         // the following commented-out code is correct as well,
         // but with less computational accuracy because of ( 1 / t ),
         // one additional division compared to the method above.
-//        float t = ( d1 + d2 ) / d1;
+//        double t = ( d1 + d2 ) / d1;
 //        Vector intersection = line1.endPoint.subtract(
 //        line1.startPoint ).multiply( 1 / t );
 
         return line1.startPoint.add( intersection );
     }
-
+    
     public static
     void testSort() {
         int ID = 0;

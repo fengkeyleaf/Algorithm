@@ -70,17 +70,29 @@ public final class GeometricIntersection {
         Vector distance = e.multiply( ratio );
         return new Line<>( projectPoint.add( distance ), projectPoint.subtract( distance ) );
     }
+    
+    /**
+     * get the common endPoint, intersection as well,
+     * if two lines on the same line intersect at one of the endpoints
+     */
+    
+    private static
+    Vector getOnlyCommonEndPoint( Line line1, Line line2 ) {
+        if ( line1.startPoint.equalsXAndY( line2.endPoint ) ) return line1.startPoint;
+
+        return line1.endPoint;
+    }
 
     /**
-     * if the two lines Overlap But Have Common EndPoint
+     * if the two lines Overlap But Have Common EndPoint,
+     * but note that may only have one common endPoint.
      */
 
     private static
     boolean isOverlapButHavingCommonEndPoint( Line line1, Line line2 ) {
-        return line1.startPoint.equalsXAndY( line2.endPoint ) ||
-                line1.endPoint.equalsXAndY( line2.startPoint ) ||
-                line1.startPoint.equalsXAndY( line2.startPoint ) ||
-                line1.endPoint.equalsXAndY( line2.endPoint );
+        return Vector.sortByX( line2.startPoint, line2.endPoint ) > 0 &&
+                line1.startPoint.equalsXAndY( line2.endPoint ) ||
+                line1.endPoint.equalsXAndY( line2.startPoint );
     }
 
     /**
@@ -123,6 +135,9 @@ public final class GeometricIntersection {
         double res3 = Triangle.areaTwo( line2.endPoint, line2.startPoint, line1.endPoint );
         double res4 = Triangle.areaTwo( line2.endPoint, line2.startPoint, line1.startPoint );
 
+        // have intersection if and only if
+        // two endpoints of one line are
+        // at the opposite side of the other line.
         boolean finalRes1 = ifLinesIntersect( line1, line2, res1, res2 );
         boolean finalRes2 = ifLinesIntersect( line1, line2, res3, res4 );
         return finalRes1 && finalRes2;
@@ -137,13 +152,19 @@ public final class GeometricIntersection {
 
     public static
     Vector linesIntersect( Line line1, Line line2 ) {
+        // have intersection?
         if ( !ifLinesIntersect( line1, line2 ) ) return null;
+        // yes, but the intersection point is one of the endpoints.
+        if ( isOverlapButHavingCommonEndPoint( line1, line2 ) )
+            return getOnlyCommonEndPoint( line1, line2 );
 
+        // yes, normal intersection point.
         Vector base = line2.getVector();
         double d1 = Math.abs( Vector.cross(
                 base, line1.startPoint.subtract( line2.startPoint ) ) );
         double d2 = Math.abs( Vector.cross(
                 base, line1.endPoint.subtract( line2.startPoint ) ) );
+        assert !MyMath.equalZero( d1 + d2 );
         double t = d1 / ( d1 + d2 );
         Vector intersection = line1.getVector().multiply( t );
 

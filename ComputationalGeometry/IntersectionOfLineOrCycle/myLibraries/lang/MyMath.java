@@ -23,7 +23,31 @@ import myLibraries.util.geometry.elements.Vector;
  */
 
 public final class MyMath {
-    public static final float EPSILON = 0.0000001f;
+   private static final double EPSILON = 0.00000001; // 1e-8
+
+    /**
+     * double's compare with epsilon
+     * */
+
+    public static
+    int doubleCompare( double num1, double num2 ) {
+        if ( equalFloats( num1, num2 ) ) return 0;
+        return Double.compare( num1, num2 );
+    }
+
+    /**
+     * which quadrant the point is at
+     * */
+
+    public static
+    int quadrant( double x, double y ) {
+        if ( x > 0 && y >= 0 )  return 1;
+        if ( x <= 0 && y > 0 )  return 2;
+        if ( x < 0 )  return 3;
+        if ( y < 0 ) return 4;
+
+        return -1;
+    }
 
     public static
     int quadrant( float x, float y ) {
@@ -60,12 +84,25 @@ public final class MyMath {
         return quadrant( point.x, point.y );
     }
 
+    /**
+     * check int Overflow
+     * */
+
     public static
     boolean checkOverflow( int original, int result ) {
         return original < 0 && result > 0 ||
                 original > 0 && result < 0;
     }
 
+    /**
+     * determine if the floating number equals zero
+     * */
+
+    public static
+    boolean equalZero( double num ) {
+        return Math.abs( num - 0 ) <= EPSILON;
+    }
+    
     /**
      * determine if two floating numbers are equal or not
      * */

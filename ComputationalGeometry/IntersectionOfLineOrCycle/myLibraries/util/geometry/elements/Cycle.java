@@ -34,6 +34,6 @@ public class Cycle {
      * */
 
     public boolean ifIntersectsLine( Line<Vector> line ) {
-        return line.distance( center ) <= radius;
+        return MyMath.doubleCompare( line.distance( center ), radius ) <= 0;
     }
 }

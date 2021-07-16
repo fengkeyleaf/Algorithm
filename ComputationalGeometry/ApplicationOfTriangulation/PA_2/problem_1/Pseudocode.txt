@@ -1,0 +1,127 @@
+MAKEMONOTONE(P)
+	Input. A simple polygon P stored in a doubly-connected edge list D.
+	Output. A partitioning of P into monotone subpolygons, stored in D.
+	Construct a priority queue Q on the vertices of P, 
+	using their y-coordinates as priority. 
+	If two points have the same y-coordinate,
+	the one with smaller x-coordinate has higher priority.
+	And also determine Vertex type for each vertex.
+	
+	Initialize an empty binary search tree T.
+	
+	while Q is not empty
+		do Remove the vertex vi with the highest priority from Q.
+		Call the appropriate procedure to handle the vertex, depending on its type.
+
+HANDLESTARTVERTEX(vi)
+	Insert ei in T and set helper(ei) to vi.
+	
+HANDLEENDVERTEX(vi)
+	if helper(ei−1) is a merge vertex
+		then Insert the diagonal connecting vi to helper(ei−1) in D.
+	Delete ei−1 from T.
+	
+HANDLESPLITVERTEX(vi)
+	Search in T to find the edge e j directly left of vi.
+	Insert the diagonal connecting vi to helper(ej) in D.
+	helper(e j)←vi
+	Insert ei in T and set helper(ei) to vi.
+	
+HANDLEMERGEVERTEX(vi)
+	if helper(ei−1) is a merge vertex
+		then Insert the diagonal connecting vi to helper(ei−1) in D.
+	Delete ei−1 from T.
+	Search in T to find the edge e j directly left of vi.
+	if helper(ej) is a merge vertex
+		then Insert the diagonal connecting vi to helper(e j) in D.
+	helper(e j)←vi
+	
+HANDLEREGULARVERTEX(vi)
+	if the interior of P lies to the right of vi
+		if helper(ei−1) is a merge vertex
+			Insert the diagonal connecting vi to helper(ei−1) in D.
+		Delete ei−1 from T.
+		Insert ei in T and set helper(ei) to vi.
+	else Search in T to find the edge ej directly left of vi.
+		if helper(ej) is a merge vertex
+			Insert the diagonal connecting vi to helper(ej) in D.
+	helper(e j)←vi
+	
+getVertexType(P):
+	if its two neighbors lie below it
+		if interior angle at v is less than π:
+			start vertex
+		else
+			split vertex
+	else if two neighbors lie above it
+		if less than π:
+			end vertex
+		else
+			merge vertex
+	else
+		if two neighbors on the left:
+			regular right vertex
+		else
+			regular left vertex
+
+getDCEI(vertices):
+	two faces, one inside the polygon, the other outside of it.
+	two edge list, one going counter-clock wise, the other going the opposite.
+	from the first vertex to the last one, i-th vertex:
+		create twin edges
+		if i > 0:
+			add next and prev for the two halfEdges, i and i - 1, separately.
+	
+	add next and prev for the first and last halfEdges.
+	
+	set outComponent and innerComponent.
+	
+	return an arbitrary vertex as the starting point of this DCEI.
+	
+connectHelper(lv, rv, innerFace)
+	create two new halfEdges,
+	outer and inner,
+	connecting this vertex and the helper
+	
+	find the incoming halfEdge of lv with innerFace,
+	connect it with inner.
+	find the outgoing halfEdge of rv with innerFace, 
+	and also connect it with inner.
+	And walk round, starting with the halfEdge, 
+	set their incident edge to another one.
+	
+	find the incoming halfEdge of rv with innerFace,
+	connect it with outer.
+	find the outgoing halfEdge of lv with innerFace, 
+	and also connect it with outer.
+	set the outer's incident edge to innerFace.
+	
+findIncomingEdge(v, face)
+	visit all incident edges of v, return the one with its origin vertex that is not v,
+	as well as with the same face.
+	
+findOutgoingEdge(v, face)
+	visit all incident edges of v, return the one with its origin vertex that is v,
+	as well as with the same face.
+	
+TRIANGULATEMONOTONEPOLYGON(P)
+Input. A strictly y-monotone polygon P stored in a doubly-connected edge
+list D.
+Output. A triangulation of P stored in the doubly-connected edge list D.
+	Merge the vertices on the left chain and the vertices on the right chain of P
+	into one sequence, sorted on decreasing y-coordinate. If two vertices have
+	the same y-coordinate, then the leftmost one comes first. Let u1, . . . ,un
+	denote the sorted sequence.
+	Initialize an empty stack S, and push u1 and u2 onto it.
+	for j←3 to n−1
+		do if uj and the vertex on top of S are on different chains
+			then Pop all vertices from S.
+			Insert into D a diagonal from uj to each popped vertex,
+			except the last one.
+			Push uj−1 and uj onto S.
+		else Pop one vertex from S.
+			Pop the other vertices from S as long as the diagonals from
+			uj to them are inside P. Insert these diagonals into D. Push
+			the last vertex that has been popped back onto S.
+			Push uj onto S.
+	Add diagonals from un to all stack vertices except the first and the last one.

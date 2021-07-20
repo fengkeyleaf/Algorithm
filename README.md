@@ -3,7 +3,7 @@
 
 1. updated on 6/8/2021:
 
-Involved in Geometry Intersection Of Line and line, or line and Cycle.
+Involved in Geometry Intersection Of Line and line, or line and Cycle
 , file link: [portal gate](https://github.com/fengkeyleaf/Algorithm/tree/main/ComputationalGeometry/IntersectionOfLineOrCycle/myLibraries)
 
 2. updated on 6/22/2021:

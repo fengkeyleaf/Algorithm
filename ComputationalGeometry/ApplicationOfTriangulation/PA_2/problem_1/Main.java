@@ -29,7 +29,8 @@ import java.util.regex.Pattern;
 
 /**
  * CG2017 PA2-1 Shortest Path in The Room
- *
+ * https://dsa.cs.tsinghua.edu.cn/oj/problem.shtml?id=1647
+ 
  * @author Xiaoyu Tongyang, or call me sora for short
  */
 

@@ -19,3 +19,7 @@ Main entry method: public static List<EventPoint2D> findIntersection( List<Inter
   Involved in BFS in dual graph and funnel algorithm, file link -> [portal gate](https://github.com/fengkeyleaf/Algorithm/blob/main/ComputationalGeometry/ApplicationOfTriangulation/myLibraries/util/graph/tools/SingleShortestPath.java)
   
   Involved in DCEL, doubly-connected edge list, file link -> [portal gate](https://github.com/fengkeyleaf/Algorithm/tree/main/ComputationalGeometry/ApplicationOfTriangulation/myLibraries/util/geometry/DCEL)
+  
+4. updated on 8/3/2021:
+  
+  Involved in inCircle test, file link -> [portal gate](https://github.com/fengkeyleaf/Algorithm/blob/main/ComputationalGeometry/InCircleTeset/myLibraries/util/geometry/tools/Cycles.java)

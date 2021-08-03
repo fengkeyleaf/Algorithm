@@ -32,6 +32,7 @@ public final class Cycles {
 
     public static
     double inCircle( Vector a, Vector b, Vector c, Vector p ) {
+        // a, b and c are on the same line, throw exception
         if ( MyMath.isEqualZero( Triangles.areaTwo( a, b, c ) ) )
             throw new ArithmeticException( "not a triangle in inCircleTest()" );
 
@@ -60,7 +61,7 @@ public final class Cycles {
 
         System.out.println( inCircle( point1, point2, point3, point1 ) ); // 0
         System.out.println( inCircle( point1, point2, point3, Vector.origin ) ); // 2
-        System.out.println( inCircle( point1, point2, point3, point4 ) ); // 8
+        System.out.println( inCircle( point1, point2, point3, point4 ) ); // -8
         System.out.println( inCircle( point1, point2, point3, point5 ) ); // 0
 
         System.out.println();

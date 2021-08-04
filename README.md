@@ -6,9 +6,9 @@
 
 ## 1.3 Geometric Intersection
 
-1. Involved in Geometric Intersection Of Line and line, or line and Cycle, file link: [portal gate](https://github.com/fengkeyleaf/Algorithm/blob/main/ComputationalGeometry/IntersectionOfLineOrCycle/myLibraries/util/geometry/tools/GeometricIntersection.java), (updated on 6/8/2021)
+1. Involved in Geometric Intersection Of Line and line, or line and Cycle, file link -> [portal gate](https://github.com/fengkeyleaf/Algorithm/blob/main/ComputationalGeometry/IntersectionOfLineOrCycle/myLibraries/util/geometry/tools/GeometricIntersection.java), (updated on 6/8/2021)
 
-2. Involved in Geometric Intersection Of segment, ray, line and cycle, using Bentley Ottmann's algrithom. Main entry method: public static List<EventPoint2D\> findIntersection( List<IntersectionShape\> shapes ), file link: [portal gate](https://github.com/fengkeyleaf/Algorithm/blob/main/ComputationalGeometry/BentleyOttmann/myLibraries/util/geometry/tools/GeometricIntersection.java), (updated on 6/22/2021)
+2. Involved in Geometric Intersection Of segment, ray, line and cycle, using Bentley Ottmann's algrithom. Main entry method: public static List<EventPoint2D\> findIntersection( List<IntersectionShape\> shapes ), file link -> [portal gate](https://github.com/fengkeyleaf/Algorithm/blob/main/ComputationalGeometry/BentleyOttmann/myLibraries/util/geometry/tools/GeometricIntersection.java), (updated on 6/22/2021)
 
 ## 1.4 Triangulation
 

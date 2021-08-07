@@ -17,3 +17,9 @@
 2. Involved in BFS in dual graph and funnel algorithm, file link -> [portal gate](https://github.com/fengkeyleaf/Algorithm/blob/main/ComputationalGeometry/ApplicationOfTriangulation/myLibraries/util/graph/tools/SingleShortestPath.java)
 
 3. Involved in DCEL, doubly-connected edge list, file link -> [portal gate](https://github.com/fengkeyleaf/Algorithm/tree/main/ComputationalGeometry/ApplicationOfTriangulation/myLibraries/util/geometry/DCEL), (updated on 7/20/2021)
+
+# 2. POJ
+
+## 2.1 Subsequence(ID 3061)
+
+Involved in two approaches, binary search and ruler, file link -> [portal gate](https://github.com/fengkeyleaf/Algorithm/blob/main/POJ/ID_3061/coding/POJ/ID_3061/Subsequence.java), (updated on 8/7/2021)

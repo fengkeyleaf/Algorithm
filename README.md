@@ -23,3 +23,7 @@
 ## 2.1 Subsequence(ID 3061)
 
 Involved in two approaches, binary search and ruler, file link -> [portal gate](https://github.com/fengkeyleaf/Algorithm/blob/main/POJ/ID_3061/coding/POJ/ID_3061/Subsequence.java), (updated on 8/7/2021)
+
+## 2.2 Face The Right Way(ID 3276)
+
+Involved in one approach, switch, file link -> [portal gate](https://github.com/fengkeyleaf/Algorithm/blob/main/POJ/ID_3276/coding/POJ/ID_3276/FaceTheRightWay.java), (updated on 8/11/2021)

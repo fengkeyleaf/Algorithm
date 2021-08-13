@@ -70,27 +70,27 @@ public final class FaceTheRightWay implements ProcessingFile {
 
     private int doTheAlgorithm( int K ) {
         int res = 0;
-        int sum = 0;
+        int sumPre = 0;
         // ∑f[ j ] = ∑f[j] + f[i] + f[i-K+1]
         for ( int i = 0; i + K <= cows.length; i++ ) {
             // ∑f[ j ] % 2 != 0,
             // i-th cow's direction is different from
             // the initializing one's
-            if ( isFlip( i, sum ) ) {
+            if ( isFlip( i, sumPre ) ) {
                 res++;
                 flips[ i ] = 1;
             }
 
             // f[ i ]
-            sum += flips[ i ];
+            sumPre += flips[ i ];
             // f[ i - K + 1 ]
-            sum -= remove( i, K );
+            sumPre -= remove( i, K );
         }
 
         for ( int i = cows.length - K + 1; i < cows.length; i++ ) {
-            if ( isFlip( i, sum ) ) return -1;
+            if ( isFlip( i, sumPre ) ) return -1;
 
-            sum -= remove( i, K );
+            sumPre -= remove( i, K );
         }
 
         return res;

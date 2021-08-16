@@ -26,8 +26,12 @@ public final class Cycles {
     /**
      * determine if p lies in the circumcircle of triangle(a, b, c)
      *
+     * Note that point a, b and c must be in counter-clock wise order
+     *
      * Reference resource:
-     * https://www.cs.cmu.edu/~quake/robust.html
+     * @see <a href=https://www.cs.cmu.edu/~quake/robust.html>Adaptive Precision Floating-Point</a>
+     * @see <a href=https://www.cs.umd.edu/class/spring2020/cmsc754/Lects/lect13-delaun-alg.pdf>Delaunay Triangulations: Incremental Construction</a>
+     *
      * */
 
     public static

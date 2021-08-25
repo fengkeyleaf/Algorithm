@@ -12,6 +12,7 @@ package myLibraries.util.geometry.DCEL;
 
 import myLibraries.util.geometry.elements.point.Vector;
 import myLibraries.util.geometry.tools.Triangles;
+import myLibraries.lang.MyMath;
 
 /**
  * Data structure of Monotone Vertex
@@ -51,10 +52,9 @@ public class MonotoneVertex extends Vertex {
      * */
 
     public boolean isSplitOrMergeVertex() {
-        Vector prev = incidentEdge.prev.origin;
-        Vector base = incidentEdge.origin;
-        Vector next = incidentEdge.next.origin;
-        return Triangles.areaTwo( prev, base, next ) < 0;
+        return MyMath.isSmallerThanZero( 
+                Triangles.areaTwo( incidentEdge.prev.origin, incidentEdge.origin,
+                        incidentEdge.next.origin ) );
     }
 
     /**

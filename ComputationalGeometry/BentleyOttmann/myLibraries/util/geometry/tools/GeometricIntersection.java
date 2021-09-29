@@ -331,7 +331,13 @@ public final class GeometricIntersection {
     private static
     void reinsertLeftsAndInteriors( EventPoint2D eventPoint, StatusRBTree statusRBTree,
                                     List<EventPoint2D> lefts, List<EventPoint2D> interiors ) {
-        final double OFFSET = 0.05;
+        // TODO: 9/19/2021 Choice of the offset is very tricky,
+        //  because if two lines are very close to each other,
+        //  the program will think those two intersect
+        //  when updating them in the status tree, but they don't in reality.
+        //  See test case 35, we will have error if the offset is MyMath.EPSILON * 10,
+        //  but get correct answer if it is MyMath.EPSILON * 100
+        final double OFFSET = MyMath.EPSILON * 100;
         // just below the sweeping line,
         // so only smaller value to offset x coordinate
         final double updatedX = eventPoint.x + OFFSET;
@@ -341,20 +347,29 @@ public final class GeometricIntersection {
         // The order of the segments in T should correspond
         // the order in which they are intersected
         // by a sweep line just below p.
-        double maxYLefts = reinsertLeftsAndInteriors( statusRBTree, lefts, updatedX, verticals );
+//        double maxYLefts = reinsertLeftsAndInteriors( statusRBTree, lefts, updatedX, verticals );
+        reinsertLeftsAndInteriors( statusRBTree, lefts, updatedX, verticals );
         double maxYInteriors = reinsertLeftsAndInteriors( statusRBTree, interiors, updatedX, verticals );
-        double maxY = Math.max( maxYLefts, maxYInteriors );
+//        double maxY = Math.max( maxYLefts, maxYInteriors );
 
-        // If there is a horizontal segment,
-        // it comes last among all segments containing p.
-        // nothing to do with cycles here
+        // insert all vertical lines in my implementation,
+        // while insert all horizontal lines in the textbook's context
         for ( EventPoint2D status : verticals ) {
-            // vertical lines are a little bit higher than
-            // all shapes in lefts and interiors
-            // at updatedX
-            status.y = maxY + OFFSET;
-            assert status.y <= status.shape.getEndPointY();
+            // If there is a horizontal segment,
+            // it comes last among all segments containing p.
+            // nothing to do with cycles here
+            if ( !interiors.isEmpty() ) {
+                // vertical lines are a little higher than
+                // all shapes in lefts and interiors
+                // at updatedX
+//            status.y = maxY + OFFSET;
+                status.y = maxYInteriors + OFFSET;
+                assert MyMath.doubleCompare( status.y, status.shape.getEndPointY() ) <= 0;
 //            statusRBTree.put( status );
+            }
+
+            // no segments containing p,
+            // just put into the tree as it is
             statusRBTree.put( status, status );
         }
     }

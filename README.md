@@ -1,3 +1,9 @@
+IMPORTANT: I plan to update this Repository as follows:
+1. Add two Convex Hull algorithms: Brute force and Graham's Scan, as well as visualization. 
+2. Add visualization to Bentley Ottmann's algrithom, that is, Geometric Intersection.
+3. Reconstruct the visualization program in the triangluation program, make it aligned to the one taking advantage of normalization in graphics, which is the one other programs use as well. And there is also a web-based teaching program for the triangulation algorithm, which is more interactive than Java implementation.
+4. Add Point Location ( Trapezoid Map and Search structure ), as well as visualization.
+
 # 1. Computational Geometry
 
 ## 1.1 Numerical  Tests

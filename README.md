@@ -1,6 +1,6 @@
 # Introduction to Algorithm Repository
 
-IMPORTANT: All updated code is in the Java folder, others are out of date, but I leave them as they are for now. Maybe remove in the future.
+IMPORTANT: All updated code is in the Java folder, others are out of date, but I leave them as they are for now. Maybe remove then in the future.
 
  I plan to update this Repository as follows:
 
@@ -15,6 +15,8 @@ IMPORTANT: All updated code is in the Java folder, others are out of date, but I
 ## 1. Algorithm
 
 ### 1.1 Computational Geometry
+
+Only support 2-dimensional scenario.
 
 #### 1.1.1 Numerical  Tests
 
@@ -72,8 +74,10 @@ IMPORTANT: All updated code is in the Java folder, others are out of date, but I
 | Counting sort  | [void countingSort( List\<NumberRadix> numbers, ... )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/lang/MySorts.java#L32) |
 | Radix sort     | [List\<NumberRadix> radixSort( long[] arr, int radix )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/lang/MySorts.java#L54) |
 | Insertion sort | [void insertionSort( List\<E> arrayToSort )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/lang/MySorts.java#L54) |
+| Merge sort     | [List\<E> mergeSort( List\<E> arrayToSort )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/lang/MySorts.java#L32) |
+| Bucket sort    | [void bucketSort( List\<Double> arrayToSort )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/lang/MySorts.java#L140) |
 
-1.4 Graph
+#### 1.4 Graph
 
 | Description                                                  | Entry method\File                                            |
 | :----------------------------------------------------------- | ------------------------------------------------------------ |
@@ -107,6 +111,8 @@ IMPORTANT: All updated code is in the Java folder, others are out of date, but I
 | Bipartite Matching                | [BipartiteMatching.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/BipartiteMatching.java) |
 
 ### 2.3 Computational Geometry
+
+Only support 2-dimensional scenario.
 
 #### 2.3.1 DCEL
 

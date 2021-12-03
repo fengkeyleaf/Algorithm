@@ -36,7 +36,7 @@ IMPORTANT: All updated code is in the Java folder, others are out of date, but I
 | Description                                                  | Entry method\File                                            |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | Line and line                                                | [Vector lineIntersect( Line line1, Line line2 )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/GeometricIntersection.java#L179) |
-| Line and Circle                                              | [Line lineCircleIntersect( Line line, Circle cycle )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/GeometricIntersection.java#L87) |
+| Line and Circle                                              | [Line lineCircleIntersect( Line line, Circle cycle )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/GeometricIntersection.java#L67) |
 | Bentley Ottmann's algrithom( Intersection Of segment, ray, line and Circle ) | [List\<EventPoint2D> findIntersection( List\<IntersectionShape> shapes )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/GeometricIntersection.java#L479) |
 | Program ( including visualization )                          | [CG2017 PA1-2 Crossroad](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/PA_1/problem_2/Main.java) |
 

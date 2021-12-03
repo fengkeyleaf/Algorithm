@@ -1,6 +1,7 @@
 # Introduction to Algorithm Repository
 
-IMPORTANT: I plan to update this Repository as follows:
+IMPORTANT: IMPORTANT: All updated code is in the Java folder, others are out of date, but I leave them as they are for now. Maybe remove in the future.
+I plan to update this Repository as follows:
 
 1. ~~Add two Convex Hull algorithms: Brute force and Graham's Scan, as well as visualization~~. 
 2. ~~Add visualization to Bentley Ottmann's algrithom, that is, Geometric Intersection~~.

@@ -41,7 +41,7 @@ public final class GeometricIntersection {
         if ( line == null || arc == null ) return null;
 
         // get the intersection points of the cycle of the arc and the line
-        Line segment = lineCycleIntersect( line, arc );
+        Line segment = lineCircleIntersect( line, arc );
         if ( segment == null ) return null;
 
         Vector intersection1 = null;
@@ -57,28 +57,28 @@ public final class GeometricIntersection {
     }
 
     /**
-     * get the intersection point of line and cycle with vector, if exists
+     * get the intersection point of line and circle with vector, if exists
      *
      * Reference resource:
      * @see <a href=https://blog.csdn.net/qq_40998706/article/details/87521165>portal gate</a>
      */
 
     public static
-    Line lineCycleIntersect( Line line, Circle cycle ) {
-        // have intersectin point?
-        if ( line == null || cycle == null
-                || !cycle.ifIntersectsLine( line ) ) return null;
+    Line lineCircleIntersect( Line line, Circle circle ) {
+        // have intersecting point?
+        if ( line == null || circle == null
+                || !circle.ifIntersectsLine( line ) ) return null;
 
         // get the project point
-        Vector projectPoint = line.project( cycle.center );
+        Vector projectPoint = line.project( circle.center );
         Vector lineVector = line.getVector();
         // get e of the line
         Vector e = lineVector.division( lineVector.norm() );
-        double sideLength = cycle.radius * cycle.radius -
-                projectPoint.subtract( cycle.center ).normWithoutRadical();
+        double sideLength = circle.radius * circle.radius -
+                projectPoint.subtract( circle.center ).normWithoutRadical();
         double ratio = Math.sqrt( Math.abs( sideLength ) );
         Vector distance = e.multiply( ratio );
-        return new Line( projectPoint.add( distance ), projectPoint.subtract( distance ), cycle );
+        return new Line( projectPoint.add( distance ), projectPoint.subtract( distance ), circle );
     }
 
     public static
@@ -541,7 +541,7 @@ public final class GeometricIntersection {
         // line and cycle intersections
         for ( Circle cycle : cycles ) {
             for ( Line line : lines ) {
-                Line intersection = lineCycleIntersect( line, cycle );
+                Line intersection = lineCircleIntersect( line, cycle );
                 if ( intersection == null ) continue;
 
                 if ( intersection.startPoint != null &&
@@ -668,7 +668,7 @@ public final class GeometricIntersection {
 
         Circle cycle2 = new Circle( Vector.origin, 2 );
         Line line5 = new Line( vector8, vector6 );
-        System.out.println( lineCycleIntersect( line5, cycle2 ) );
+        System.out.println( lineCircleIntersect( line5, cycle2 ) );
     }
 
     public static

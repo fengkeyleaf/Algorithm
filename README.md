@@ -18,10 +18,10 @@ IMPORTANT: All updated code is in the Java folder, others are out of date, but I
 
 #### 1.1.1 Numerical  Tests
 
-| Description      | Entry method                                                 |
-| :--------------- | ------------------------------------------------------------ |
-| toLeft test      | [boolean toLeft( Vector base1, Vector base2, Vector point )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/Triangles.java#L163) |
-| in inCircle test | [double inCircle( Vector a, Vector b, Vector c, Vector p )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/Circles.java#L42) |
+| Description   | Entry method                                                 |
+| :------------ | ------------------------------------------------------------ |
+| toLeft test   | [boolean toLeft( Vector base1, Vector base2, Vector point )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/Triangles.java#L163) |
+| inCircle test | [double inCircle( Vector a, Vector b, Vector c, Vector p )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/Circles.java#L42) |
 
 #### 1.1.2 Convex Hull
 
@@ -65,6 +65,24 @@ IMPORTANT: All updated code is in the Java folder, others are out of date, but I
 | Subsequence(ID 3061)        | Two approaches, binary search and ruler | [Subsequence.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/coding/POJ/ID_3061/Subsequence.java) |
 | Face The Right Way(ID 3276) | One approach, switch                    | [FaceTheRightWay.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/coding/POJ/ID_3276/FaceTheRightWay.java) |
 
+#### 1.3 Sorting
+
+| Description    | Entry method\File                                            |
+| :------------- | ------------------------------------------------------------ |
+| Counting sort  | [void countingSort( List\<NumberRadix> numbers, ... )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/lang/MySorts.java#L32) |
+| Radix sort     | [List\<NumberRadix> radixSort( long[] arr, int radix )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/lang/MySorts.java#L54) |
+| Insertion sort | [void insertionSort( List\<E> arrayToSort )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/lang/MySorts.java#L54) |
+
+1.4 Graph
+
+| Description                                                  | Entry method\File                                            |
+| :----------------------------------------------------------- | ------------------------------------------------------------ |
+| Breath First Search, BFS                                     | [void BFS( int sizeOfGraph, Vertex start, Vertex end )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/tools/SingleShortestPath.java#L297) |
+| Depth Frist Search, DFS                                      | [public int DFS( Vertex vertex, boolean[] visited )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/Graph.java#L101) |
+| Bellman Ford( Constricted to make only one edge of progress at a given step) | [void constrictedBellmanFord( Graph\<ShortestVertex> aGraph ... )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/tools/SingleShortestPath.java#L439) |
+| Find the max flow in a internet flow                         | [int findMaxFlow( InternetFlowVertex start )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/InternetFlow.java#L199) |
+| Get all matching from a bipartite matching                   | [public List<List\<InternetFlowVertex>> getAllMatching()](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/BipartiteMatching.java#L87) |
+
 ## 2. Data Structure
 
 ### 2.1 Tree
@@ -74,10 +92,23 @@ IMPORTANT: All updated code is in the Java folder, others are out of date, but I
 | Binary Search Tree ( put(), deleteMin(), deleteMax(), delete(), min(), max(), etc.) | [BinarySearchTree.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/tree/BinarySearchTree.java) |
 | Red Black Tree ( put(), deleteMin(), deleteMax(), delete(), min(), max(), etc. ) | [RedBlackTree.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/tree/RedBlackTree.java) |
 | Segment Tree ( Range maximum and minimum Query )             | [SegmentTree.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/tree/SegmentTree.java) |
+| Priority Queue                                               | [MyPriorityQueue.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/tree/MyPriorityQueue.java) |
 
-### 2.2 Computational Geometry
+### 2.2 Graph
 
-#### 2.2.1 DCEL
+| Description                       | Entry File                                                   |
+| :-------------------------------- | ------------------------------------------------------------ |
+| Graph                             | [Graph.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/Graph.java) |
+| Strongly connected component, SCC | [SCC.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/SCC.java) |
+| Directed acyclic graph, DAG       | [DAG.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/DAG.java) |
+| Minimum spanning tree, MST.       | [MST.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/tools/MST.java) |
+| Union Find                        | [UnionFind.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/UnionFind.java) |
+| Internet Flow                     | [InternetFlow.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/InternetFlow.java) |
+| Bipartite Matching                | [BipartiteMatching.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/BipartiteMatching.java) |
+
+### 2.3 Computational Geometry
+
+#### 2.3.1 DCEL
 
 | Description                                                  | Entry File/Package                                           |
 | :----------------------------------------------------------- | :----------------------------------------------------------- |
@@ -87,9 +118,9 @@ IMPORTANT: All updated code is in the Java folder, others are out of date, but I
 | Find the first ClockWise Edge with two vertices destination and origin | [HalfEdge firstClockWiseEdge( Vertex destination, Vertex origin )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/DCEL/DCEL.java#L52) |
 | Find the first CounterClockWise Edge with two vertices destination and origin | [HalfEdge firstCounterClockWiseEdge( Vertex origin, Vertex destination )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/DCEL/DCEL.java#L85) |
 
-#### 2.2.2 Point Location
+#### 2.3.2 Point Location
 
 | Description                       | Entry File/Package                                           |
 | :-------------------------------- | :----------------------------------------------------------- |
 | Trapezoidal Map                   | [public class Trapezoid](https://github.com/fengkeyleaf/Algorithm/blob/43b0bc5aadfaddb07352e3c021bd626ff57b9bb0/Java/myLibraries/util/geometry/elements/Trapezoid.java#L54) |
-| Search Structure( Tree-like DGA ) | [public class SearchStructure](https://github.com/fengkeyleaf/Algorithm/blob/43b0bc5aadfaddb07352e3c021bd626ff57b9bb0/Java/myLibraries/util/graph/SearchStructure.java#L35) |
+| Search Structure( Tree-like DAG ) | [public class SearchStructure](https://github.com/fengkeyleaf/Algorithm/blob/43b0bc5aadfaddb07352e3c021bd626ff57b9bb0/Java/myLibraries/util/graph/SearchStructure.java#L35) |

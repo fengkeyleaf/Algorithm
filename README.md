@@ -1,7 +1,8 @@
 # Introduction to Algorithm Repository
 
-IMPORTANT: IMPORTANT: All updated code is in the Java folder, others are out of date, but I leave them as they are for now. Maybe remove in the future.
-I plan to update this Repository as follows:
+IMPORTANT: All updated code is in the Java folder, others are out of date, but I leave them as they are for now. Maybe remove in the future.
+
+ I plan to update this Repository as follows:
 
 1. ~~Add two Convex Hull algorithms: Brute force and Graham's Scan, as well as visualization~~. 
 2. ~~Add visualization to Bentley Ottmann's algrithom, that is, Geometric Intersection~~.
@@ -18,7 +19,7 @@ I plan to update this Repository as follows:
 #### 1.1.1 Numerical  Tests
 
 | Description      | Entry method                                                 |
-| ---------------- | ------------------------------------------------------------ |
+| :--------------- | ------------------------------------------------------------ |
 | toLeft test      | [boolean toLeft( Vector base1, Vector base2, Vector point )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/Triangles.java#L163) |
 | in inCircle test | [double inCircle( Vector a, Vector b, Vector c, Vector p )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/Circles.java#L42) |
 
@@ -54,7 +55,7 @@ I plan to update this Repository as follows:
 | Description                                | Entry method\File                                            |
 | :----------------------------------------- | ------------------------------------------------------------ |
 | Build trapezoidal Map and search structure | [SearchStructure trapezoidalMap( List\<Line> lines, SearchVertex box )](https://github.com/fengkeyleaf/Algorithm/blob/43b0bc5aadfaddb07352e3c021bd626ff57b9bb0/Java/myLibraries/util/geometry/tools/PointLocation.java#L68) |
-| Point Locatoin( Search Structure )         | [public class SearchStructure](https://github.com/fengkeyleaf/Algorithm/blob/43b0bc5aadfaddb07352e3c021bd626ff57b9bb0/Java/myLibraries/util/graph/SearchStructure.java#L35) |
+| Point Locatoin                             | [public SearchVertex get( Line line )](https://github.com/fengkeyleaf/Algorithm/blob/43b0bc5aadfaddb07352e3c021bd626ff57b9bb0/Java/myLibraries/util/graph/SearchStructure.java#L167) |
 | Program ( including visualization )        | [Programming Assignment 3 - Trapezoidal Map and Planar Point Location](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CSCI716/assign_3/AssignmentThree.java) |
 
 #### 1.2 POJ
@@ -79,9 +80,16 @@ I plan to update this Repository as follows:
 #### 2.2.1 DCEL
 
 | Description                                                  | Entry File/Package                                           |
-| :----------------------------------------------------------- | ------------------------------------------------------------ |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
 | Doubly-connected edge list                                   | [DCEL](https://github.com/fengkeyleaf/Algorithm/tree/main/Java/myLibraries/util/geometry/DCEL) |
 | Get all incident edges of the vertex                         | [List\<HalfEdge> allIncidentEdges( Vertex vertex )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/DCEL/DCEL.java#L231) |
 | Walk around all halfEdges, starting at face and get visited vertices | [List\<Vertex> walkAroundVertex( Face face )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/DCEL/DCEL.java#L222) |
 | Find the first ClockWise Edge with two vertices destination and origin | [HalfEdge firstClockWiseEdge( Vertex destination, Vertex origin )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/DCEL/DCEL.java#L52) |
 | Find the first CounterClockWise Edge with two vertices destination and origin | [HalfEdge firstCounterClockWiseEdge( Vertex origin, Vertex destination )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/DCEL/DCEL.java#L85) |
+
+#### 2.2.2 Point Location
+
+| Description                       | Entry File/Package                                           |
+| :-------------------------------- | :----------------------------------------------------------- |
+| Trapezoidal Map                   | [public class Trapezoid](https://github.com/fengkeyleaf/Algorithm/blob/43b0bc5aadfaddb07352e3c021bd626ff57b9bb0/Java/myLibraries/util/geometry/elements/Trapezoid.java#L54) |
+| Search Structure( Tree-like DGA ) | [public class SearchStructure](https://github.com/fengkeyleaf/Algorithm/blob/43b0bc5aadfaddb07352e3c021bd626ff57b9bb0/Java/myLibraries/util/graph/SearchStructure.java#L35) |

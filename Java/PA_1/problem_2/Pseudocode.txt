@@ -1,0 +1,43 @@
+Strategies:
+
+BBST:
+	1) swap nodes' vals;
+	2) swap nodes with given elements(inverse part);
+	3) val has multiple-elements;
+	4) put while updating keys along the searching route;
+	5) get pre(node) and suc(node);
+	
+Algorithm:
+	1) store duplicates in one node with the same key;
+	2) swap: swap nodes in intersection event and update others in the same node,
+		either going up or down (re-putting)
+	3) all duplicates need to check with pre(d) and suc(d);
+	4) intersection event: store relevant lines sorted by y, using BBST as well;
+	5) circle -> 4 quarters;
+	
+Update:
+	1) add: update, relative to the newly added one;
+	2) swap: update, relative spcace relationship changed;
+	3) delete: not update,, relative space relationship not changed;
+	
+pre & suc:
+	1) add: find stricly pre & suc, and find all the pres & succes with the same key, and check;
+	2) swap: before swap -> pre, suc;
+		pre -> last one after swaping;
+		suc -> first one after swaping;
+	   and check;
+	3) delete:
+		same end point: pre, suc are the ones with differe endpoint;
+		not same endpoint: pre, suc include the ones with the same endpoints;
+		
+DuplicateRBTree:
+	1) put: allow duplicate keys, insert at the left subtree;
+	2) delete: delete the key associated with give treeNode;
+
+
+deleteOverlappingLines:
+	sort by slope;
+	collect lines with the same slope;
+	sort each line set by area2 to identify lines on the same line;
+	sort each line set by right endpoint; (left endpoint <= right endpoint)
+	greedy to merge overlapping lines, exlcluding ones only with one common endpoint;

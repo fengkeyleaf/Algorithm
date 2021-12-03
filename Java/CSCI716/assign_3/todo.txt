@@ -1,0 +1,12 @@
+DCEL:
+1. Split();
+2. addEdge(); √
+2. connectHelper() -> addDiagonal(),
+3. data structure of trapezoids;
+5. partition trapezoids;
+6. visiualization;
+
+Search Struture:
+1. data structure;
+2. build and query by hand;
+3. visiualization;

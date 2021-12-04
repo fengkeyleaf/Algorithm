@@ -1,8 +1,17 @@
 # Introduction to Algorithm Repository
 
-IMPORTANT: All updated code is in the Java folder, others are out of date, but I leave them as they are for now. Maybe remove then in the future.
+IMPORTANT: All updated code is in the Java folder, others are out of date, but I leave them as they are for now. Maybe remove them in the future.
 
- I plan to update this Repository as follows:
+## 0. Overview
+
+### 0.1 Implementation details
+
+1. Dictionaries/HashMaps/HashSets may not be the solution we're looking for, so I haven't used Hash Table in the current implementation. We're always exploring an alternative solution that does not rely on the expected O(1) performance of operations involving a hash table. Well, the reason behind this is simply that this is an algorithm-based repository, not project-based one. We're eager for finding a cleverer and more amazing algorithm and data structure to solve the problem.
+2. For computational geometry. Java is not that good at visualizing 3D scenario, so I thinking of not using Java when digging into 3D or higher-dimensions scenario. ( but there is indeed a 3D Java library )
+
+### 0.2 updating plans:
+
+I plan to update this Repository as follows:
 
 1. ~~Add two Convex Hull algorithms: Brute force and Graham's Scan, as well as visualization~~. 
 2. ~~Add visualization to Bentley Ottmann's algrithom, that is, Geometric Intersection~~.
@@ -38,7 +47,7 @@ Only support 2-dimensional scenario.
 | Description                                                  | Entry method\File                                            |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | Line and line                                                | [Vector lineIntersect( Line line1, Line line2 )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/GeometricIntersection.java#L179) |
-| Line and Circle                                              | [Line lineCircleIntersect( Line line, Circle cycle )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/GeometricIntersection.java#L67) |
+| Line and Circle                                              | [Line lineCircleIntersect( Line line, Circle circle )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/GeometricIntersection.java#L67) |
 | Bentley Ottmann's algrithom( Intersection Of segment, ray, line and Circle ) | [List\<EventPoint2D> findIntersection( List\<IntersectionShape> shapes )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/GeometricIntersection.java#L479) |
 | Program ( including visualization )                          | [CG2017 PA1-2 Crossroad](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/PA_1/problem_2/Main.java) |
 

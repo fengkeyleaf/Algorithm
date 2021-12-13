@@ -1,0 +1,47 @@
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+#controls {
+    position: absolute;
+    width: 450px;
+    background-color: #DDDDDD;
+}
+
+.sliderBox {
+    margin: 20px 0px 20px 20px;
+    display: flex;
+    align-content: center;
+}
+
+.slider {
+    width: 300px;
+    margin-left: 30px;
+}
+
+.progress {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #F1F5FD;
+}
+
+.progress-bar {
+    width: 40%;
+    height: 100%;
+    border-radius: 3px;
+    background: #0072FF;
+}
+
+.progress-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    box-shadow: 0 0 15px 5px #0072FF;
+    float: right;
+    position: relative;
+    left: 7px;
+    top: -5px;
+}

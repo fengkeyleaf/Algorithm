@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript" src="../../../myLibraries/lang/MyString.js"></script>
+    <script type="text/javascript" src="../../../myLibraries/lang/MyArray.js"></script>
+    <script type="text/javascript" src="https://threejs.org/build/three.js"></script>
+    <script src="http://www.yanhuangxueyuan.com/threejs/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+
+<script type="module">
+
+    import KeyFraming from "../../../myLibraries/animation/KeyFraming.js";
+
+    let camera, controls, scene, renderer;
+
+    init();
+
+    const curve = new THREE.CubicBezierCurve3(
+        new THREE.Vector3( -50, 0, 0 ),
+        new THREE.Vector3( -42, -20, 0 ),
+        new THREE.Vector3( -16, -20, 0 ),
+        new THREE.Vector3( 10, 20, 0 )
+    );
+
+    const points = curve.getPoints( 50 );
+    // console.log( points);
+    console.log( KeyFraming.getKeyFramesFromBezierCurve( curve, 0, 50, 100 ) );
+    const geometry = new THREE.BufferGeometry().setFromPoints( points );
+
+    const material = new THREE.LineBasicMaterial( { color : 0xff0000 } );
+
+    // Create the final object to add to the scene
+    const curveObject = new THREE.Line( geometry, material );
+
+    scene.add( curveObject );
+
+    renderByControl();
+
+    function init() {
+        // set up our scene
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color( 0xeeeeee );
+
+        let point = new THREE.PointLight( 0xffffff );
+        point.position.set( 400, 200, 300 );
+        scene.add( point );
+
+        // setup ambient light
+        let ambient = new THREE.AmbientLight( 0x444444 );
+        scene.add( ambient );
+
+        // set up the canvas covering the whole DOM
+        const WIDTH = window.innerWidth;
+        const HEIGHT = window.innerHeight;
+        const K = WIDTH / HEIGHT; // ratio of window
+        const S = 38; // factor to control the size of showing area
+
+        camera = new THREE.OrthographicCamera( -S * K, S * K, S, -S, 1, 1000 );
+        camera.position.set( 200, 100, 500 );
+        camera.lookAt( scene.position );
+
+        // set up axis helpers
+        let axisHelper = new THREE.AxesHelper( 250 );
+        scene.add( axisHelper );
+
+        renderer = new THREE.WebGLRenderer();
+        renderer.setSize( WIDTH, HEIGHT );
+        renderer.setClearColor( 0xb9d3ff, 1 );
+        document.body.appendChild( renderer.domElement );
+
+        controls = new THREE.OrbitControls( camera, renderer.domElement );//创建控件对象
+        controls.addEventListener( 'change', renderByControl );//监听鼠标、键盘事件
+
+    }
+
+    function renderByControl() {
+        renderer.render( scene, camera );
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+orientBone (bone)
+    R <- get parent rotation from parent's mesh
+    T <- get parent translation from parent's mesh
+    apply bone offset from bone to T
+    apply T to child's group
+    apply rotation(s) at joint -> child's mesh
+    get worldMatrix <- scene.updateMatrixWorld(true)
+    for each child c of the bone
+        orientBone (c);

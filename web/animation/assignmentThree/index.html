@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assignment #3 - mocap</title>
+    <link rel="stylesheet" href="./CSS/index.css">
+
+    <script type="module" src="../../myLibraries/lang/MyArray.js"></script>
+    <script type="text/javascript" src="../../myLibraries/lang/MyString.js"></script>
+    <script type="text/javascript" src="https://threejs.org/build/three.js"></script>
+</head>
+<body>
+
+<div id="controls">
+    <div class="sliderBox">
+        <div style="margin-top: -7px">Playback</div>
+        <div id="progressSlider" class="slider">
+            <div class="progress">
+                <div class="progress-bar">
+                    <div class="progress-thumb"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sliderBox">
+        <div style="margin-top: -7px">Speed</div>
+        <div id="speedSlider" class="slider">
+            <div class="progress">
+                <div class="progress-bar">
+                    <div class="progress-thumb"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import AnimatorThree from "./JavaScript/AnimatorThree.js";
+
+    window.onload = AnimatorThree.run;
+</script>
+</body>
+</html>

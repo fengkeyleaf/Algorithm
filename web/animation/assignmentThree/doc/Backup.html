@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Assignment #3 - mocap</title>
+  <link rel="stylesheet" href="../../assignmentZero/CSS/Index.css">
+
+  <script type="module" src="../../../myLibraries/lang/MyArray.js"></script>
+  <script type="text/javascript" src="../../../myLibraries/lang/MyString.js"></script>
+  <script type="text/javascript" src="https://threejs.org/build/three.js"></script>
+</head>
+<body>
+<script type="module">
+  // import Animator from "./AnimatorThree.js";
+
+  // window.onload = Animator.run;
+
+  import { BVHLoader } from '../../../myLibraries/externals/jsm/loaders/BVHLoader.js';
+  import MoCop from "../../../myLibraries/animation/MoCop.js";
+  import { OrbitControls } from "../../../myLibraries/externals/jsm/controls/OrbitControls.js";
+
+  let camera, controls, scene, renderer;
+  let mixer, skeletonHelper;
+  let initializingDate;
+
+  let startIndex = 0;
+  let currentKeyframes = null;
+
+  let endIndex = 1;
+  let nextKeyframes = null;
+
+  let preTime = null;
+  let nextTime = null;
+
+  let allKeyframes = null;
+  let root = null;
+
+  init();
+
+  const loader = new BVHLoader();
+  let file = "pirouette.bvh";
+  // file = "pirouette - only two keyframes.bvh";
+  file = "Arms.bvh";
+  file = "Ambient.bvh";
+  // file = "Example1 - basic.bvh";
+  // file = "Example2 - very simple.bvh"
+  // file = "Example3 - one leg with rotation.bvh"
+  // file = "Example5 - full body with only offset.bvh"
+  loader.load( file, function ( result ) {
+    console.log( result );
+    skeletonHelper = new THREE.SkeletonHelper( result.skeleton.bones[ 0 ] );
+
+    allKeyframes = MoCop.getKeyFrames( result.clip );
+    console.assert( allKeyframes.length === result.clip.tracks[ 0 ].values.length / 3, result.clip.tracks.length / 2, allKeyframes.length );
+    console.log( allKeyframes );
+    root = MoCop.setupShapes( result.skeleton.bones[ 0 ], scene );
+    console.log( root );
+
+    allKeyframes.forEach( k => k.reverse() );
+
+    currentKeyframes = allKeyframes[ startIndex ];
+    nextKeyframes = allKeyframes[ endIndex ];
+    preTime = currentKeyframes[ 0 ].time;
+    nextTime = nextKeyframes[ 0 ].time;
+
+    initializingDate = new Date();
+    render();
+  } );
+
+  function render() {
+    let current = new Date() - initializingDate;
+
+    if ( current >= nextTime ) {
+      // render the last frame
+      if ( endIndex >= allKeyframes.length - 1 ) {
+        let copy = [];
+        allKeyframes.getLast().forEach( k => copy.push( k ) );
+        MoCop.orientBone( scene, root, copy );
+        renderer.render( scene, camera );
+        console.log( "stop here" );
+        return;
+      } else {
+        console.log( "next keyframe" );
+        update();
+      }
+    }
+
+    requestAnimationFrame( render );
+    renderer.render( scene, camera );
+
+    let copy = [];
+    currentKeyframes.forEach( k => copy.push( k ) );
+    MoCop.orientBone( scene, root, copy );
+    // renderer.render( scene, camera );
+  }
+
+  function renderByControl() {
+    renderer.render( scene, camera );
+  }
+
+  function init() {
+    // set up our scene
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color( 0xeeeeee );
+    scene.autoUpdate = false;
+    scene.add( new THREE.GridHelper( 400, 10 ) );
+
+    let point = new THREE.PointLight( 0xffffff );
+    point.position.set( 400, 200, 300 );
+    scene.add( point );
+    point.updateMatrixWorld( true );
+
+    // setup ambient light
+    let ambient = new THREE.AmbientLight( 0x444444 );
+    scene.add( ambient );
+    ambient.updateMatrixWorld( true );
+
+    // set up the canvas covering the whole DOM
+    const WIDTH = window.innerWidth;
+    const HEIGHT = window.innerHeight;
+    const K = WIDTH / HEIGHT; // ratio of window
+    const S = 200; // factor to control the size of showing area
+
+    camera = new THREE.OrthographicCamera( -S * K, S * K, S, -S, 1, 1000 );
+    camera.position.set( 200, 100, 500 );
+    camera.lookAt( scene.position );
+    camera.updateMatrixWorld( true );
+
+    // set up axis helpers
+    let axisHelper = new THREE.AxesHelper( 250 );
+    scene.add( axisHelper );
+
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize( WIDTH, HEIGHT );
+    renderer.setClearColor( 0xb9d3ff, 1 );
+    document.body.appendChild( renderer.domElement );
+
+    controls = new OrbitControls( camera, renderer.domElement );//创建控件对象
+    controls.addEventListener( 'change', renderByControl );//监听鼠标、键盘事件
+
+    initializingDate = new Date();
+  }
+
+  function printInfo() {
+    MoCop.groups.forEach( g => {
+      let temp = new THREE.Vector3();
+      g.joint.getWorldPosition( temp );
+      console.log( g.name, temp );
+      console.log( g.joint.rotation );
+    } );
+  }
+
+  function update() {
+    startIndex = endIndex++;
+    currentKeyframes = allKeyframes[ startIndex ];
+    nextKeyframes = allKeyframes[ endIndex ];
+    preTime = currentKeyframes[ 0 ].time;
+    console.assert( nextKeyframes, endIndex );
+    nextTime = nextKeyframes[ 0 ].time;
+    // this.interval = this.nextTime - this.preTime;
+    // printInfo();
+  }
+
+</script>
+</body>
+</html>

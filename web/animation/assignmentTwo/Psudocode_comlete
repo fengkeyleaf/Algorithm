@@ -1,0 +1,30 @@
+Step 1
+Calculate Forces, F(t), t(t)
+
+Step 2
+Integrate velocities
+    s(t +Dt) = s(t) + v(t)Dt
+    q(t +Dt) = q(t) + 0.5 (w(t)q(t)) Dt /* normalize to avoid problems */
+    r(t +Dt) = (convert) q(t +Dt)
+
+Perform collision detection / response
+    If collision detected, backup object to point of collision
+    Calculate impulse (realized as change to momentum)
+
+Update Momentum (integrate force)
+    M(t +Dt) = M(t) + F(t) Dt + impluse
+    L(t +Dt) = L(t) + t(t) Dt + impluse
+
+Step 3
+Calculate velocities for next step (“divide” by mass)
+Translational:
+    v(t +Dt) = M(t +Dt)/m
+Rotational
+    General
+    I-1(t +Dt) = R(t +Dt)I-1
+    body R(t +Dt)T
+    w(t +Dt) = + I-1(t +Dt)L(t +Dt)
+    If symettric
+    w(t +Dt) = + 1/I L(t +Dt)
+
+Go to step 1

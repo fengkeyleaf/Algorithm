@@ -1,0 +1,41 @@
+t + Dt = new Date() = t( t )
+Dt = t + Dt - t
+
+Perform collision detection / response
+Test all pairs of objects, if collision detected,
+
+    Binary search to find the point of collision
+        No collision at time t, Penetration at time t + Dt
+        Test point at time t’ between t and t + Dt iteratively.
+        t' = ( t + Dt ) / 2
+        Dt = t' - t
+        update all objects' position with Dt
+        Test all pairs of objects, If No Collision, test at time between t’ and t + Dt
+        Else test at time between t and t’
+        Iterate until a predefined tolerance(tol) is achieved
+
+    backup object to point of collision. t'
+        Dt = t' - t
+        Calculate Forces with newer Dt
+        update position with newer Dt
+
+    Calculate impulse_coll (realized as change to momentum)
+
+Step 1
+Calculate Forces, F( t ) = M / Dt
+
+Step 2
+update position ( integrate velocity )
+s( t + Dt ) = s( t ) + v( t ) * Dt
+
+Render the scene
+
+update Momentum ( integrate force / acceleration )
+M( t + Dt ) = M( t ) + F( t ) * Dt + impulse( impulse_init + impulse_coll + impulse_fric )
+
+Step 3
+Calculate velocities
+v(t +Dt) = M( t + Dt ) / m
+
+update t to t + Dt
+Go to step 1

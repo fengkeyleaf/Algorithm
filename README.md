@@ -1,7 +1,5 @@
 # Introduction to Algorithm Repository
 
-IMPORTANT: All updated code is in the Java and web folder, others are out of date, but I leave them as they are for now. Maybe remove them in the future.
-
 ## 0. Overview
 
 ### 0.1 Implementation details
@@ -18,7 +16,7 @@ I plan to update this Repository as follows( All updated ):
 3. Reconstruct the visualization program in the triangluation program, make it aligned to the one taking advantage of normalization in graphics, which is the one other programs use as well. 
 4. And there is also a web-based teaching program for the triangulation algorithm, which is more interactive than Java implementation.
 5. Add Point Location ( Trapezoid Map and Search structure ), as well as visualization
-6. ~~Four Animation algorithms, implemented with three.js~~;
+6. Four Animation algorithms, implemented with three.js;
 7. DFS in Haskell;
 
 ## 1. Algorithm

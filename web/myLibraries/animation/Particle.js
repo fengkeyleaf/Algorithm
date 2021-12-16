@@ -62,7 +62,7 @@ export default class Particle extends RigidSphere {
      * @param {Vector3} scale
      * @param {Number} lifeTime
      */
-
+    
     init( center, direction,
           radius, speed,
           psi, scale, lifeTime ) {
@@ -76,14 +76,11 @@ export default class Particle extends RigidSphere {
         // console.log( pos, pos.clone().sub( center ).length() );
 
         this.reset();
-        // get velocity
-        let unitDirection = Particle.randomUnitVector3InCone( direction, psi );
-        // hit it with a rotation matrix to get it aligned with the direction of the cone
-        let rotation = new THREE.Matrix4().lookAt( center, direction.clone().add( center ), Dynamics.zAxis.clone() );
-        let directionV = unitDirection.clone().transformDirection( rotation );
+        // get unit velocity in the cone
+        let unitDirection = Particle.randomUnitVector3InCone( center, direction, psi );
         // get Momentum for this particle
         let m = speed * this.m;
-        this.M = directionV.clone().negate().multiplyScalar( m );
+        this.M = unitDirection.clone().negate().multiplyScalar( m );
 
         // set position and scale
         this.mesh.scale.set( scale.x, scale.y, 1 ); // set y scale only
@@ -102,11 +99,12 @@ export default class Particle extends RigidSphere {
      * Reference resource:
      * Generating uniform unit random vectors in Rn, UMONS, Belgium, Andersen Ang
      *
+     * @param {Vector3} center  center of the cone
      * @param {Vector3} direction  direction of the cone
      * @param {Number} sideAngle  in degrees
      */
 
-    static randomUnitVector3InCone( direction, sideAngle ) {
+    static randomUnitVector3InCone( center, direction, sideAngle ) {
         let theta = Math.random() * 360;
 
         // side angle of the cone is sideAngle degrees
@@ -118,7 +116,9 @@ export default class Particle extends RigidSphere {
         let x = sinPhi * Math.cos( MyMath.radians( theta ) );
         let y = sinPhi * Math.sin( MyMath.radians( theta ) );
 
-        let directionV = new THREE.Vector3( x, y, z );
+        // hit it with a rotation matrix to get it aligned with the direction of the cone
+        let rotation = new THREE.Matrix4().lookAt( center, direction.clone().add( center ), Dynamics.zAxis.clone() );
+        let directionV = new THREE.Vector3( x, y, z ).clone().transformDirection( rotation );
         // console.log( MyMath.degrees( direction.angleTo( directionV ) ), direction.length() );
         return directionV;
     }

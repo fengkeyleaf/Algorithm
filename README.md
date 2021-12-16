@@ -1,6 +1,6 @@
 # Introduction to Algorithm Repository
 
-IMPORTANT: All updated code is in the Java folder, others are out of date, but I leave them as they are for now. Maybe remove them in the future.
+IMPORTANT: All updated code is in the Java and web folder, others are out of date, but I leave them as they are for now. Maybe remove them in the future.
 
 ## 0. Overview
 
@@ -11,14 +11,14 @@ IMPORTANT: All updated code is in the Java folder, others are out of date, but I
 
 ### 0.2 updating plans:
 
-I plan to update this Repository as follows:
+I plan to update this Repository as follows( All updated ):
 
-1. ~~Add two Convex Hull algorithms: Brute force and Graham's Scan, as well as visualization~~. 
-2. ~~Add visualization to Bentley Ottmann's algrithom, that is, Geometric Intersection~~.
-3. ~~Reconstruct the visualization program in the triangluation program, make it aligned to the one taking advantage of normalization in graphics, which is the one other programs use as well~~. 
+1. Add two Convex Hull algorithms: Brute force and Graham's Scan, as well as visualization. 
+2. Add visualization to Bentley Ottmann's algrithom, that is, Geometric Intersection.
+3. Reconstruct the visualization program in the triangluation program, make it aligned to the one taking advantage of normalization in graphics, which is the one other programs use as well. 
 4. And there is also a web-based teaching program for the triangulation algorithm, which is more interactive than Java implementation.
-5. ~~Add Point Location ( Trapezoid Map and Search structure ), as well as visualization~~.
-6. Four Animation algorithms, implemented with three.js;
+5. Add Point Location ( Trapezoid Map and Search structure ), as well as visualization
+6. ~~Four Animation algorithms, implemented with three.js~~;
 7. DFS in Haskell;
 
 ## 1. Algorithm
@@ -60,6 +60,7 @@ Only support 2-dimensional scenario.
 | BFS in a dual graph                 | [void BFS( int sizeOfGraph, DualVertex start, DualVertex end )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/tools/SingleShortestPath.java#L241) |
 | Funnel algorithm                    | [List\<Vector> Funnel( DualVertex startTriangle, Vector startPoint, Vector endPoint )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/tools/SingleShortestPath.java#L145) |
 | Program ( including visualization ) | [CG2017 PA2-1 Shortest Path in The Room](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/PA_2/problem_1/Main.java) |
+| Pedagogical Aid Webpage             | [Pedagogical Aid of Triangulation](https://fengkeyleaf.github.io/finalProject/index.html) |
 
 #### 1.1.5 Point Location
 
@@ -69,14 +70,14 @@ Only support 2-dimensional scenario.
 | Point Locatoin                             | [public SearchVertex get( Line line )](https://github.com/fengkeyleaf/Algorithm/blob/43b0bc5aadfaddb07352e3c021bd626ff57b9bb0/Java/myLibraries/util/graph/SearchStructure.java#L167) |
 | Program ( including visualization )        | [Programming Assignment 3 - Trapezoidal Map and Planar Point Location](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CSCI716/assign_3/AssignmentThree.java) |
 
-#### 1.2 POJ
+### 1.2 POJ
 
 | Problem                     | Description                             | Entry File                                                   |
 | --------------------------- | :-------------------------------------- | ------------------------------------------------------------ |
 | Subsequence(ID 3061)        | Two approaches, binary search and ruler | [Subsequence.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/coding/POJ/ID_3061/Subsequence.java) |
 | Face The Right Way(ID 3276) | One approach, switch                    | [FaceTheRightWay.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/coding/POJ/ID_3276/FaceTheRightWay.java) |
 
-#### 1.3 Sorting
+### 1.3 Sorting
 
 | Description    | Entry method\File                                            |
 | :------------- | ------------------------------------------------------------ |
@@ -86,15 +87,58 @@ Only support 2-dimensional scenario.
 | Merge sort     | [List\<E> mergeSort( List\<E> arrayToSort )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/lang/MySorts.java#L32) |
 | Bucket sort    | [void bucketSort( List\<Double> arrayToSort )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/lang/MySorts.java#L140) |
 
-#### 1.4 Graph
+### 1.4 Graph
 
 | Description                                                  | Entry method\File                                            |
 | :----------------------------------------------------------- | ------------------------------------------------------------ |
 | Breath First Search, BFS                                     | [void BFS( int sizeOfGraph, Vertex start, Vertex end )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/tools/SingleShortestPath.java#L297) |
 | Depth Frist Search, DFS                                      | [public int DFS( Vertex vertex, boolean[] visited )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/Graph.java#L101) |
+| DFS in Haskell                                               | [dfs :: ( Ix i ) => Graph i -> [ Vertex i ] -> Forest ( Vertex i )](https://github.com/fengkeyleaf/Algorithm/blob/main/Haskell/DFS/MyLibraries/DFS.hs#L153) |
 | Bellman Ford( Constricted to make only one edge of progress at a given step) | [void constrictedBellmanFord( Graph\<ShortestVertex> aGraph ... )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/tools/SingleShortestPath.java#L439) |
 | Find the max flow in a internet flow                         | [int findMaxFlow( InternetFlowVertex start )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/InternetFlow.java#L199) |
 | Get all matching from a bipartite matching                   | [public List<List\<InternetFlowVertex>> getAllMatching()](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/BipartiteMatching.java#L87) |
+
+### 1.5 Animation
+
+#### 1.5.1 keyframing
+
+| Description                    | Entry File/Link                                              |
+| :----------------------------- | ------------------------------------------------------------ |
+| keyframing                     | [KeyFraming](https://github.com/fengkeyleaf/Algorithm/blob/main/web/myLibraries/animation/KeyFraming.js) |
+| Linear Interpolation           | [static LinearInterpolation](https://github.com/fengkeyleaf/Algorithm/blob/main/web/myLibraries/animation/KeyFraming.js#L101) |
+| Spherical Linear Interpolation | [static slerp](https://github.com/fengkeyleaf/Algorithm/blob/main/web/myLibraries/animation/KeyFraming.js#L150) |
+| Animation Program              | [index.html](https://github.com/fengkeyleaf/Algorithm/blob/main/web/animation/assignmentOne/index.html) |
+| Example Video                  | [Bilibili](https://www.bilibili.com/video/BV1f3411s7ji/)     |
+
+#### 1.5.2 Collision System
+
+| Description                                                  | Entry File/Link                                              |
+| :----------------------------------------------------------- | ------------------------------------------------------------ |
+| Collision Object                                             | [CollidingObject](https://github.com/fengkeyleaf/Algorithm/blob/main/web/myLibraries/animation/CollidingObject.js) |
+| Detect collision and trackback to the point where the first collision happens | [static detectCollision](https://github.com/fengkeyleaf/Algorithm/blob/main/web/myLibraries/animation/Dynamics.js#L38) |
+| Binary Search to find the point where the first collision happens | [static __binarySearchCollision](https://github.com/fengkeyleaf/Algorithm/blob/main/web/myLibraries/animation/Dynamics.js#L153) |
+| Find collided objects( brute force )                         | [static __isColliding]()                                     |
+| Animation Program - Billiards                                | [index.html](https://github.com/fengkeyleaf/Algorithm/blob/main/web/animation/assignmentTwo/index.html) |
+| Example Video                                                | [Bilibili](https://www.bilibili.com/video/BV1Cr4y1D7Td/)     |
+
+#### 1.5.3 Motion Capture System
+
+| Description                                              | Entry File/Link                                              |
+| :------------------------------------------------------- | ------------------------------------------------------------ |
+| Set up Articulated Figures from the Skeleton in three.js | [static setupShapes](https://github.com/fengkeyleaf/Algorithm/blob/main/web/myLibraries/animation/MoCop.js#L39) |
+| Animate Hierarchical Models                              | [static orientBone](https://github.com/fengkeyleaf/Algorithm/blob/main/web/myLibraries/animation/MoCop.js#L220) |
+| Animation Program                                        | [index.html](https://github.com/fengkeyleaf/Algorithm/blob/main/web/animation/assignmentThree/index.html) |
+| Example Video                                            | [Bilibili](https://www.bilibili.com/video/BV1zg411w7bn/)     |
+
+#### 1.5.4 Particle System
+
+| Description                                         | Entry File/Link                                              |
+| :-------------------------------------------------- | ------------------------------------------------------------ |
+| Particle System                                     | [ParticleSystem](https://github.com/fengkeyleaf/Algorithm/blob/main/web/myLibraries/animation/ParticleSystem.js) |
+| Get random Unit Vector3 bounded by a given Cone.    | [randomUnitVector3InCone](https://github.com/fengkeyleaf/Algorithm/blob/main/web/myLibraries/animation/Particle.js#L109) |
+| Animation Program - comet                           | [index.html](https://github.com/fengkeyleaf/Algorithm/blob/main/web/animation/assignmentFour/index.html) |
+| Animation Program - Static wall and gravity applied | [SaticWall.html](https://github.com/fengkeyleaf/Algorithm/blob/main/web/animation/assignmentFour/SaticWall.html) |
+| Example Video                                       | [Bilibili](https://www.bilibili.com/video/BV1gR4y1x7SQ/)     |
 
 ## 2. Data Structure
 
@@ -112,6 +156,7 @@ Only support 2-dimensional scenario.
 | Description                       | Entry File                                                   |
 | :-------------------------------- | ------------------------------------------------------------ |
 | Graph                             | [Graph.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/Graph.java) |
+| Graph in Haskell                  | [Graph.hs](https://github.com/fengkeyleaf/Algorithm/blob/main/Haskell/DFS/MyLibraries/Graph.hs) |
 | Strongly connected component, SCC | [SCC.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/SCC.java) |
 | Directed acyclic graph, DAG       | [DAG.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/DAG.java) |
 | Minimum spanning tree, MST.       | [MST.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/tools/MST.java) |

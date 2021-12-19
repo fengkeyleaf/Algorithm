@@ -36,7 +36,7 @@ export default class Vector extends Node {
      * @param {Number} ID
      * */
 
-    constructor( x, y, ID ) {
+    constructor( x, y, ID = Vector._IDStatic++ ) {
         super( ID, null );
         console.assert( x !== null );
         console.assert( y !== null );

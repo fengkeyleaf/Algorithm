@@ -14,7 +14,6 @@ import Lines from "./Lines.js";
 import Triangles from "./Triangles.js";
 import Face from "../DCEL/Face.js";
 import HalfEdge from "../DCEL/HalfEdge.js";
-import MonotonePolygons from "./MonotonePolygons.js";
 
 /**
  * This class consists exclusively of static methods
@@ -97,7 +96,10 @@ export default class Polygons {
     }
 
     /**
-     * is the point On This Polygon?
+     * is the point On This Polygon( represented as Face )?
+     *
+     * @param {Face} polygon
+     * @param {Vector} point
      * */
 
     static isOnThisPolygon( polygon, point ) {

@@ -117,8 +117,8 @@ export default class AnimatorFourStaticWal extends AnimatorFour {
             return;
         }
 
-        let center = Dynamics.origin.clone().add( new THREE.Vector3( 0, 0, 0 ) );
-        animator.particleSystem.generate( center, Dynamics.xAxis.clone().sub( center ) );
+        let center = Dynamics.origin.clone();
+        animator.particleSystem.generate( center, Dynamics.xAxis.clone() );
         dt = animator.particleSystem.update( current, dt );
 
         animator.initializingDate += dt;

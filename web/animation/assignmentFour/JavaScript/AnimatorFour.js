@@ -162,7 +162,8 @@ export default class AnimatorFour extends AnimatorOne {
         let pos = KeyFraming.LinearInterpolation( u, animator.currentKeyframe.position, animator.nextKeyframe.position );
 
         if ( animator.lastPos != null ) {
-            animator.particleSystem.generate( pos, animator.lastPos.sub( pos ).clone() );
+            // animator.particleSystem.generate( pos, animator.lastPos.sub( pos ).clone() );
+            animator.particleSystem.generate( pos, animator.lastPos.clone() );
             animator.particleSystem.update( current / 1000, current / 1000 );
             Animator.render();
         }

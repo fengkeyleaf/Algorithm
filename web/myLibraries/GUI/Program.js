@@ -15,7 +15,6 @@ import Main from "../../finalProject/JavaScript/Main.js";
 import Vertex from "../util/geometry/DCEL/Vertex.js";
 import Circle from "../util/geometry/elements/cycle/Circle.js";
 import Vector from "../util/geometry/elements/point/Vector.js";
-import Triangles from "../util/geometry/tools/Triangles.js";
 import Drawer from "./geometry/Drawer.js";
 import Example from "../../finalProject/JavaScript/Example.js";
 
@@ -37,7 +36,7 @@ export default class Program {
     static TRIANGLE_FAN = 6;
 
     constructor( paras ) {
-        Program.__check( paras );
+        Program.#check( paras );
 
         // Global variables that are set and used
         // across the application
@@ -56,11 +55,11 @@ export default class Program {
         this.triangulationPoints = null;
         this.triangulationColors = null;
 
-        this.__initWebGl( paras );
+        this.#initWebGl( paras );
         this.addCanvasEvents();
     }
 
-    static __check( paras ) {
+    static #check( paras ) {
         console.assert( paras.webgl );
         console.assert( paras.vertexShader );
         console.assert( paras.fragmentShader );
@@ -72,7 +71,7 @@ export default class Program {
      * Entry point to our application
      * */
 
-    __initWebGl( paras ) {
+    #initWebGl( paras ) {
         // Retrieve the canvas
         this.canvas = document.getElementById( paras.webgl );
         // console.log( this.canvas.width, this.canvas.height );
@@ -97,10 +96,10 @@ export default class Program {
         this.gl.clearDepth( 1.0 )
 
         // Read, compile, and link your shaders
-        this.__initProgram( paras );
+        this.#initProgram( paras );
     }
 
-    static canvasClickEvent = function add( event ) {
+    static canvasClickEvent = function ( event ) {
         // change instructions for canvas
         document.getElementById( "instructions" ).innerText = Example.canvasInstructions;
 
@@ -126,7 +125,7 @@ export default class Program {
         //                          1( y, 300 )
         //
         //
-        // -1( x, -300 )            0                    1 ( x, 600 )
+        // -1( x, -300 )            0                    1 ( x, 300 )
         //
         //
         //                          -1( y, -300 )
@@ -159,17 +158,12 @@ export default class Program {
         // Further, the previous method can calculate points drawn in the webgl,
         // but I leave both approaches for your guys.
         let xCanvas = vertex.x / halfWidth - 1;
-        let yCanvas = -(vertex.y / halfHeight - 1);
-        let { points, colors } = new Circle( {
-            center: new Vertex( xCanvas, yCanvas ),
-            radius: 0.01,
-            color: Vertex.NORMAL_COLOR
-        } ).getPoints();
+        let yCanvas = -( vertex.y / halfHeight - 1 );
+        let vertexCanvas = new Vertex( xCanvas, yCanvas );
+
         // console.log( vertex, new Vertex( xCanvas, -yCanvas ), vertices.getLast() );
         let lastDraw = Main.pop();
         console.assert( lastDraw.length === 3 || lastDraw.length === 0 );
-        // push drawing data for points
-        Main.main.pushData( new Float32Array( points ), new Float32Array( colors ), Program.TRIANGLE_FAN );
 
         // push drawing data for edges(lines),
         // we also put the drawing data of edges at the end of those drawing data arrays
@@ -177,7 +171,17 @@ export default class Program {
         linePoints = linePoints.push( xCanvas, yCanvas )
         let lineColors = lastDraw.isEmpty() ? new Float32Array( [] ) : lastDraw[ 1 ];
         lineColors = lineColors.concat( Drawer.black.concat( Drawer.black ) );
-        Main.main.pushData( new Float32Array( linePoints ), new Float32Array( lineColors ), Program.LINE_STRIP );
+
+        // push drawing data for points
+        let { points, colors } = new Circle( {
+            center: vertexCanvas,
+            radius: 0.01,
+            color: Vertex.NORMAL_COLOR
+        } ).getPoints();
+        Main.main.pushData( new Float32Array( points ), new Float32Array( colors ), Program.TRIANGLE_FAN );
+
+        // push drawing data for lines
+        Main.main.pushData( new Float32Array( linePoints ), new Float32Array( lineColors ), Program.LINE_LOOP );
 
         Main.main.draw();
     }
@@ -211,9 +215,9 @@ export default class Program {
      * Create a program with the appropriate vertex and fragment shaders
      * */
 
-    __initProgram( paras ) {
-        this.vertexShader = this.__getShader( paras.vertexShader );
-        this.fragmentShader = this.__getShader( paras.fragmentShader );
+    #initProgram( paras ) {
+        this.vertexShader = this.#getShader( paras.vertexShader );
+        this.fragmentShader = this.#getShader( paras.fragmentShader );
 
         // Create a program
         this.program = this.gl.createProgram();
@@ -243,7 +247,7 @@ export default class Program {
      * from the DOM and return the compiled shader
      * */
 
-    __getShader( id ) {
+    #getShader( id ) {
         const script = document.getElementById( id );
         const shaderString = script.text.trim();
 

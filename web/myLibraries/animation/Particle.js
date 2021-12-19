@@ -62,7 +62,7 @@ export default class Particle extends RigidSphere {
      * @param {Vector3} scale
      * @param {Number} lifeTime
      */
-    
+
     init( center, direction,
           radius, speed,
           psi, scale, lifeTime ) {
@@ -117,7 +117,8 @@ export default class Particle extends RigidSphere {
         let y = sinPhi * Math.sin( MyMath.radians( theta ) );
 
         // hit it with a rotation matrix to get it aligned with the direction of the cone
-        let rotation = new THREE.Matrix4().lookAt( center, direction.clone().add( center ), Dynamics.zAxis.clone() );
+        // let rotation = new THREE.Matrix4().lookAt( center, direction.clone().add( center ), Dynamics.zAxis.clone() );
+        let rotation = new THREE.Matrix4().lookAt( center, direction.clone(), Dynamics.zAxis.clone() );
         let directionV = new THREE.Vector3( x, y, z ).clone().transformDirection( rotation );
         // console.log( MyMath.degrees( direction.angleTo( directionV ) ), direction.length() );
         return directionV;

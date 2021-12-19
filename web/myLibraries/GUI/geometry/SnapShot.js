@@ -310,7 +310,7 @@ export default class SnapShot {
             this.pseudocode.indicesSub.forEach( i => elements.push( this.pseudocode.sub.children[ i ] ) );
         }
 
-        main.synchronizer.startAnimation( SnapShot.selectAnimation )( elements );
+        SnapShot.selectAnimation( elements );
     }
 
     /**
@@ -324,13 +324,10 @@ export default class SnapShot {
         let time = ( SnapShot.animationTime * 4 ) / elements.length;
         time = time < 200 ? 200 : time; // min: 200 ms
         time = time > 400 ? 400 : time // max: 400 ms
-        let terminateFlag = false;
 
         // closure
         function start() {
             return new Promise( function ( resolve, reject ) {
-                if ( terminateFlag ) return;
-
                 resolve = next;
                 reject = console.log;
                 SnapShot.__select( i++, elements ) ? setTimeout( resolve, time ) : reject( "select done" );
@@ -339,8 +336,6 @@ export default class SnapShot {
 
         function next() {
             return new Promise( function ( resolve, reject ) {
-                if ( terminateFlag ) return;
-
                 resolve = start;
                 reject = console.log;
                 SnapShot.__select( i++, elements ) ? setTimeout( resolve, time ) : reject( "select done" );

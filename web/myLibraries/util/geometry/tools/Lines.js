@@ -15,6 +15,7 @@ import Triangles from "./Triangles.js";
 import Vectors from "./Vectors.js";
 import Main from "../../../../finalProject/JavaScript/Main.js";
 import KeyFraming from "../../../animation/KeyFraming.js";
+import Line from "../elements/line/Line.js";
 import SnapShot from "../../../GUI/geometry/SnapShot.js";
 
 /**
@@ -92,10 +93,10 @@ export default class Lines {
             }
 
             Main.main.draw();
-            return;
+            return true;
         }
 
-        Main.main.synchronizer.setID( requestAnimationFrame( () => Lines.animateByLine( lines, colors ) ) );
+        requestAnimationFrame( () => Lines.animateByLine( lines, colors ) );
         Main.main.draw();
 
         // pop previous statuses
@@ -123,6 +124,8 @@ export default class Lines {
             // push data
             Main.main.pushData( new Float32Array( [ middleStart.x, middleStart.y, middleEnd.x, middleEnd.y ] ), colors[ i + 1 ], 2 );
         }
+
+        return false;
     }
 
     /**
@@ -154,9 +157,9 @@ export default class Lines {
             return;
         }
 
-        Main.main.synchronizer.setID( requestAnimationFrame( function () {
+        requestAnimationFrame( function () {
             Lines.animateByPoint( lines, colors );
-        } ) );
+        } );
         Main.main.draw();
 
         // pop previous statuses
@@ -177,5 +180,7 @@ export default class Lines {
             // push data
             Main.main.pushData( new Float32Array( [ start.x, start.y, middle.x, middle.y ] ), colors[ i ], 2 );
         }
+
+        return false;
     }
 }

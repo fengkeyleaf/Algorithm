@@ -9,15 +9,7 @@
 
 ### 0.2 updating plans:
 
-I plan to update this Repository as follows( All updated ):
-
-1. Add two Convex Hull algorithms: Brute force and Graham's Scan, as well as visualization. 
-2. Add visualization to Bentley Ottmann's algrithom, that is, Geometric Intersection.
-3. Reconstruct the visualization program in the triangluation program, make it aligned to the one taking advantage of normalization in graphics, which is the one other programs use as well. 
-4. And there is also a web-based teaching program for the triangulation algorithm, which is more interactive than Java implementation.
-5. Add Point Location ( Trapezoid Map and Search structure ), as well as visualization
-6. Four Animation algorithms, implemented with three.js;
-7. DFS in Haskell;
+1. Voronoi Diagrams, including visualization.
 
 ## 1. Algorithm
 

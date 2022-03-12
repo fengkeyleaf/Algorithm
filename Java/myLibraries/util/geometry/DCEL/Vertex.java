@@ -12,7 +12,9 @@ package myLibraries.util.geometry.DCEL;
  * JDK: 16
  */
 
-import myLibraries.util.geometry.elements.point.Vector;
+import myLibraries.util.geometry.elements.Vector;
+
+import java.util.List;
 
 /**
  * Data structure of vertex for DCEL
@@ -36,6 +38,26 @@ public class Vertex extends Vector {
 
     public Vertex( Vector point ) {
         this( point.x, point.y );
+    }
+
+    /**
+     * left is already connected to right?
+     * */
+
+    public boolean isAlreadyConnected( Vertex right ) {
+        if ( incidentEdge == null ||
+                right.incidentEdge == null ) return false;
+
+        List<HalfEdge> incidentEdges = DCEL.allIncidentEdges( this );
+
+        for ( HalfEdge edge : incidentEdges ) {
+            if ( edge.origin.equals( right ) ) {
+                assert edge.twin.origin.equals( this );
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static

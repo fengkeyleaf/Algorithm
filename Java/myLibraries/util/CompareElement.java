@@ -142,4 +142,16 @@ public final class CompareElement {
         res.add( max );
         return res;
     }
+
+    /**
+     * get min and max in the list
+     *
+     * @return      { min, max }
+     * */
+
+    public static<E>
+    List<E> minMax( Comparator<? super E> comparator,
+                    List<E> elements ) {
+        return minMax( comparator, elements, 0, elements.size() );
+    }
 }

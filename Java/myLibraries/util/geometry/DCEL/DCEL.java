@@ -10,7 +10,7 @@ package myLibraries.util.geometry.DCEL;
  *     $1.0$
  */
 
-import myLibraries.util.geometry.tools.Triangles;
+import myLibraries.util.geometry.Triangles;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -156,7 +156,18 @@ public final class DCEL {
     }
 
     /**
-     * reset IncidentEdge
+     * reset incidentFace of all half-edges inside the face to it
+     * */
+
+    public static
+    void resetIncidentFace( Face face ) {
+        if ( face == null || face.outComponent == null ) return;
+
+        resetIncidentFace( face.outComponent, face );
+    }
+
+    /**
+     * reset incidentFace of all half-edges starting from the start edge to the face
      * */
 
     public static
@@ -164,6 +175,7 @@ public final class DCEL {
         HalfEdge edge = start;
         do {
             edge.incidentFace = face;
+            assert edge.next != null : edge;
             edge = edge.next;
         } while ( edge != start );
     }
@@ -179,7 +191,7 @@ public final class DCEL {
         do {
             edges.add( edge );
             assert edge.twin != null;
-            assert edge.incidentFace == outComponent.incidentFace : outComponent.origin;
+            assert edge.incidentFace == outComponent.incidentFace : edge + " " + outComponent;
             edge = edge.next;
         } while ( edge != outComponent );
 
@@ -223,20 +235,49 @@ public final class DCEL {
         return walkAroundVertex( face.outComponent );
     }
 
+    static
+    List<HalfEdge> allIncidentEdges( Vertex vertex, boolean isOutgoing, boolean isIncoming ) {
+        final List<HalfEdge> edges = new ArrayList<>();
+
+        // outgoing edge
+        HalfEdge edge = vertex.incidentEdge;
+        do {
+            assert edge.origin == vertex : edge + " " + vertex;
+            assert edge.twin.twin.origin == vertex;
+
+            // outgoing edge
+            if ( isOutgoing ) edges.add( edge );
+            // incoming edge
+            if ( isIncoming ) edges.add( edge.twin );
+            edge = edge.twin.next;
+        } while ( edge != vertex.incidentEdge );
+
+        return edges;
+    }
+
     /**
      * get all incident edges of the vertex
      * */
 
     public static
     List<HalfEdge> allIncidentEdges( Vertex vertex ) {
-        final List<HalfEdge> edges = new ArrayList<>();
-        HalfEdge edge = vertex.incidentEdge;
-        do {
-            edges.add( edge );
-            edges.add( edge.twin );
-            edge = edge.twin.next;
-        } while ( edge != vertex.incidentEdge );
-
-        return edges;
+        return allIncidentEdges( vertex, true, true );
     }
+
+    public static
+    List<HalfEdge> allOutGoingEdges( Vertex vertex ) {
+        return allIncidentEdges( vertex, true, false );
+    }
+
+    public static
+    List<HalfEdge> allIncomingEdges( Vertex vertex ) {
+        return allIncidentEdges( vertex, false, true );
+    }
+
+
+    //-------------------------------------------------------
+    // Check integrity of DCEL data structure.
+    //-------------------------------------------------------
+
+
 }

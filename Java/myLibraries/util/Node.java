@@ -29,13 +29,13 @@ public class Node {
     // sometimes we can't use ID
     // to map this node to something else,
     // in this case, we use this mappingID to do so.
-    // note that must reset this ID to -1,
+    // Note that must reset this ID to -1,
     // after using it, since in some case,
     // we will use -1 to identify something,
     // so we need guarantee mapping ID to be -1,
-    // every time we use it
+    // every time we wanna to use it.
     public int mappingID = -1;
-    // parent node of this node
+    // parent/predecessor node of this node
     public Node parent = null;
 
     /**
@@ -58,6 +58,15 @@ public class Node {
     public static<N extends Node>
     void resetMappingID( List<N> nodes ) {
         nodes.forEach( n -> n.mappingID = -1 );
+    }
+
+    /**
+     * @param initID initializing mapping ID, usually starting with 0.
+     */
+
+    public static<N extends Node>
+    void setMappingID( List<N> nodes, int initID ) {
+        for ( Node n : nodes ) n.mappingID = initID++;
     }
 
     @Override

@@ -14,10 +14,10 @@ package myLibraries.util.geometry.DCEL;
  */
 
 import myLibraries.GUI.geometry.DrawingProgram;
-import myLibraries.util.geometry.elements.point.Vector;
-import myLibraries.util.geometry.tools.Triangles;
+import myLibraries.util.geometry.elements.Vector;
+import myLibraries.util.geometry.Triangles;
 import myLibraries.lang.MyMath;
-import myLibraries.util.geometry.tools.Vectors;
+import myLibraries.util.geometry.Vectors;
 
 import java.awt.*;
 import java.util.ArrayList;

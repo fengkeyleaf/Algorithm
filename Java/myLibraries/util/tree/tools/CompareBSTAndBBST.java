@@ -295,7 +295,6 @@ public final class CompareBSTAndBBST {
 //        long BSTime = measurePuttingRunningTime( Tree.BST );
         long BSTime = 0;
         long BBSTime = measurePuttingRunningTime( Tree.RBTREE );
-        RBTree.checkValidTreeStructure();
 
         System.out.println( "Worst case:\t------>" );
         System.out.println( "put(): " + BSTime + " <-> " + BBSTime );
@@ -342,7 +341,6 @@ public final class CompareBSTAndBBST {
 //      BSTime = measurePuttingRunningTimeRandomly( Tree.BST );
 
         long BBSTime = measurePuttingRunningTimeRandomly( Tree.RBTREE );
-        RBTree.checkValidTreeStructure();
 
         System.out.println( "put(): " + BSTime + " <-> " + BBSTime );
 

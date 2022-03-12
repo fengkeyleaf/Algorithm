@@ -12,10 +12,21 @@ package myLibraries.GUI.geometry;
  *     $1.0$
  */
 
+import myLibraries.util.geometry.Circles;
+import myLibraries.util.geometry.DCEL.Face;
+import myLibraries.util.geometry.Lines;
+import myLibraries.util.geometry.Polygons;
+import myLibraries.util.geometry.Vectors;
+import myLibraries.util.geometry.elements.Circle;
+import myLibraries.util.geometry.elements.Line;
+import myLibraries.util.geometry.elements.Vector;
+
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,6 +35,7 @@ import java.util.List;
  * @author Xiaoyu Tongyang, or call me sora for short
  */
 
+// TODO: 2/22/2022 put drawing methods for basic shapes( lines, polygons, etc. ) in this class
 public class DrawingProgram {
     public static final Color NORMAL_POLYGON_COLOR = Color.GRAY;
     public static final Color INTERSECTION_COLOR = Color.RED;
@@ -54,6 +66,16 @@ public class DrawingProgram {
     protected final int originWidth;
     protected final int originHeight;
 
+    // drawing data
+    final List<List<Vector>> points = new ArrayList<>();
+    final List<Color> colorsPoint = new ArrayList<>();
+    final List<List<Integer>> polygonPoints = new ArrayList<>();
+    final List<Color> colorsPoly = new ArrayList<>();
+    final List<List<Integer>> linesPoints = new ArrayList<>();
+    final List<Color> colorsLine = new ArrayList<>();
+    final List<List<Integer>> circlePoints = new ArrayList<>();
+    final List<Color> colorsCircle = new ArrayList<>();
+
     public DrawingProgram( String title, int originWidth, int originHeight ) {
         this( title, DEFAULT_SIZE, DEFAULT_SIZE, originWidth, originHeight );
     }
@@ -82,6 +104,61 @@ public class DrawingProgram {
         for ( int num : nums ) {
             points.add( num );;
         }
+    }
+
+    /**
+     * add drawing data for points
+     * */
+
+    public void addPoints( List<Vector> points, Color c ) {
+        this.points.add( Vectors.reversedY( points ) );
+        colorsPoint.add( c );
+    }
+
+    /**
+     * add drawing data for polygons
+     * */
+
+    public void addPoly( List<Face> faces, Color c ) {
+        polygonPoints.add( Polygons.getAllDrawingPoints( faces, originWidth, originHeight, CANVAS_WIDTH, CANVAS_HEIGHT ) );
+        colorsPoly.add( c );
+    }
+
+    public void addPoly( Face[] faces, Color c ) {
+        List<Face> faceList = new ArrayList<>( faces.length + 1 );
+        faceList.addAll( Arrays.asList( faces ) );
+        addPoly( faceList, c );
+    }
+
+    /**
+     * add drawing data for lines
+     * */
+
+    public void addLines( List<Line> lines, Color c ) {
+        linesPoints.add( Lines.getDrawingPoints( lines, originWidth, originHeight, CANVAS_WIDTH, CANVAS_HEIGHT ) );
+        colorsLine.add( c );
+    }
+
+    /**
+     * add drawing data for circles
+     * */
+
+    public void addCircles( List<Circle> circles, Color c ) {
+        circlePoints.add( Circles.getDrawingPoints( circles, originWidth, originHeight, CANVAS_WIDTH, CANVAS_HEIGHT ) );
+        colorsCircle.add( c );
+    }
+
+    /**
+     * reset drawing data
+     * */
+
+    public void resetData() {
+        points.clear();
+        colorsPoint.clear();
+        polygonPoints.clear();
+        colorsPoly.clear();
+        linesPoints.clear();
+        colorsLine.clear();
     }
 
     protected void resetCanvas() {

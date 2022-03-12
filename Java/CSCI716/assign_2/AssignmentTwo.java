@@ -12,19 +12,20 @@ package CSCI716.assign_2;
  *     $1.0$
  */
 
-import myLibraries.GUI.geometry.intersection.Program;
+import myLibraries.GUI.geometry.DrawingProgram;
+import myLibraries.GUI.geometry.IntersectProgram;
 import myLibraries.io.MyWriter;
 import myLibraries.io.ProcessingFile;
 import myLibraries.io.ReadFromStdOrFile;
 import myLibraries.lang.MyMath;
 import myLibraries.util.geometry.elements.IntersectionShape;
-import myLibraries.util.geometry.elements.line.InterLine;
-import myLibraries.util.geometry.elements.line.Line;
-import myLibraries.util.geometry.elements.point.EventPoint2D;
-import myLibraries.util.geometry.elements.point.Vector;
-import myLibraries.util.geometry.tools.GeometricIntersection;
-import myLibraries.util.geometry.tools.Lines;
-import myLibraries.util.geometry.tools.Vectors;
+import myLibraries.util.geometry.elements.InterLine;
+import myLibraries.util.geometry.elements.Line;
+import myLibraries.util.geometry.elements.EventPoint2D;
+import myLibraries.util.geometry.elements.Vector;
+import myLibraries.util.geometry.GeometricIntersection;
+import myLibraries.util.geometry.Lines;
+import myLibraries.util.geometry.Vectors;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -306,7 +307,7 @@ public final class AssignmentTwo implements ProcessingFile {
 
     public void doTheAlgorithm( String outputFilePath, String prefix ) {
         // visualized program
-        Program drawer = new Program( originWidth, originHeight );
+        IntersectProgram drawer = new IntersectProgram( originWidth, originHeight );
 
 //        System.out.println( segments );
         segments = Lines.mergeOverlappingLines( segments );
@@ -329,7 +330,7 @@ public final class AssignmentTwo implements ProcessingFile {
         List<Vector> intersectionsClever = new ArrayList<>( intersections.size() + 1 );
         intersectionsClever.addAll( intersections );
 
-        drawer.draw( segments, intersectionsClever );
+        drawer.draw( segments, intersectionsClever, DrawingProgram.INTERSECTION_COLOR );
         if ( isVisualization )
             drawer.initialize();
 
@@ -354,11 +355,11 @@ public final class AssignmentTwo implements ProcessingFile {
 
         // 2) given both inputFilePath and outputFilePath
         size = 3;
-        new AssignmentTwo( "src/PA_1/problem_2/test_1/3", "src/CSCI716.assign_2/3", true, size, size );
+        new AssignmentTwo( "src/PA_1/problem_2/test_1/3", "src/CSCI716/assign_2/3", true, size, size );
         size = 16;
-        new AssignmentTwo( "src/PA_1/problem_2/test_1/24", "src/CSCI716.assign_2/24", true, size, size );
+        new AssignmentTwo( "src/PA_1/problem_2/test_1/24", "src/CSCI716/assign_2/24", true, size, size );
         size = 240;
-        new AssignmentTwo( "src/PA_1/problem_2/test_1/27", "src/CSCI716.assign_2/27", true, size, size );
+        new AssignmentTwo( "src/PA_1/problem_2/test_1/27", "src/CSCI716/assign_2/27", true, size, size );
         size = 20;
 //        new AssignmentTwo( "src/PA_1/problem_2/test_1/28", "src/CSCI716.assign_2/27", true, size, size );
 //        new AssignmentTwo( "src/PA_1/problem_2/test_1/29", "src/CSCI716.assign_2/29", true, size, size );

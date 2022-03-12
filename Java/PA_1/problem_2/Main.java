@@ -12,20 +12,22 @@ package PA_1.problem_2;
  * JDK: 16
  */
 
+import myLibraries.GUI.geometry.DrawingProgram;
+import myLibraries.GUI.geometry.IntersectProgram;
 import myLibraries.io.ProcessingFile;
 import myLibraries.io.ReadFromStdOrFile;
 import myLibraries.lang.MyMath;
 import myLibraries.util.geometry.elements.IntersectionShape;
-import myLibraries.util.geometry.elements.circle.Circle;
-import myLibraries.util.geometry.elements.circle.InterArc;
-import myLibraries.util.geometry.elements.line.InterLine;
-import myLibraries.util.geometry.elements.point.EventPoint2D;
-import myLibraries.util.geometry.elements.line.Line;
-import myLibraries.util.geometry.elements.point.Vector;
-import myLibraries.util.geometry.tools.Circles;
-import myLibraries.util.geometry.tools.GeometricIntersection;
-import myLibraries.util.geometry.tools.Lines;
-import myLibraries.util.geometry.tools.Vectors;
+import myLibraries.util.geometry.elements.Circle;
+import myLibraries.util.geometry.elements.InterArc;
+import myLibraries.util.geometry.elements.InterLine;
+import myLibraries.util.geometry.elements.EventPoint2D;
+import myLibraries.util.geometry.elements.Line;
+import myLibraries.util.geometry.elements.Vector;
+import myLibraries.util.geometry.Circles;
+import myLibraries.util.geometry.GeometricIntersection;
+import myLibraries.util.geometry.Lines;
+import myLibraries.util.geometry.Vectors;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -37,6 +39,8 @@ import java.util.regex.Pattern;
  * @author       Xiaoyu Tongyang, or call me sora for short
  */
 
+// TODO: 1/13/2022 test lines and circles
+// TODO: 1/11/2022 visualization
 public final class Main implements ProcessingFile {
     private static final double boundary;
     private static final Vector quadrantFirst;
@@ -132,7 +136,7 @@ public final class Main implements ProcessingFile {
             case RAY:
                 Line ray = new Line( points[ 0 ], points[ 1 ] );
                 Vector vectorRay = ray.getVector();
-                points[ 1 ] = generatePoint( MyMath.quadrant( vectorRay.x, vectorRay.y ), ray );
+                points[ 1 ] = generatePoint( MyMath.quadrant( vectorRay ), ray );
                 Arrays.sort( points, Vectors::sortByX );
                 rays.add( new Line( points[ 0 ], points[ 1 ] ) );
                 break;
@@ -210,7 +214,6 @@ public final class Main implements ProcessingFile {
 
     private void checker( List<EventPoint2D> intersections,
                           TreeSet<Vector> intersectionsBruteForceAll ) {
-        System.out.println( intersections.size() + " " + intersectionsBruteForceAll.size() );
         intersections.sort( Vectors::sortByX );
         List<Vector> intersectionsBruteForce = new ArrayList<>( intersectionsBruteForceAll.size() + 1 );
         intersectionsBruteForce.addAll( intersectionsBruteForceAll );
@@ -231,9 +234,15 @@ public final class Main implements ProcessingFile {
             index1++;
         }
 
+        if ( index1 < intersectionsBruteForce.size() )
+            differences.addAll( intersectionsBruteForce.subList( index1, intersectionsBruteForce.size() ) );
+        else if ( index2 < intersections.size() )
+            differences.addAll( intersections.subList( index2, intersections.size() ) );
+
         if ( !differences.isEmpty() )
             System.out.println( "Diff: " + differences );
-//        System.out.println( intersections );
+
+        System.out.println( intersections );
         System.out.println( intersectionsBruteForce );
     }
 
@@ -241,7 +250,7 @@ public final class Main implements ProcessingFile {
         segments.addAll( rays );
         segments.addAll( lines );
         segments = Lines.mergeOverlappingLines( segments );
-        System.out.println( segments );
+//        System.out.println( segments );
         nonOverlappingSegments = new ArrayList<>( segments.size() );
         for ( Line seg : segments ) {
             nonOverlappingSegments.add( new InterLine( seg ) );
@@ -261,6 +270,18 @@ public final class Main implements ProcessingFile {
 //        TreeSet<Vector> intersectionsBruteForce = GeometricIntersection.bruteForceLinesIntersection( segments );
         TreeSet<Vector> intersectionsBruteForceAll = GeometricIntersection.bruteForceLineCycleIntersection( segments, circles );
         checker( intersections, intersectionsBruteForceAll );
+
+        IntersectProgram program = new IntersectProgram( 80, 80 );
+
+        List<Line> lines = new ArrayList<>( nonOverlappingSegments.size() + 1 );
+        nonOverlappingSegments.forEach( l -> lines.add( ( Line ) l ) );
+
+        List<Vector> points = new ArrayList<>( intersections.size() + 1 );
+        points.addAll( intersections );
+
+        program.draw( lines, points, DrawingProgram.NORMAL_POLYGON_COLOR );
+        program.initialize();
+
         assert intersections.size() == intersectionsBruteForceAll.size();
         return intersections.size();
     }
@@ -294,7 +315,8 @@ public final class Main implements ProcessingFile {
 //        new Main( ReadFromStdOrFile.getFilePathCG( 1, 2, 24, prefix ) ); // 24 - 3
 //        new Main( ReadFromStdOrFile.getFilePathCG( 1, 2, 25, prefix ) ); // 25 - 0
 //        new Main( ReadFromStdOrFile.getFilePathCG( 1, 2, 26, prefix ) ); // 1
-        new Main( ReadFromStdOrFile.getFilePathCG( 1, 2, 31, prefix ) ); // 3
+//        new Main( ReadFromStdOrFile.getFilePathCG( 1, 2, 31, prefix ) ); // 3 X - tree symmetric
+        new Main( ReadFromStdOrFile.getFilePathCG( 1, 2, 36, prefix ) ); // 4
     }
 
     public static
@@ -304,7 +326,7 @@ public final class Main implements ProcessingFile {
         new Main( ReadFromStdOrFile.getFilePathCG( 1, 2, "1_2" , prefix ) ); // 2
         new Main( ReadFromStdOrFile.getFilePathCG( 1, 2, "1_3" , prefix ) ); // 4
         new Main( ReadFromStdOrFile.getFilePathCG( 1, 2, "1_4" , prefix ) ); // 2
-        new Main( ReadFromStdOrFile.getFilePathCG( 1, 2, "1_5" , prefix ) ); // 7
+        new Main( ReadFromStdOrFile.getFilePathCG( 1, 2, "5_1" , prefix ) ); // 7
         new Main( ReadFromStdOrFile.getFilePathCG( 1, 2, "1_6" , prefix ) ); // 1
         new Main( ReadFromStdOrFile.getFilePathCG( 1, 2, "1_7" , prefix ) ); // 3
         new Main( ReadFromStdOrFile.getFilePathCG( 1, 2, "1_8" , prefix ) ); // 5
@@ -367,12 +389,20 @@ public final class Main implements ProcessingFile {
         new Main( ReadFromStdOrFile.getFilePathCG( 1, 2, "3_9", prefix ) ); // 22
     }
 
+    private static
+    void testBoundingBox() {
+        String prefix = "/test_5/";
+//        new Main( ReadFromStdOrFile.getFilePathCG( 1, 2, "5_1", prefix ) ); // 6
+        new Main( ReadFromStdOrFile.getFilePathCG( 1, 2, "5_2", prefix ) ); // 8
+    }
+
     public static
     void main( String[] args ) {
-        testOnlyLines(); // 26
+//        testOnlyLines(); // 26
 //        testLinesCycles(); // 15
 //        testLinesCyclesComplex(); // 30
 //        testAllTypes();
+        testBoundingBox();
 
         // read from std
 //        new Subsequence( ReadFromStdOrFile.getFilePathCG( 1, 2, "3_1", "" ) ); // 2

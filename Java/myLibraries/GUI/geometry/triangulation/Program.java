@@ -10,17 +10,16 @@ package myLibraries.GUI.geometry.triangulation;
  *
  * Revisions:
  *     $1.0 basic but bad visualization on 7/21/2021 $
- *     $1.1 basic but bad visualization on 7/21/2021 $
  */
 
 import myLibraries.GUI.geometry.DrawingProgram;
 import myLibraries.util.geometry.DCEL.Face;
 import myLibraries.util.geometry.DCEL.MonotoneVertex;
 import myLibraries.util.geometry.DCEL.Vertex;
-import myLibraries.util.geometry.elements.point.Vector;
-import myLibraries.util.geometry.tools.Lines;
-import myLibraries.util.geometry.tools.Polygons;
-import myLibraries.util.geometry.tools.Vectors;
+import myLibraries.util.geometry.elements.Vector;
+import myLibraries.util.geometry.Lines;
+import myLibraries.util.geometry.Polygons;
+import myLibraries.util.geometry.Vectors;
 import myLibraries.util.graph.Graph;
 import myLibraries.util.graph.elements.DualVertex;
 import myLibraries.util.graph.tools.Graphs;
@@ -28,8 +27,6 @@ import myLibraries.util.graph.tools.Graphs;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -299,7 +296,7 @@ public final class Program extends DrawingProgram {
         vertices.add( new MonotoneVertex( -2, 1 ) );
         vertices.add( new MonotoneVertex( 1, -1 ) );
 
-        Face[] faces = myLibraries.util.geometry.tools.Polygons.getDCEL( vertices );
+        Face[] faces = Polygons.getDCEL( vertices );
 //        new Program().initialize( vertices, faces );
     }
 }

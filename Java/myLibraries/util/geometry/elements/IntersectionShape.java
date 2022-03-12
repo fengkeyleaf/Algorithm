@@ -3,15 +3,14 @@ package myLibraries.util.geometry.elements;
 /*
  * IntersectionShape.java
  *
+ * JDK: 15
+ *
  * Version:
  *     $1.0$
  *
  * Revisions:
  *     $1.0$
  */
-
-import myLibraries.util.geometry.elements.point.EventPoint2D;
-import myLibraries.util.geometry.elements.point.Vector;
 
 import java.util.List;
 
@@ -21,7 +20,8 @@ import java.util.List;
  * @author       Xiaoyu Tongyang, or call me sora for short
  */
 
-public interface IntersectionShape extends UpdateCoordinatesShape{
+public interface IntersectionShape extends UpdateCoordinatesShape {
+
     enum ShapeType {
         LINE, ARC
     }
@@ -32,7 +32,7 @@ public interface IntersectionShape extends UpdateCoordinatesShape{
 
     static boolean isAllTheCycles( List<EventPoint2D> eventPoint2DS ) {
         for ( EventPoint2D eventPoint2D : eventPoint2DS ) {
-            if ( eventPoint2D.shape.getShapeType() == ShapeType.LINE )
+            if ( ( ( IntersectionShape ) eventPoint2D.shape ).getShapeType() == ShapeType.LINE )
                 return false;
         }
 

@@ -13,16 +13,16 @@ package CSCI716.assign_1;
  */
 
 import myLibraries.GUI.geometry.DrawingProgram;
-import myLibraries.GUI.geometry.convexHull.Program;
+import myLibraries.GUI.geometry.DCELProgram;
 import myLibraries.io.MyWriter;
 import myLibraries.io.ProcessingFile;
 import myLibraries.io.ReadFromStdOrFile;
 import myLibraries.lang.MyMath;
 import myLibraries.util.geometry.DCEL.Face;
 import myLibraries.util.geometry.DCEL.Vertex;
-import myLibraries.util.geometry.elements.point.Vector;
-import myLibraries.util.geometry.tools.ConvexHull;
-import myLibraries.util.geometry.tools.Polygons;
+import myLibraries.util.geometry.elements.Vector;
+import myLibraries.util.geometry.ConvexHull;
+import myLibraries.util.geometry.Polygons;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -229,7 +229,7 @@ public final class AssignmentOne implements ProcessingFile {
 
     public void doTheAlgorithm( String filePath, String prefix ) {
         // visualized program
-        Program drawer = new Program( originWidth, originHeight );
+        DCELProgram drawer = new DCELProgram( originWidth, originHeight );
 
         // note that extreme points here are in clock wise order
         List<Vector> extremePoints = ConvexHull.grahamScan( points );
@@ -245,7 +245,7 @@ public final class AssignmentOne implements ProcessingFile {
         Face[] faces = Polygons.getDCEL( vertices );
         if ( faces == null ) return;
 
-        drawer.addVertices( points, DrawingProgram.NORMAL_POLYGON_COLOR );
+        drawer.addPoints( points, DrawingProgram.NORMAL_POLYGON_COLOR );
         drawer.addPoly( faces, DrawingProgram.NORMAL_POLYGON_COLOR );
 
         // draw
@@ -266,9 +266,9 @@ public final class AssignmentOne implements ProcessingFile {
 //        new AssignmentOne( "src/PA_1/problem_1/1", true, size, size );
 
         // 2) given both inputFilePath and outputFilePath
-        new AssignmentOne( "src/PA_1/problem_1/1", "src/CSCI716.assign_1/1", true, size, size );
+        new AssignmentOne( "src/PA_1/problem_1/1", "src/CSCI716/assign_1/1", true, size, size );
         size = 40;
-        new AssignmentOne( "src/PA_1/problem_1/13", "src/CSCI716.assign_1/1", true, size, size );
+        new AssignmentOne( "src/PA_1/problem_1/13", "src/CSCI716/assign_1/1", true, size, size );
 
         // 2.2 Command Line
 //        new AssignmentOne( args );

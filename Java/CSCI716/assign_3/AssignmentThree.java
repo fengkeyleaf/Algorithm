@@ -6,26 +6,28 @@ package CSCI716.assign_3;
  * JDK: 16
  *
  * Version:
- *     $1.0$
+ *     $1.1$
  *
  * Revisions:
  *     $1.0 basic operations on 10/23/2021$
+ *     $1.1 ability to handle degenerate cases ( same x-coors ) on 2/21/2022$
  */
 
-import myLibraries.GUI.geometry.convexHull.Program;
+import myLibraries.GUI.geometry.DCELProgram;
 import myLibraries.io.MyWriter;
 import myLibraries.io.ProcessingFile;
 import myLibraries.io.ReadFromStdOrFile;
 import myLibraries.lang.MyMath;
 import myLibraries.util.Matrix;
+import myLibraries.util.geometry.BoundingBox;
 import myLibraries.util.geometry.DCEL.Vertex;
-import myLibraries.util.geometry.elements.line.Line;
-import myLibraries.util.geometry.elements.point.Vector;
-import myLibraries.util.geometry.tools.PointLocation;
-import myLibraries.util.geometry.tools.TrapezoidalMap;
-import myLibraries.util.geometry.tools.Vectors;
-import myLibraries.util.graph.SearchStructure;
-import myLibraries.util.graph.elements.SearchVertex;
+import myLibraries.util.geometry.elements.Line;
+import myLibraries.util.geometry.elements.Vector;
+import myLibraries.util.geometry.PointLocation;
+import myLibraries.util.geometry.TrapezoidalMap;
+import myLibraries.util.geometry.Vectors;
+import myLibraries.util.geometry.SearchStructure;
+import myLibraries.util.geometry.SearchVertex;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -38,12 +40,14 @@ import java.util.stream.Collectors;
  */
 
 public final class AssignmentThree implements ProcessingFile {
-    // input, output and visualization
-    private static final String prefix = "assign_3/";
-    private String inputFilePath ;
+    // input
+    private String inputFilePath;
+    // output
+    private static final String prefix = "CSCI716/assign_3/res_";
     private String outputFilePath;
     private final boolean isIDEA;
 
+    // visualization
     private boolean isVisualization;
     private int originWidth;
     private int originHeight;
@@ -337,7 +341,7 @@ public final class AssignmentThree implements ProcessingFile {
     }
 
     /**
-     * Do the algorithm to slave the problem.
+     * Do the algorithm to solve the problem.
      * */
 
     public void doTheAlgorithm( String outputFilePath, String prefix ) {
@@ -347,30 +351,29 @@ public final class AssignmentThree implements ProcessingFile {
             points.add( segment.startPoint );
             points.add( segment.endPoint );
         }
-        // initialize the visualization program
-        Program drawer = new Program( originWidth, originHeight );
 
         // get the bounding box R
-        SearchVertex R = PointLocation.getBoundingBox( bottomLeft, topRight );
         // get the search structure, SS after adding randomized segments one by one
-        SearchStructure SS = PointLocation.trapezoidalMap( segments, R );
+        BoundingBox b = PointLocation.trapezoidalMap( segments );
         // reset trapezoid's ID to their position in the SS, as leaf node
         // in order to output them in the matrix and query path
-        SS.setLeafIDs();
+        b.SS.setLeafIDs();
 
+        // initialize the visualization program
+        DCELProgram drawer = new DCELProgram( originWidth, originHeight );
         // pass drawing info to the program
-        TrapezoidalMap.drawTrapezoidalMap( SS, drawer, points );
+        TrapezoidalMap.drawTrapezoidalMap( b.SS, drawer, points );
 
         // query the point in SS and get the traversal path
         if ( queryPoint != null ) {
-            List<SearchVertex> path = SS.getPath( queryPoint );
+            List<SearchVertex> path = b.SS.getPath( queryPoint );
 
             if ( path.isEmpty() )
-                System.out.println( "Ouf of the bounding box, R. The defined area is: \n" + SS.boundingBox);
+                System.out.println( "Ouf of the bounding box, R. The defined area is: \n" + b.SS.boundingBox );
             else {
-                SearchVertex trapezoid = path.get( path.size() - 1 );
+                SearchVertex res = path.get( path.size() - 1 );
                 // pass query info to the program
-                TrapezoidalMap.drawQuery( trapezoid, queryPoint, drawer );
+                TrapezoidalMap.drawQuery( res, queryPoint, drawer );
                 // print the traversal path
                 System.out.println( SearchStructure.getSearchPathString( path ) );
             }
@@ -379,7 +382,7 @@ public final class AssignmentThree implements ProcessingFile {
         if ( isVisualization ) drawer.initialize();
 
         // output the matrix to the file
-        List<SearchVertex> col = getCol( SS );
+        List<SearchVertex> col = getCol( b.SS );
         String matrix = toStringMatrix( col, getAdjacencyMatrix( col ) );
         MyWriter.fileWriterMethod( MyWriter.preprocessFilePath( outputFilePath, prefix, isIDEA ), matrix );
     }
@@ -390,35 +393,73 @@ public final class AssignmentThree implements ProcessingFile {
 
         // 2.1 IDEA
         // 1) only given inputFilePath
-//        new AssignmentThree( "src/CSCI716.assign_3/1", true, size, size );
-//        new AssignmentThree( "src/CSCI716.assign_3/2", true, size, size );
-//        new AssignmentThree( "src/CSCI716.assign_3/3", true, size, size );
-//        new AssignmentThree( "src/CSCI716.assign_3/4", true, size, size );
-//        new AssignmentThree( "src/CSCI716.assign_3/5", true, size, size );
-//        new AssignmentThree( "src/CSCI716.assign_3/6", true, size, size );
-//        new AssignmentThree( "src/CSCI716.assign_3/7", true, size, size );
-//        new AssignmentThree( "src/CSCI716.assign_3/8", true, size, size );
-//        new AssignmentThree( "src/CSCI716.assign_3/9", true, size, size );
-//        new AssignmentThree( "src/CSCI716.assign_3/10", true, size, size );
-//        new AssignmentThree( "src/CSCI716.assign_3/14", true, size, size );
-//        new AssignmentThree( "src/CSCI716.assign_3/15", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/1", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/2", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/3", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/4", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/5", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/6", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/7", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/8", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/9", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/10", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/14", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/15", true, size, size );
 
-//        new AssignmentThree( "src/CSCI716.assign_3/11", true, size, size );
-//        new AssignmentThree( "src/CSCI716.assign_3/12", true, size, size );
+        // degenerate cases
+//        new AssignmentThree( "src/CSCI716/assign_3/11", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/12", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/18", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/19", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/20", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/21", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/22", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/17", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/23", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/24", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/25", true, size, size ); // including vertical lines
+//        new AssignmentThree( "src/CSCI716/assign_3/26", true, size, size ); // including vertical lines
+//        new AssignmentThree( "src/CSCI716/assign_3/27", true, size, size ); // including vertical lines
+//        new AssignmentThree( "src/CSCI716/assign_3/28", true, size, size ); // including vertical lines
+//        new AssignmentThree( "src/CSCI716/assign_3/29", true, size, size ); // including vertical lines
+//        new AssignmentThree( "src/CSCI716/assign_3/16", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/30", true, size, size ); // polygon-like case.
+//        new AssignmentThree( "src/CSCI716/assign_3/31", true, size, size ); // polygon-like case.
+//        new AssignmentThree( "src/CSCI716/assign_3/32", true, size, size ); // polygon-like case.
+//        new AssignmentThree( "src/CSCI716/assign_3/33", true, size, size );
+        new AssignmentThree( "src/CSCI716/assign_3/34", true, size, size );
 
 
         // 2) given both inputFilePath and outputFilePath
-//        new AssignmentThree( "src/CSCI716.assign_3/10", "src/CSCI716.assign_3/res_10", true, size, size );
-//        new AssignmentThree( "src/CSCI716.assign_3/14", "src/CSCI716.assign_3/res_14", true, size, size );
-//        new AssignmentThree( "src/CSCI716.assign_3/15", "src/CSCI716.assign_3/res_15", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/10", "src/CSCI716/assign_3/res_10", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/14", "src/CSCI716/assign_3/res_14", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/15", "src/CSCI716/assign_3/res_15", true, size, size );
 
         // 3) given query point
-//        new AssignmentThree( "src/CSCI716.assign_3/10", "src/CSCI716.assign_3/res_10", -20, -20, true, size, size );
-        new AssignmentThree( "src/CSCI716.assign_3/10", "src/CSCI716.assign_3/res_10", 0, 0, true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/10", "src/CSCI716/assign_3/res_10", -20, -20, true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/10", "src/CSCI716/assign_3/res_10", 0, 0, true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/32", 0, 8,true, size, size ); // polygon-like case.
+//        new AssignmentThree( "src/CSCI716/assign_3/32", 1, 6,true, size, size ); // polygon-like case.
+//        new AssignmentThree( "src/CSCI716/assign_3/32", 0, 3,true, size, size ); // polygon-like case.
+//        new AssignmentThree( "src/CSCI716/assign_3/32", -4, 9,true, size, size ); // polygon-like case.
+//        new AssignmentThree( "src/CSCI716/assign_3/32", 8, -6,true, size, size ); // polygon-like case.
+//
+//        new AssignmentThree( "src/CSCI716/assign_3/33", 1, 3, true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/33", 0, 2, true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/33", -1, 4, true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/33", 2, 3, true, size, size );
+//
+//        new AssignmentThree( "src/CSCI716/assign_3/27", 2, 3, true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/27", -2, 0, true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/27", -5, -3, true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/27", -2, -2, true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/27", -2, -4, true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/27", -2, 5, true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/1", -2, 5, true, size, size );
 
         size = 220;
-//        new AssignmentThree( "src/CSCI716.assign_3/xt1643.txt", true, size, size );
-//        new AssignmentThree( "src/CSCI716.assign_3/xt1643.txt", "src/CSCI716.assign_3/res_xt1643", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/xt1643.txt", true, size, size );
+//        new AssignmentThree( "src/CSCI716/assign_3/xt1643.txt", "src/CSCI716.assign_3/res_xt1643", true, size, size );
 
         // 2.2 Command Line
 //        new AssignmentThree( args );

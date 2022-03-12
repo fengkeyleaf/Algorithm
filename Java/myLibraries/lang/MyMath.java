@@ -3,8 +3,10 @@ package myLibraries.lang;
 /*
  * MyMath.java
  *
+ * JDK: 15
+ *
  * Version:
- *     $1.6$
+ *     $1.7$
  *
  * Revisions:
  *     $1.0 convert Number To OtherBase and Arrangement, etc.$
@@ -14,13 +16,14 @@ package myLibraries.lang;
  *     $1.4 add quadrant() on 5/14/2021$
  *     $1.5 add doubleCompare() and isSameSign() on 7/8/2021$
  *     $1.6 add generateRandomDoubles() with uniform distribution and Gaussian(normal) distribution on 9/10/2021$
- *
- * JDK: 15
+ *     $1.7 add findMaxMinInAbs() on 2/10/2022$
  */
 
-import myLibraries.util.geometry.elements.point.Vector;
+import myLibraries.util.CompareElement;
+import myLibraries.util.geometry.elements.Vector;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -32,6 +35,48 @@ import java.util.Random;
 
 public final class MyMath {
     public static final double EPSILON = 0.00000001; // 1e-8
+
+    /**
+     * base is less than n?
+     * */
+
+    public static
+    boolean isLess( double base, double n ) {
+        return doubleCompare( base, n ) < 0;
+    }
+
+    /**
+     * base is greater than n?
+     * */
+
+    public static
+    boolean isGreater( double base, double n ) {
+        return doubleCompare( base, n ) > 0;
+    }
+
+    /**
+     * find min amd max num, compared by Math.abs() among numbers.
+     *
+     * @return [ min, max ] compared by Math.abs()
+     * */
+
+    public static
+    double[] findMaxMinInAbs( List<Double> nums ) {
+        double[] minMax = new double[ 2 ];
+        minMax[ 0 ] = CompareElement.min( Comparator.comparingDouble( Math::abs ), nums );
+        minMax[ 1 ] = CompareElement.max( Comparator.comparingDouble( Math::abs ), nums );
+
+        return minMax;
+    }
+
+    public static
+    double[] findMaxMinInAbs( double... nums ) {
+        List<Double> numbers = new ArrayList<>( nums.length + 1 );
+        for ( double num : nums )
+            numbers.add( num );
+
+        return findMaxMinInAbs( numbers );
+    }
 
     /**
      * generate random non-negative integers with uniform distribution
@@ -156,31 +201,12 @@ public final class MyMath {
 
     public static
     int quadrant( double x, double y ) {
-        if ( x > 0 && y >= 0 )  return 1;
-        if ( x <= 0 && y > 0 )  return 2;
-        if ( x < 0 )  return 3;
-        if ( y < 0 ) return 4;
+        if ( isPositive( x ) && doubleCompare( y, 0 ) >= 0 )  return 1;
+        if ( doubleCompare( x, 0 ) <= 0 && isPositive( y ) )  return 2;
+        if ( isNegative( x ) ) return 3;
+        if ( isNegative( y ) ) return 4;
 
-        return -1;
-    }
-
-    public static
-    int quadrant( float x, float y ) {
-        if ( x > 0 && y >= 0 )  return 1;
-        if ( x <= 0 && y > 0 )  return 2;
-        if ( x < 0 )  return 3;
-        if ( y < 0 ) return 4;
-
-        return -1;
-    }
-
-    public static
-    int quadrant( int x, int y ) {
-        if ( x > 0 && y >= 0 )  return 1;
-        if ( x <= 0 && y > 0 )  return 2;
-        if ( x < 0 )  return 3;
-        if ( y < 0 ) return 4;
-
+        assert false;
         return -1;
     }
 
@@ -191,6 +217,7 @@ public final class MyMath {
         if ( x < 0 )  return 3;
         if ( y < 0 ) return 4;
 
+        assert false;
         return -1;
     }
 

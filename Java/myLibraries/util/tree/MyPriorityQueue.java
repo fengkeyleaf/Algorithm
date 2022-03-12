@@ -62,6 +62,21 @@ public class MyPriorityQueue<E> extends PerfectBinaryTree<E> {
     }
 
     /**
+     * Retrieves, but does not remove,
+     * the head of this queue, or returns null if this queue is empty.
+     *
+     * @return the head of this queue,
+     *         also the element with the highest priority, if not empty.
+     * */
+
+    // https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/PriorityQueue.html#peek()
+    public E peek() {
+        if ( isEmpty() ) return null;
+
+        return tree.get( 0 );
+    }
+
+    /**
      * do bubble up
      * */
 

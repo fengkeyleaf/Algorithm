@@ -3,6 +3,8 @@ package myLibraries.util.graph;
 /*
  * InternetFlow.java
  *
+ * JDK: 14
+ *
  * Version:
  *     $1.0$
  *
@@ -147,6 +149,7 @@ public class InternetFlow extends Graph<InternetFlowVertex> {
      * start searching paths s -> t
      * */
 
+    // TODO: 12/3/2021 use BFS to implement Internet flow
     private int startSearching( InternetFlowVertex start, boolean ifForward ) {
         int sum = 0;
         // false, no paths s -> t existed in the graph

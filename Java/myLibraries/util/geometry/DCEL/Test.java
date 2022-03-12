@@ -12,18 +12,20 @@ package myLibraries.util.geometry.DCEL;
  *     $1.0 basic operations on 10/18/2021$
  */
 
-import myLibraries.GUI.geometry.convexHull.Program;
-import myLibraries.util.geometry.elements.point.Vector;
-import myLibraries.util.geometry.tools.Polygons;
+import myLibraries.GUI.geometry.DCELProgram;
+import myLibraries.util.geometry.elements.Vector;
+import myLibraries.util.geometry.Polygons;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Test DCEL data structure
+ *
  * @author Xiaoyu Tongyang, or call me sora for short
  */
 
-public final class Test {
+final class Test {
     private static
     void testAddEdges() {
         Vector p1 = new Vector( 1, 1 );
@@ -44,16 +46,16 @@ public final class Test {
 
         Vertex target = vertices.get( 0 );
         Vertex origin = new Vertex( Vector.origin );
-        HalfEdge.addEdge( target, origin );
+        HalfEdges.addEdge( target, origin );
 
         target = vertices.get(3);
         origin = new Vertex( p5 );
-        HalfEdge.addEdge( target, origin );
+        HalfEdges.addEdge( target, origin );
 
         points.add( Vector.origin );
         points.add( p5 );
         int size = 6;
-        Program drawer = new Program( size, size );
+        DCELProgram drawer = new DCELProgram( size, size );
 //        drawer.draw( points, faces );
 
         drawer.initialize();
@@ -86,16 +88,18 @@ public final class Test {
             if ( e.origin.equals( vertices.get( 0 ) ) && e.next.origin.equals( vertices.get( 1 ) ) )
                 edge = e;
         }
-        HalfEdge.split( edge, split );
+        HalfEdges.split( edge, split );
+        assert DCEL.walkAroundEdge( edge ) != null;
+        assert DCEL.walkAroundEdge( edge.twin ) != null;
 
         Vertex target = split;
         Vertex origin = new Vertex( Vector.origin );
-        HalfEdge.addEdge( target, origin );
+        HalfEdges.addEdge( target, origin );
 
         points.add( Vector.origin );
         points.add( p6 );
         int size = 6;
-        Program drawer = new Program( size, size );
+        DCELProgram drawer = new DCELProgram( size, size );
 //        drawer.draw( points, faces );
 
         drawer.initialize();
@@ -130,12 +134,14 @@ public final class Test {
             if ( e.origin.equals( vertices.get( 0 ) ) && e.next.origin.equals( vertices.get( 1 ) ) )
                 edge = e;
         }
-        HalfEdge.split( edge, split );
+        HalfEdges.split( edge, split );
+        assert DCEL.walkAroundEdge( edge ) != null;
+        assert DCEL.walkAroundEdge( edge.twin ) != null;
 
         Vertex target = split;
         Vertex origin = new Vertex( Vector.origin );
         vertices.add( origin );
-        HalfEdge.addEdge( target, origin );
+        HalfEdges.addEdge( target, origin );
 
         points.add( Vector.origin );
         points.add( p6 );
@@ -148,9 +154,11 @@ public final class Test {
             if ( e.origin.equals( vertices.get( 3 ) ) && e.next.origin.equals( vertices.get( 2 ) ) )
                 edge = e;
         }
-        HalfEdge.split( edge, split );
+        HalfEdges.split( edge, split );
+        assert DCEL.walkAroundEdge( edge ) != null;
+        assert DCEL.walkAroundEdge( edge.twin ) != null;
 
-        HalfEdge.connectHelper( vertices.get( vertices.size() - 2 ), split, new ArrayList<>() );
+        HalfEdges.connectHelper( vertices.get( vertices.size() - 2 ), split, new ArrayList<>() );
 //        points.add( origin );
         points.add( p7 );
 
@@ -160,10 +168,10 @@ public final class Test {
             if ( e.origin.equals( vertices.get( vertices.size() - 2 ) ) && e.twin.origin.equals( split ) )
                 edge = e;
         }
-        Face[] face = HalfEdge.deleteEdge( edge );
+        Face[] face = HalfEdges.deleteEdge( edge );
         faces[ 1 ] = face[ 1 ];
 
-        HalfEdge.connectHelper( vertices.get( vertices.size() - 2 ), vertices.get( 3 ), new ArrayList<>() );
+        HalfEdges.connectHelper( vertices.get( vertices.size() - 2 ), vertices.get( 3 ), new ArrayList<>() );
 
         edges = DCEL.allIncidentEdges( vertices.get( vertices.size() - 2 ) );
         for ( HalfEdge e :
@@ -171,11 +179,11 @@ public final class Test {
             if ( e.origin.equals( vertices.get( vertices.size() - 2 ) ) && e.twin.origin.equals( vertices.get( 4 ) ) )
                 edge = e;
         }
-        face = HalfEdge.deleteEdge( edge );
+        face = HalfEdges.deleteEdge( edge );
         faces[ 1 ] = face[ 1 ];
 
         int size = 6;
-        Program drawer = new Program( size, size );
+        DCELProgram drawer = new DCELProgram( size, size );
 //        drawer.draw( points, faces );
 
         drawer.initialize();

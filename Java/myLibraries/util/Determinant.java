@@ -99,5 +99,12 @@ public class Determinant extends Matrix {
 
         Determinant determinant2 = new Determinant( matrix2 );
         System.out.println( determinant2.getResult() ); // 0
+
+        double[][] matrix3 = {
+                { 3, 1, 2 },
+                { 4, 2, 0 }
+        };
+
+//        System.out.println( new Determinant( matrix3 ).getResult() ); // 0
     }
 }

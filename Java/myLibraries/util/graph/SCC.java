@@ -3,6 +3,8 @@ package myLibraries.util.graph;
 /*
  * SCC.java
  *
+ * JDK: 14
+ *
  * Version:
  *     $1.0$
  *

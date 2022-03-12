@@ -24,6 +24,8 @@ public class Face {
     public final int ID;
     public HalfEdge outComponent;
     public final List<HalfEdge> innerComponents = new ArrayList<>();
+    // half-edge that the infinite face only has.
+    private HalfEdge infiniteBoundary;
 
     public int IDOfDualVertex;
 

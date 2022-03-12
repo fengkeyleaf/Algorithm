@@ -14,8 +14,8 @@ package myLibraries.util.graph.tools;
 import myLibraries.util.Node;
 import myLibraries.util.tree.MemorizedPriorityQueue;
 import myLibraries.util.geometry.DCEL.HalfEdge;
-import myLibraries.util.geometry.elements.point.Vector;
-import myLibraries.util.geometry.tools.Triangles;
+import myLibraries.util.geometry.elements.Vector;
+import myLibraries.util.geometry.Triangles;
 import myLibraries.util.graph.Graph;
 import myLibraries.util.graph.elements.*;
 

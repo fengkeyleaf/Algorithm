@@ -12,14 +12,14 @@ package PA_1.problem_1;
  * JDK: 15
  */
 
-import myLibraries.GUI.geometry.convexHull.Program;
+import myLibraries.GUI.geometry.DCELProgram;
 import myLibraries.io.ProcessingFile;
 import myLibraries.io.ReadFromStdOrFile;
 import myLibraries.util.geometry.DCEL.Face;
 import myLibraries.util.geometry.DCEL.Vertex;
-import myLibraries.util.geometry.elements.point.Vector;
-import myLibraries.util.geometry.tools.ConvexHull;
-import myLibraries.util.geometry.tools.Polygons;
+import myLibraries.util.geometry.elements.Vector;
+import myLibraries.util.geometry.ConvexHull;
+import myLibraries.util.geometry.Polygons;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -96,7 +96,7 @@ public final class Main implements ProcessingFile {
 
     public BigInteger doTheAlgorithm() {
         // visualized program
-        Program drawer = new Program( 12, 12 );
+        DCELProgram drawer = new DCELProgram( 12, 12 );
 
         List<Vector> extremePoints = ConvexHull.grahamScan( points );
 //        List<Vector> extremePoints = ConvexHull.slowConvexHull( points );

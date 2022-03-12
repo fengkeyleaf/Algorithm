@@ -10,6 +10,7 @@ package myLibraries.util.tree.elements;
  *     $1.0$
  */
 
+import myLibraries.util.DoublyLinkedNode;
 import myLibraries.util.Node;
 
 /**
@@ -19,6 +20,7 @@ import myLibraries.util.Node;
  */
 
 public class MapTreeNode<K, V> extends Node {
+    protected static int IDStatic = 0;
     public MapTreeNode<K, V> left;
     public MapTreeNode<K, V> right;
     public K key;
@@ -26,12 +28,18 @@ public class MapTreeNode<K, V> extends Node {
     // including this node itself
     public int numberOfChildren = 1;
 
+    public final DoublyLinkedNode<MapTreeNode<K, V>> node;
+
     /**
      * constructs to create an instance of Node
      * */
 
     public MapTreeNode( int ID, K key, V val ) {
         this( ID, null, null, null, key, val );
+    }
+
+    public MapTreeNode( K key, V val ) {
+        this( IDStatic++, null, null, null, key, val );
     }
 
     public MapTreeNode( int ID, MapTreeNode<K, V> parent,
@@ -52,10 +60,25 @@ public class MapTreeNode<K, V> extends Node {
         this.val = val;
         this.left = left;
         this.right = right;
+        node = new DoublyLinkedNode<>( this );
     }
 
     public MapTreeNode( MapTreeNode<K, V> node ) {
         this( node.ID, node.key, node.val );
+    }
+
+    public boolean isRoot() {
+        return parent == null;
+    }
+
+    public boolean isLeft() {
+        // only MapTreeNode used in BST, so ignore the warning.
+        return !isRoot() && ( ( MapTreeNode<K, V> ) parent ).left == this;
+    }
+
+    public boolean isRight() {
+        // only MapTreeNode used in BST, so ignore the warning.
+        return !isRoot() && ( ( MapTreeNode<K, V> ) parent ).right == this;
     }
 
     public static <K, V>
@@ -82,12 +105,16 @@ public class MapTreeNode<K, V> extends Node {
         return "{" + key + "->" + val + "}";
     }
 
-    private String toStringWithoutKey() {
+    protected String toStringWithoutKey() {
         return String.valueOf( val );
+    }
+
+    protected String toStringWithoutValue() {
+        return String.valueOf( key );
     }
 
     @Override
     public String toString() {
-        return toStringWithoutKey();
+        return toStringWithoutValue();
     }
 }

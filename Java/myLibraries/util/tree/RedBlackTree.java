@@ -3,6 +3,8 @@ package myLibraries.util.tree;
 /*
  * RedBlackTree.java
  *
+ * JDK: 16
+ *
  * Version:
  *     $1.0$
  *
@@ -11,6 +13,7 @@ package myLibraries.util.tree;
  */
 
 import myLibraries.util.tree.elements.MapTreeNode;
+import myLibraries.util.tree.elements.RBTreeNode;
 
 import java.util.Comparator;
 
@@ -21,13 +24,21 @@ import java.util.Comparator;
  * Note that in order to avoid errors, either a Comparator<K> is provided
  * or the key, K, implements Comparable<K>
  *
- * Reference resource: https://algs4.cs.princeton.edu/home/
+ * Reference resource:
+ * @see <a href=https://algs4.cs.princeton.edu/home/>Algorithms 4th Edition</a>
  * or Algorithms 4th Edition in Chinese
  *
  * @author       Xiaoyu Tongyang, or call me sora for short
  */
 
 public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
+
+    /**
+     * node colors
+     * */
+
+    protected static final boolean RED   = true;
+    protected static final boolean BLACK = false;
 
     /**
      * constructs to create an instance of RedBlackTree
@@ -41,151 +52,26 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
         this( null );
     }
 
-    /**
-     * node color
-     * */
 
-    public enum Color {
-        RED, BLACK
-    }
-
-    /**
-     * Data structure of Red Black Tree Node
-     *
-     * Inner class
-     * */
-
-    protected class RedBlackTreeNode extends MapTreeNode<K, V> {
-        public Color color;
-
-        /**
-         * constructs to create an instance of Node
-         * */
-
-        public RedBlackTreeNode( int ID, K key,
-                                 V val, Color color ) {
-            this( ID, null, null, null, key, val, color );
-        }
-
-        public RedBlackTreeNode( int ID, RedBlackTreeNode parent,
-                            K key, V val, Color color ) {
-            this( ID, parent, null, null, key, val, color );
-        }
-
-        public RedBlackTreeNode( int ID, RedBlackTreeNode parent,
-                                 RedBlackTreeNode left, RedBlackTreeNode right,
-                            K key, V val, Color color ) {
-            super( ID, parent, left, right, key, val );
-            this.color = color;
-        }
-
-        public RedBlackTreeNode( int ID, RedBlackTreeNode left,
-                                 RedBlackTreeNode right, K key, V val, Color color ) {
-            this( ID, null, left, right, key, val, color );
-        }
-
-        public RedBlackTreeNode( RedBlackTreeNode node ) {
-            this( node.ID, node.key, node.val, node.color );
-        }
-
-        private String toStringWithoutColor() {
-            return "{" + key + "->" + val + "}";
-        }
-
-        private String toStringNormal() {
-            return color + ":{" + key + "->" + val + "}";
-        }
-
-        private String toStringWithoutKey() {
-            return String.valueOf( val );
-        }
-
-        @Override
-        public String toString() {
-            return toStringWithoutKey();
-        }
-    }
-
-    /**
-     * check a node has valid structure
-     * */
-
-    private boolean checkInvalidStructure( RedBlackTreeNode root ) {
-        RedBlackTreeNode left = ( RedBlackTreeNode ) root.left;
-        RedBlackTreeNode right = ( RedBlackTreeNode ) root.right;
-
-        boolean ifInvalid = false;
-        // if left is BLACK, right must be non-null
-        if ( left != null && left.color == RedBlackTree.Color.BLACK )
-            if ( right == null )
-                ifInvalid = true;
-
-        // if right is BLACK, left must be non-null
-        if ( right != null && right.color == RedBlackTree.Color.BLACK )
-            if ( left == null )
-                ifInvalid = true;
-
-        return ifInvalid;
-    }
-
-    /**
-     * Use inorder to do the job
-     * */
-
-    private void checkValidTreeStructure( RedBlackTreeNode root ) {
-        if ( root == null ) return;
-        assert !checkInvalidStructure( root ) : root.left + " <- " +root + " -> " + root.right;
-
-        checkValidTreeStructure( ( RedBlackTreeNode ) root.left );
-        checkValidTreeStructure( ( RedBlackTreeNode ) root.right );
-    }
-
-    /**
-     * check Valid Tree Structure
-     * */
-
-    public void checkValidTreeStructure() {
-        checkValidTreeStructure( ( RedBlackTreeNode ) root );
-    }
-
-    /**
-     * inorderPrint
-     * */
-
-    private void inorderPrint( RedBlackTreeNode root ) {
-        if ( root == null ) return;
-        assert !checkInvalidStructure( root );
-
-        inorderPrint( ( RedBlackTreeNode ) root.left );
-        System.out.print( root + " " );
-        inorderPrint( ( RedBlackTreeNode ) root.right );
-    }
-
-    /**
-     * print this BST in inorder
-     * */
-
-    public void inorderPrint() {
-        inorderPrint( ( RedBlackTreeNode ) root );
-        System.out.println();
-    }
+    //-------------------------------------------------------
+    // balancing operations
+    //-------------------------------------------------------
 
     /**
      * a node is red?
      * */
 
     protected boolean isRed( MapTreeNode<K, V> node ) {
-        return node != null &&
-                ( ( RedBlackTreeNode ) node ).color == RedBlackTree.Color.RED;
+        return node != null && ( ( RBTreeNode<K, V> ) node ).color;
     }
 
     /**
      * common part for both rotateLeft and rotateRight
      * */
 
-    protected void rotate( RedBlackTreeNode root, RedBlackTreeNode temp ) {
+    protected void rotate( RBTreeNode<K, V>  root, RBTreeNode<K, V>  temp ) {
         temp.color = root.color;
-        root.color = RedBlackTree.Color.RED;
+        root.color = RED;
         temp.numberOfChildren = root.numberOfChildren;
         updateSize( root );
     }
@@ -194,8 +80,8 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
      * rotate Left
      * */
 
-    protected RedBlackTreeNode rotateLeft( RedBlackTreeNode root ) {
-        RedBlackTreeNode temp = ( RedBlackTreeNode ) root.right;
+    protected RBTreeNode<K, V>  rotateLeft( RBTreeNode<K, V>  root ) {
+        RBTreeNode<K, V>  temp = ( RBTreeNode<K, V>  ) root.right;
         root.right = temp.left;
         temp.left = root;
         rotate( root, temp );
@@ -206,8 +92,8 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
      * rotate Right
      * */
 
-    protected RedBlackTreeNode rotateRight( RedBlackTreeNode root ) {
-        RedBlackTreeNode temp = ( RedBlackTreeNode ) root.left;
+    protected RBTreeNode<K, V>  rotateRight( RBTreeNode<K, V>  root ) {
+        RBTreeNode<K, V>  temp = ( RBTreeNode<K, V>  ) root.left;
         root.left = temp.right;
         temp.right = root;
         rotate( root, temp );
@@ -216,18 +102,13 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
 
     /**
      * flip Colors
-     *
-     * @param reverse   true - set root's color to BLACK,
-     *                  children RED ( up-down combing ),
-     *                  false - set root's color to RED,
-     *                  children BLACK ( bottom-up restoring )
      * */
 
-    protected void flipColors( RedBlackTreeNode root, boolean reverse ) {
+    protected void flipColors( RBTreeNode<K, V>  root ) {
         assert root.left != null && root.right != null;
-        root.color = reverse ? RedBlackTree.Color.BLACK : RedBlackTree.Color.RED;
-        ( ( RedBlackTreeNode ) root.left ).color = reverse ? RedBlackTree.Color.RED : RedBlackTree.Color.BLACK;
-        ( ( RedBlackTreeNode ) root.right ).color = reverse ? RedBlackTree.Color.RED : RedBlackTree.Color.BLACK;
+        root.color = !root.color;
+        ( ( RBTreeNode<K, V>  ) root.left ).color = !( ( RBTreeNode<K, V>  ) root.left ).color;
+        ( ( RBTreeNode<K, V>  ) root.right ).color = !( ( RBTreeNode<K, V>  ) root.right ).color;
     }
 
     /**
@@ -236,7 +117,7 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
      * the right child is BLACK
      * */
 
-    protected boolean ifBalanceCaseOne( RedBlackTreeNode root ) {
+    protected boolean ifBalanceCaseOne( RBTreeNode<K, V>  root ) {
         return isRed( root.right ) && !isRed( root.left );
     }
 
@@ -246,7 +127,7 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
      * and the left child's left child is RED
      * */
 
-    protected boolean ifBalanceCaseTwo( RedBlackTreeNode root ) {
+    protected boolean ifBalanceCaseTwo( RBTreeNode<K, V>  root ) {
         return isRed( root.left ) && isRed( root.left.left );
     }
 
@@ -256,7 +137,7 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
      * the right child is RED
      * */
 
-    protected boolean ifBalanceCaseThree( RedBlackTreeNode root ) {
+    protected boolean ifBalanceCaseThree( RBTreeNode<K, V>  root ) {
         return isRed( root.left ) && isRed( root.right );
     }
 
@@ -264,50 +145,71 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
      * balance this R-B tree
      * */
 
-    protected RedBlackTreeNode balance( RedBlackTreeNode root ) {
+    protected RBTreeNode<K, V>  balance( RBTreeNode<K, V>  root ) {
         if ( ifBalanceCaseOne( root ) ) root = rotateLeft( root );
         if ( ifBalanceCaseTwo( root ) ) root = rotateRight( root );
-        if ( ifBalanceCaseThree( root ) ) flipColors( root, false );
+        if ( ifBalanceCaseThree( root ) ) flipColors( root );
 
-        return ( RedBlackTreeNode ) updateSize( root );
+        return ( RBTreeNode<K, V>  ) updateSize( root );
     }
+
+    //-------------------------------------------------------
+    // put
+    //-------------------------------------------------------
 
     /**
      * put key -> val into this R-B tree
      * */
 
     public void put( K key, V val ) {
-        RedBlackTreeNode root = put( ( RedBlackTreeNode ) this.root, key, val );
-        root.color = RedBlackTree.Color.BLACK;
-        this.root = root;
+        if ( isNull( key, val ) ) return;
+
+        root = put( this.root, key, val );
+        ( ( RBTreeNode<K, V> ) root ).color = BLACK;
+        assert check();
     }
 
     // this part of code is very similar to
     // put( MapTreeNode<K, V> root, K key, V val ).
-    private RedBlackTreeNode put( RedBlackTreeNode root, K key, V val ) {
+    private RBTreeNode<K, V>  put( MapTreeNode<K, V> root, K key, V val ) {
         // base case, attach the new node to this position
-        if ( root == null ) return new RedBlackTreeNode( ID++, key, val, RedBlackTree.Color.RED );
+        if ( root == null ) return new RBTreeNode<K, V> ( ID++, key, val, RED );
 
         int res = compareKeys( root, key );
         // the node should be attached in the left subtree
-        if ( res > 0 ) root.left = put( ( RedBlackTreeNode ) root.left, key, val );
+        if ( res > 0 ) root.left = put( root.left, key, val );
         // the node should be attached in the right subtree
-        else if ( res < 0 ) root.right = put( ( RedBlackTreeNode ) root.right, key, val );
+        else if ( res < 0 ) root.right = put( root.right, key, val );
         // added before, update value
         else root.val = val;
 
         // update size and restore this R-B tree
-        return balance( root );
+        return balance( ( RBTreeNode<K, V>  ) root );
     }
+
+    //-------------------------------------------------------
+    // delete
+    //-------------------------------------------------------
 
     /**
      * update the root after deleting
      * */
 
-    protected void updateRootForDelete( RedBlackTreeNode root ) {
+    protected void updateRootForDelete( RBTreeNode<K, V>  root ) {
         this.root = root;
         // !isEmpty() is equivalent to root != null
-        if ( !isEmpty() ) root.color = RedBlackTree.Color.BLACK;
+        if ( !isEmpty() ) root.color = RED;
+    }
+
+    /**
+     * delete the minimum key -> value in this R-B tree,
+     * and get the value
+     * */
+
+    public V deleteMinAndGetVal() {
+        deletedMinNode = null;
+        deleteMin();
+        return deletedMinNode == null ? null : deletedMinNode.val;
     }
 
     /**
@@ -315,21 +217,22 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
      * */
 
     public void deleteMin() {
+        // the root is null, i.e. the tree is empty,
+        // which is missed by the textbook
+        if ( isEmpty() ) return;
+
         // the following commented out code is from the textbook,
         // but from my point of view, they're redundant.
          if ( !isRed( root.left ) &&
                  !isRed( root.right ) )
-             ( ( RedBlackTreeNode ) root ).color = RedBlackTree.Color.RED;
-
-        // the root is null, i.e the tree is empty,
-        // which is missed by the textbook
-        if ( isEmpty() ) return;
+             ( ( RBTreeNode<K, V> ) root ).color = BLACK;
 
         // delete the node and update the root
-        updateRootForDelete( deleteMin( ( RedBlackTreeNode ) this.root ) );
+        updateRootForDelete( deleteMin( ( RBTreeNode<K, V> ) this.root ) );
+        assert check();
     }
 
-    protected RedBlackTreeNode deleteMin( RedBlackTreeNode root ) {
+    protected RBTreeNode<K, V>  deleteMin( RBTreeNode<K, V>  root ) {
         // base case, this node is the least one in the tree
         // and it's also a leaf node in this R-B tree,
         // so just return null, instead of return root.right,
@@ -350,33 +253,34 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
             root = moveRedLeft( root );
 
         // otherwise, look into the left subtree
-        root.left = deleteMin( ( RedBlackTreeNode ) root.left );
+        root.left = deleteMin( ( RBTreeNode<K, V> ) root.left );
         return balance( root );
     }
 
-    /**
-     * delete the minimum key -> value in this R-B tree,
-     * and get the value
-     * */
-
-    public V deleteMinAndGetVal() {
-        deletedMinNode = null;
-        deleteMin();
-        return deletedMinNode == null ? null : deletedMinNode.val;
-    }
-
-    protected RedBlackTreeNode moveRedLeft( RedBlackTreeNode root ) {
-        flipColors( root, true );
+    protected RBTreeNode<K, V>  moveRedLeft( RBTreeNode<K, V>  root ) {
+        flipColors( root );
 
         if ( isRed( root.right.left ) ) {
             // handle case 6
-            root.right = rotateRight( ( RedBlackTreeNode ) root.right );
+            root.right = rotateRight( ( RBTreeNode<K, V>  ) root.right );
             root = rotateLeft( root );
-            flipColors( root, false ); // RedBlackTree.flipColors(RedBlackTree.java:229) nullPointerException
+            flipColors( root ); // RedBlackTree.flipColors(RedBlackTree.java:229) nullPointerException
         }
 
         return root;
     }
+
+    /**
+     * delete the maximum key -> value in this R-B tree,
+     * and get the value
+     * */
+
+    public V deleteMaxAndGetVal() {
+        deletedMaxNode = null;
+        deleteMax();
+        return deletedMaxNode == null ? null : deletedMaxNode.val;
+    }
+
 
     /**
      * delete the maximum key -> value in this R-B tree
@@ -384,21 +288,22 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
 
     // TODO: 5/29/2021 return the deleted max val in O(1)
     public void deleteMax() {
+        // the root is null, i.e. the tree is empty,
+        // which is missed by the textbook
+        if ( isEmpty() ) return;
+
         // the following commented out code is from the textbook,
         // but from my point of view, they're redundant
          if ( !isRed( root.left ) &&
                  !isRed( root.right ) )
-             ( ( RedBlackTreeNode ) root ).color = RedBlackTree.Color.RED;
-
-        // the root is null, i.e the tree is empty,
-        // which is missed by the textbook
-        if ( isEmpty() ) return;
+             ( ( RBTreeNode<K, V> ) root ).color = RED;
 
         // delete the node and update the root
-        updateRootForDelete( deleteMax( ( RedBlackTreeNode ) this.root ) );
+        updateRootForDelete( deleteMax( ( RBTreeNode<K, V> ) this.root ) );
+        assert check();
     }
 
-    private RedBlackTreeNode deleteMax( RedBlackTreeNode root ) {
+    private RBTreeNode<K, V>  deleteMax( RBTreeNode<K, V>  root ) {
         // handle case 2
         if ( isRed( root.left ) )
             root = rotateRight( root );
@@ -408,6 +313,7 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
         // so just return null, instead of return root.left,
         // which is different from deleteMax() for BST
         if ( root.right == null ) {
+            deletedMaxNode = root;
             assert root.left == null;
             return null;
         }
@@ -422,12 +328,12 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
             root = moveRedRight( root );
 
         // otherwise, look into the right subtree
-        root.right = deleteMax( ( RedBlackTreeNode ) root.right );
+        root.right = deleteMax( ( RBTreeNode<K, V>  ) root.right );
         return balance( root );
     }
 
-    protected RedBlackTreeNode moveRedRight( RedBlackTreeNode root ) {
-        flipColors( root, true );
+    protected RBTreeNode<K, V>  moveRedRight( RBTreeNode<K, V>  root ) {
+        flipColors( root );
 
         // handle case 4 more efficiently,
         // since at this point, there is an extra red node on the left,
@@ -436,10 +342,21 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
         // which is: !isRed( root.left.left )
         if ( isRed( root.left.left ) ) {
             root = rotateRight( root );
-            flipColors( root, false );
+            flipColors( root );
         }
 
         return root;
+    }
+
+    /**
+     * delete the key -> value in this R-B tree,
+     * and get the value
+     * */
+
+    public V deleteAndGetVal( K key ) {
+        deletedNode = null;
+        delete( key );
+        return deletedNode == null ? null : deletedNode.val;
     }
 
     /**
@@ -447,23 +364,26 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
      * */
 
     public void delete( K key ) {
+        deletedNode = null;
+
+        // the root is null, i.e. the tree is empty,
+        // which is missed by the textbook
+        if ( key == null || isEmpty() ) return;
+
         // the following commented out code is from the textbook,
         // but from my point of view, they're redundant
          if ( !isRed( root.left ) &&
                  !isRed(  root.right ) )
-             ( ( RedBlackTreeNode ) root ).color = RedBlackTree.Color.RED;
-
-        // the root is null, i.e the tree is empty,
-        // which is missed by the textbook
-        if ( isEmpty() ) return;
+             ( ( RBTreeNode<K, V> ) root ).color  = RED;
 
         // delete the node and update the root
-        updateRootForDelete( delete( ( RedBlackTreeNode ) this.root, key ) );
+        updateRootForDelete( delete( ( RBTreeNode<K, V> ) this.root, key ) );
+        assert check();
     }
 
     // Note that this recursive method is a bit unique from usual ones,
     // since the base case for this method is not at the beginning of code
-    private RedBlackTreeNode delete( RedBlackTreeNode root, K key ) {
+    private RBTreeNode<K, V>  delete( RBTreeNode<K, V>  root, K key ) {
         // why not use the commented-out code to compare keys?
         // because if tree was rotated, the root has changed,
         // i.e. not the previous one we computed for the variable, res,
@@ -485,7 +405,7 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
                     !isRed( root.left.left ) )
                 root = moveRedLeft( root );
 
-            root.left = delete( ( RedBlackTreeNode ) root.left, key );
+            root.left = delete( ( RBTreeNode<K, V>  ) root.left, key );
         }
         // the key may be in the right subtree,
         // or found the key to delete.
@@ -501,6 +421,7 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
             // just delete it
             if ( compareKeys( root, key ) == 0 &&
                     root.right == null ) {
+                assert deletedNode == null;
                 deletedNode = root;
                 return null;
             }
@@ -521,11 +442,12 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
             // replace it with its successor and
             // delete the successor with deleteMin( root ).
             if ( compareKeys( root, key ) == 0 ) {
+                assert deletedNode == null;
                 deletedNode = new MapTreeNode<>( root.ID, root.key, root.val );
                 // replace the node with its successor
                 root.replace( min( root.right ) );
                 // delete the successor
-                root.right = deleteMin( ( RedBlackTreeNode ) root.right );
+                root.right = deleteMin( ( RBTreeNode<K, V>  ) root.right );
 
                 // the following commented-out code is from the textbook,
                 // which is a little bit complex, not as simple as possible
@@ -534,21 +456,78 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
 //                root.right = deleteMin( ( RedBlackTreeNode ) root.right );
             }
             // the key may be in the right subtree,
-            else root.right = delete( ( RedBlackTreeNode ) root.right, key );
+            else root.right = delete( ( RBTreeNode<K, V>  ) root.right, key );
         }
 
         // update size and restore this R-B tree
         return balance( root );
     }
 
+    //-------------------------------------------------------
+    // toString methods
+    //-------------------------------------------------------
+
     /**
-     * delete the key -> value in this R-B tree,
-     * and get the value
+     * inorderPrint
      * */
 
-    public V deleteAndGetVal( K key ) {
-        deletedNode = null;
-        delete( key );
-        return deletedNode == null ? null : deletedNode.val;
+    private void inorderPrint( RBTreeNode<K, V>  root ) {
+        if ( root == null ) return;
+
+        inorderPrint( ( RBTreeNode<K, V>  ) root.left );
+        System.out.print( root + " " );
+        inorderPrint( ( RBTreeNode<K, V>  ) root.right );
+    }
+
+    /**
+     * print this R-B tree in inorder
+     * */
+
+    public void inorderPrint() {
+        inorderPrint( ( RBTreeNode<K, V> ) root );
+        System.out.println();
+    }
+
+    //-------------------------------------------------------
+    // Check integrity of red-black tree data structure.
+    //-------------------------------------------------------
+
+    protected boolean check() {
+        boolean isBST = super.check();
+        boolean is23 = is23();
+        boolean isBalanced = isBalanced();
+
+        if ( !is23 )             System.err.println( "Not a 2-3 tree" );
+        if ( !isBalanced )       System.err.println( "Not balanced" );
+
+        return isBST && is23 && isBalanced;
+    }
+
+    // Does the tree have no red right links, and at most one (left)
+    // red links in a row on any path?
+    private boolean is23() { return is23( root ); }
+    private boolean is23( MapTreeNode<K, V> x ) {
+        if ( x == null ) return true;
+        if ( isRed( x.right ) ) return false;
+        if ( x != root && isRed( x ) && isRed( x.left ) ) return false;
+        return is23( x.left ) && is23( x.right );
+    }
+
+    // do all paths from root to leaf have same number of black edges?
+    private boolean isBalanced() {
+        int black = 0;     // number of black links on path from root to min
+        MapTreeNode<K, V> x = root;
+        while ( x != null ) {
+            if ( !isRed( x ) ) black++;
+            x = x.left;
+        }
+        return isBalanced( root, black );
+    }
+
+    // does every path from the root to a leaf have the given number of black links?
+    private boolean isBalanced( MapTreeNode<K, V> x, int black ) {
+        if ( x == null ) return black == 0;
+        if ( !isRed( x ) ) black--;
+        return isBalanced( x.left, black ) && isBalanced( x.right, black );
     }
 }

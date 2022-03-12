@@ -3,14 +3,14 @@ package myLibraries.util.geometry.elements;
 /*
  * UpdateCoordinatesShape.java
  *
+ * JDK: 15
+ *
  * Version:
  *     $1.0$
  *
  * Revisions:
  *     $1.0$
  */
-
-import myLibraries.util.geometry.elements.point.Vector;
 
 /**
  * interface includes methods to update x or y
@@ -35,7 +35,7 @@ public interface UpdateCoordinatesShape {
     /**
      * update the target point's x and y
      * based on the given update point,
-     * using this line to calculate
+     * using this shape to calculate
      *
      * Interface definition
      *

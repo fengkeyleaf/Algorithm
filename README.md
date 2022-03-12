@@ -10,7 +10,7 @@
 ### 0.2 updating plans( All updated ):
 
 1.  Voronoi Diagrams enhanced with Point location, including visualization. i.e. query a point in Voronoi Diagrams efficiently.
-2.  Point Location with the ability to handle all degenerate cases, including visualization.
+1.  Point Location with the ability to handle all degenerate cases, including visualization.
 
 ## 1. Algorithm
 
@@ -147,7 +147,7 @@ Only support 2-dimensional scenario.
 
 | Description                                                  | Entry File                                                   |
 | :----------------------------------------------------------- | ------------------------------------------------------------ |
-| MyLinkedList ( With the ability to remove / insert a node directly from / into the list. ) | [MyLinkedList.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/MyLinkedList.java) |
+| Doubly Linked List ( With the ability to remove / insert a node directly from / into the list. ) | [MyLinkedList.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/MyLinkedList.java) |
 
 ### 2.1 Tree
 
@@ -157,8 +157,8 @@ Only support 2-dimensional scenario.
 | Red Black Tree ( put(), deleteMin(), deleteMax(), delete(), min(), max(), etc. ) | [RedBlackTree.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/tree/RedBlackTree.java) |
 | Segment Tree ( Range maximum and minimum Query )             | [SegmentTree.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/tree/SegmentTree.java) |
 | Priority Queue                                               | [MyPriorityQueue.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/tree/MyPriorityQueue.java) |
-| DoublyLinkedBST ( With the ability delete / insert a node directly from / into the BST ) | [DoublyLinkedBST.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/tree/DoublyLinkedBST.java) |
-| DoublyLinkedRBT ( With the ability delete / insert a node directly from / into the R-B Tree ) | [DoublyLinkedRBT.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/tree/DoublyLinkedRBT.java) |
+| Doubly Linked Binary Search Tree ( With the ability delete / insert a node directly from / into the BST ) | [DoublyLinkedBST.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/tree/DoublyLinkedBST.java) |
+| Doubly Linked Red Black Tree ( With the ability delete / insert a node directly from / into the R-B Tree ) | [DoublyLinkedRBT.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/tree/DoublyLinkedRBT.java) |
 
 ### 2.2 Graph
 

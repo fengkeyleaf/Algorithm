@@ -7,9 +7,10 @@
 1. Dictionaries/HashMaps/HashSets may not be the solution we're looking for, so I haven't used Hash Table in the current implementation. We're always exploring an alternative solution that does not rely on the expected O(1) performance of operations involving a hash table. Well, the reason behind this is simply that this is an algorithm-based repository, not project-based one. We're eager for finding a cleverer and more amazing algorithm and data structure to solve the problem.
 2. For computational geometry. Java is not that good at visualizing 3D scenario, so I thinking of not using Java when digging into 3D or higher-dimensions scenario. ( but there is indeed a 3D Java library )
 
-### 0.2 updating plans:
+### 0.2 updating plans( All updated ):
 
-1. Voronoi Diagrams, including visualization.
+1.  Voronoi Diagrams enhanced with Point location, including visualization. i.e. query a point in Voronoi Diagrams efficiently.
+2.  Point Location with the ability to handle all degenerate cases, including visualization.
 
 ## 1. Algorithm
 
@@ -21,32 +22,33 @@ Only support 2-dimensional scenario.
 
 | Description   | Entry method                                                 |
 | :------------ | ------------------------------------------------------------ |
-| toLeft test   | [boolean toLeft( Vector base1, Vector base2, Vector point )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/Triangles.java#L163) |
-| inCircle test | [double inCircle( Vector a, Vector b, Vector c, Vector p )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/Circles.java#L42) |
+| toLeft test   | [boolean toLeft( Vector base1, Vector base2, Vector point )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/Triangles.java#L163) |
+| inCircle test | [double inCircle( Vector a, Vector b, Vector c, Vector p )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/Circles.java#L122) |
 
 #### 1.1.2 Convex Hull
 
 | Description                         | Entry method\File                                            |
 | ----------------------------------- | ------------------------------------------------------------ |
-| Graham's Scan                       | [List\<Vector> grahamScan( List\<Vector> points )](https://github.com/fengkeyleaf/Algorithm/blob/43b0bc5aadfaddb07352e3c021bd626ff57b9bb0/Java/myLibraries/util/geometry/tools/ConvexHull.java#L114) |
-| Brute force                         | [List\<Vector> slowConvexHull( List\<Vector> points )](https://github.com/fengkeyleaf/Algorithm/blob/43b0bc5aadfaddb07352e3c021bd626ff57b9bb0/Java/myLibraries/util/geometry/tools/ConvexHull.java#L42) |
+| Graham's Scan                       | [List\<Vector> grahamScan( List\<Vector> points )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/ConvexHull.java#L98) |
+| Brute force                         | [List\<Vector> slowConvexHull( List\<Vector> points )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/ConvexHull.java#L42) |
 | Program ( including visualization ) | [Programming Assignment 1 - Convex Hull](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CSCI716/assign_1/AssignmentOne.java) |
 
 #### 1.1.3 Geometric Intersection
 
 | Description                                                  | Entry method\File                                            |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Line and line                                                | [Vector lineIntersect( Line line1, Line line2 )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/GeometricIntersection.java#L179) |
-| Line and Circle                                              | [Line lineCircleIntersect( Line line, Circle circle )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/GeometricIntersection.java#L67) |
-| Bentley Ottmann's algrithom( Intersection Of segment, ray, line and Circle ) | [List\<EventPoint2D> findIntersection( List\<IntersectionShape> shapes )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/GeometricIntersection.java#L479) |
+| Line and line                                                | [public Vector lineIntersect( Line l )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/elements/Line.java#L497) |
+| Segment and segment                                          | [public Vector segmentIntersect( Line l )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/elements/Line.java#L469) |
+| Line and Circle                                              | [Line lineCircleIntersect( Line line, Circle circle )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/GeometricIntersection.java#L67) |
+| Bentley Ottmann's algrithom( Intersection Of segment, ray, line and Circle ) | [List\<EventPoint2D> findIntersection( List\<IntersectionShape> shapes )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/GeometricIntersection.java#L375) |
 | Program ( including visualization )                          | [CG2017 PA1-2 Crossroad](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/PA_1/problem_2/Main.java) |
 
 #### 1.1.4 Triangulation
 
 | Description                         | Entry method\File                                            |
 | :---------------------------------- | ------------------------------------------------------------ |
-| Partionting monotone polygons       | [List\<Face> makeMonotone( List\<Vertex> vertices )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/MonotonePolygons.java#L288) |
-| Triangulation                       | [List\<Face> preprocessMonotonePolygon( List\<Face> monotonePolygons )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/tools/MonotonePolygons.java#L495) |
+| Partionting monotone polygons       | [List\<Face> makeMonotone( List\<Vertex> vertices )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/MonotonePolygons.java#L288) |
+| Triangulation                       | [List\<Face> preprocessMonotonePolygon( List\<Face> monotonePolygons )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/MonotonePolygons.java#L497) |
 | BFS in a dual graph                 | [void BFS( int sizeOfGraph, DualVertex start, DualVertex end )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/tools/SingleShortestPath.java#L241) |
 | Funnel algorithm                    | [List\<Vector> Funnel( DualVertex startTriangle, Vector startPoint, Vector endPoint )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/graph/tools/SingleShortestPath.java#L145) |
 | Program ( including visualization ) | [CG2017 PA2-1 Shortest Path in The Room](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/PA_2/problem_1/Main.java) |
@@ -56,9 +58,18 @@ Only support 2-dimensional scenario.
 
 | Description                                | Entry method\File                                            |
 | :----------------------------------------- | ------------------------------------------------------------ |
-| Build trapezoidal Map and search structure | [SearchStructure trapezoidalMap( List\<Line> lines, SearchVertex box )](https://github.com/fengkeyleaf/Algorithm/blob/43b0bc5aadfaddb07352e3c021bd626ff57b9bb0/Java/myLibraries/util/geometry/tools/PointLocation.java#L68) |
-| Point Locatoin                             | [public SearchVertex get( Line line )](https://github.com/fengkeyleaf/Algorithm/blob/43b0bc5aadfaddb07352e3c021bd626ff57b9bb0/Java/myLibraries/util/graph/SearchStructure.java#L167) |
+| Build trapezoidal Map and search structure | [BoundingBox trapezoidalMap( List<Line\> lines )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/PointLocation.java#L106) |
+| Point Locatoin                             | [public SearchVertex get( Vector p )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/SearchStructure.java#L157) |
 | Program ( including visualization )        | [Programming Assignment 3 - Trapezoidal Map and Planar Point Location](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CSCI716/assign_3/AssignmentThree.java) |
+
+#### 1.1.6 Voronoi Diagrams
+
+| Description                                                  | Entry method\File                                            |
+| :----------------------------------------------------------- | ------------------------------------------------------------ |
+| Build Voronoi Diagrams                                       | [BoundingBox voronoiDiagrams( List<Face\> sites )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/VoronoiDiagrams.java#L223) |
+| Find on which cell ( Voronoi Face ) the query point is.      | [List<Face\> findCell( SearchVertex v, Vector p )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/VoronoiDiagrams.java#L68) |
+| Generate segments from Voronoi edges to compute the trapezoidal Map of the Voronoi Diagrams. | [List<Line\> getSegments( BoundingBox b )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/VoronoiDiagrams.java#L134) |
+| Program ( including visualization )                          | [CG2017 PA2-2 Find Dancing Partners](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/PA_2/problem_2/Main.java) |
 
 ### 1.2 POJ
 
@@ -132,6 +143,12 @@ Only support 2-dimensional scenario.
 
 ## 2. Data Structure
 
+### 2.1 Basics
+
+| Description                                                  | Entry File                                                   |
+| :----------------------------------------------------------- | ------------------------------------------------------------ |
+| MyLinkedList ( With the ability to remove / insert a node directly from / into the list. ) | [MyLinkedList.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/MyLinkedList.java) |
+
 ### 2.1 Tree
 
 | Description                                                  | Entry File                                                   |
@@ -140,6 +157,8 @@ Only support 2-dimensional scenario.
 | Red Black Tree ( put(), deleteMin(), deleteMax(), delete(), min(), max(), etc. ) | [RedBlackTree.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/tree/RedBlackTree.java) |
 | Segment Tree ( Range maximum and minimum Query )             | [SegmentTree.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/tree/SegmentTree.java) |
 | Priority Queue                                               | [MyPriorityQueue.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/tree/MyPriorityQueue.java) |
+| DoublyLinkedBST ( With the ability delete / insert a node directly from / into the BST ) | [DoublyLinkedBST.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/tree/DoublyLinkedBST.java) |
+| DoublyLinkedRBT ( With the ability delete / insert a node directly from / into the R-B Tree ) | [DoublyLinkedRBT.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/tree/DoublyLinkedRBT.java) |
 
 ### 2.2 Graph
 
@@ -172,5 +191,11 @@ Only support 2-dimensional scenario.
 
 | Description                       | Entry File/Package                                           |
 | :-------------------------------- | :----------------------------------------------------------- |
-| Trapezoidal Map                   | [public class Trapezoid](https://github.com/fengkeyleaf/Algorithm/blob/43b0bc5aadfaddb07352e3c021bd626ff57b9bb0/Java/myLibraries/util/geometry/elements/Trapezoid.java#L54) |
-| Search Structure( Tree-like DAG ) | [public class SearchStructure](https://github.com/fengkeyleaf/Algorithm/blob/43b0bc5aadfaddb07352e3c021bd626ff57b9bb0/Java/myLibraries/util/graph/SearchStructure.java#L35) |
+| Trapezoidal Map                   | [public class Trapezoid](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/TrapezoidalMap.java) |
+| Search Structure( Tree-like DAG ) | [public class SearchStructure](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/SearchStructure.java) |
+
+#### 2.3.3 others
+
+| Description                                   | Entry File/Package                                           |
+| :-------------------------------------------- | :----------------------------------------------------------- |
+| BoundingBox ( Bounding box for a half plane ) | [BoundingBox.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/BoundingBox.java) |

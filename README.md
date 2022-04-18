@@ -7,10 +7,11 @@
 1. Dictionaries/HashMaps/HashSets may not be the solution we're looking for, so I haven't used Hash Table in the current implementation. We're always exploring an alternative solution that does not rely on the expected O(1) performance of operations involving a hash table. Well, the reason behind this is simply that this is an algorithm-based repository, not project-based one. We're eager for finding a cleverer and more amazing algorithm and data structure to solve the problem.
 2. For computational geometry. Java is not that good at visualizing 3D scenario, so I thinking of not using Java when digging into 3D or higher-dimensions scenario. ( but there is indeed a 3D Java library )
 
-### 0.2 updating plans( All updated ):
+### 0.2 updating plans:
 
-1.  Voronoi Diagrams enhanced with Point location, including visualization. i.e. query a point in Voronoi Diagrams efficiently.
-1.  Point Location with the ability to handle all degenerate cases, including visualization.
+1.  Delaunay Triangulation, a dual graph of Voronoi Diagrams, including visualization.
+1.  ~~Voronoi Diagrams enhanced with Point location, including visualization. i.e. query a point in Voronoi Diagrams efficiently~~.
+1.  ~~Point Location with the ability to handle all degenerate cases, including visualization~~.
 
 ## 1. Algorithm
 

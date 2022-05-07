@@ -10,6 +10,7 @@
 ### 0.2 updating plans:
 
 1.  Delaunay Triangulation, a dual graph of Voronoi Diagrams, including visualization.
+1.  Orthogonal range searching with kd-tree, range tree, layered range tree ( fractional cascading ), including visualization.
 1.  ~~Voronoi Diagrams enhanced with Point location, including visualization. i.e. query a point in Voronoi Diagrams efficiently~~.
 1.  ~~Point Location with the ability to handle all degenerate cases, including visualization~~.
 

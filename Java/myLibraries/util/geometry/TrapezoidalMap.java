@@ -359,8 +359,9 @@ public final class TrapezoidalMap {
         else if ( lowerRight != null )
             // otherwise, partition bottoms.
             partitionBottom( top, rightP, trim );
-        // impossible both are null.
-        else assert false;
+        // Similar to followSegment(), there are two cases where both right neighbours are null.
+        // However, unlike followSegment(), we will have the second case for trimming wall,
+        // but in this case, nothing to do. i.e. there is no right trapezoid to split at this point.
     }
 
     private static

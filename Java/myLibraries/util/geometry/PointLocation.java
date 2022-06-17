@@ -261,7 +261,10 @@ public final class PointLocation {
             D0 = D0.upperRightNeighbor;
         else if ( lowerRight != null )
             D0 = D0.lowerRightNeighbor;
-        // impossible both are null.
+        // there are two cases where both right neighbours are null:
+        // 1) the rightmost trapezoid whose top line and bottom line are from the bounding box.
+        // 2) endPoints of the top and the bottom are the same, i.e. the trapezoid is closed to the right.
+        // but we won't encounter both cases in followSegment().
         else assert false;
 
         return D0;

@@ -44,7 +44,7 @@ public class PriorityIntervalTree extends IntervalRangeTree {
     // outer layer's isX, which is the same as the one in class. RangeTree.
     boolean isXMain;
     // outer layer's c, which is the same as the one in class RangeTree.
-    Comparator<com.fengkeyleaf.util.geom.Vector> cMain;
+    Comparator<Vector> cMain;
 
     /**
      * build an interval tree enhanced with priority search tree
@@ -85,8 +85,8 @@ public class PriorityIntervalTree extends IntervalRangeTree {
             super( P.get( P.size() / 2 - 1 ) );
             assert P.size() % 2 == 0;
 
-            List<com.fengkeyleaf.util.geom.Vector> L = new ArrayList<>();
-            List<com.fengkeyleaf.util.geom.Vector> R = new ArrayList<>();
+            List<Vector> L = new ArrayList<>();
+            List<Vector> R = new ArrayList<>();
             initL( P, L, R );
             initR( P, L, R );
 
@@ -115,7 +115,7 @@ public class PriorityIntervalTree extends IntervalRangeTree {
              *           if the outer interval tree is built on y-coor or x-coor.
              * */
 
-            PrioritySearchTree( List<com.fengkeyleaf.util.geom.Vector> I ) {
+            PrioritySearchTree( List<Vector> I ) {
                 // c = opposite to cMain, isX = opposite to isMain.
                 super( new ArrayList<>(), !isXMain );
 
@@ -148,8 +148,8 @@ public class PriorityIntervalTree extends IntervalRangeTree {
             // Furthermore, the left subtree of ν is a priority search tree for the set P_below,
             // the right subtree of ν is a priority search tree for the set P_above.
 
-            com.fengkeyleaf.util.geom.Vector preprocess( List<com.fengkeyleaf.util.geom.Vector> xL ) {
-                com.fengkeyleaf.util.geom.Vector pMin = xL.get( 0 );
+            Vector preprocess( List<Vector> xL ) {
+                Vector pMin = xL.get( 0 );
                 xL.sort( ( v1, v2 ) -> {
                     // point with minimum x-coor or y-coor is considered always the smallest.
                     if ( v1 == pMin ) return -1;
@@ -162,7 +162,7 @@ public class PriorityIntervalTree extends IntervalRangeTree {
                 return pMin;
             }
 
-            boolean check( com.fengkeyleaf.util.geom.Vector pMin, List<com.fengkeyleaf.util.geom.Vector> xL ) {
+            boolean check( Vector pMin, List<Vector> xL ) {
                 for ( int i = 1; i < xL.size(); i++ ) {
                     // be careful with overlapping endpoints.
                     assert cMain.compare( pMin, xL.get( i ) ) <= 0 : pMin + " | " + xL.get( i );
@@ -172,7 +172,7 @@ public class PriorityIntervalTree extends IntervalRangeTree {
             }
 
             // init below
-            private RangeNode initL( List<com.fengkeyleaf.util.geom.Vector> I, int mid ) {
+            private RangeNode initL( List<Vector> I, int mid ) {
                 if ( I.size() < 2 ) return null;
 
                 int idx = 1;
@@ -205,7 +205,7 @@ public class PriorityIntervalTree extends IntervalRangeTree {
              * */
 
             // init above
-            private RangeNode initR( List<com.fengkeyleaf.util.geom.Vector> I, int mid ) {
+            private RangeNode initR( List<Vector> I, int mid ) {
                 if ( I.size() < 3 ) return null;
 
                 LinkedList<RangeNode> Q = new LinkedList<>();
@@ -236,7 +236,7 @@ public class PriorityIntervalTree extends IntervalRangeTree {
             // Input. The root ν of a subtree of a priority search tree and a value qx.
             // Output. All points in the subtree with x-coordinate at most qx.
             void reportSubTree( RangeNode n, QueryVector[] R,
-                                List<com.fengkeyleaf.util.geom.Vector> res ) {
+                                List<Vector> res ) {
 
                 // 1. if ν is not a leaf and qx <= (p(ν))x <= qx'
                 if ( n != null &&
@@ -263,11 +263,11 @@ public class PriorityIntervalTree extends IntervalRangeTree {
             // Input. A priority search tree and a range, unbounded to the left.
             // Output. All points lying in the range.
             @Override
-            List<com.fengkeyleaf.util.geom.Vector> query( QueryVector[] R ) {
+            List<Vector> query( QueryVector[] R ) {
                 // 1. Search with qy and qy' in T.
                 // Let νSplit be the node where the two search paths split.
                 RangeNode vSplit = findSplitNode( R );
-                List<com.fengkeyleaf.util.geom.Vector> res = new ArrayList<>();
+                List<Vector> res = new ArrayList<>();
                 if ( vSplit == null ) return res;
 
                 // 2. for each node ν on the search path of qy or qy'
@@ -323,7 +323,7 @@ public class PriorityIntervalTree extends IntervalRangeTree {
             }
 
             @Override
-            void report( RangeNode n, QueryVector[] R, List<com.fengkeyleaf.util.geom.Vector> res ) {
+            void report( RangeNode n, QueryVector[] R, List<Vector> res ) {
                 if ( n == null ) return;
 
                 // n lying inside R
@@ -389,7 +389,7 @@ public class PriorityIntervalTree extends IntervalRangeTree {
 
     @Override
     void report( List<LineNode> res, IntervalRangeNode n,
-                 List<com.fengkeyleaf.util.geom.Vector> R, boolean isPosInf ) {
+                 List<Vector> R, boolean isPosInf ) {
         String[] RStr = getOrthogonalArea( R, isPosInf );
         // query in priority search tree.
         PriorityNode v = ( PriorityNode ) n;

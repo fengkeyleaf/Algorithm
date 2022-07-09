@@ -40,7 +40,7 @@ import java.util.List;
 public class LayeredRangeTree extends RangeTree {
 
     // this constructor will not remove duplicate points.
-    LayeredRangeTree( List<com.fengkeyleaf.util.geom.Vector> P, boolean isX ) {
+    LayeredRangeTree( List<Vector> P, boolean isX ) {
         // build the normal range tree.
         super( init( P ), isX );
         // build associated fractional cascading structure.
@@ -54,7 +54,7 @@ public class LayeredRangeTree extends RangeTree {
      *          Duplicate points allowed, they will be removed in the process.
      * */
 
-    public LayeredRangeTree( List<com.fengkeyleaf.util.geom.Vector> P ) {
+    public LayeredRangeTree( List<Vector> P ) {
         // build the normal range tree.
         super( P );
         // build associated fractional cascading structure.
@@ -109,7 +109,7 @@ public class LayeredRangeTree extends RangeTree {
         return A;
     }
 
-    public List<com.fengkeyleaf.util.geom.Vector> query( List<com.fengkeyleaf.util.geom.Vector> R ) {
+    public List<Vector> query( List<Vector> R ) {
         return query( vectorToString( R ) );
     }
 
@@ -123,19 +123,19 @@ public class LayeredRangeTree extends RangeTree {
      *         [ ( x1, y1 ), ( x2, y2 ) ] = [ bottomLeft, topRight ].
      * */
 
-    public List<com.fengkeyleaf.util.geom.Vector> query( String[] R ) {
+    public List<Vector> query( String[] R ) {
         assert R.length == 4;
         return query( getQueryR( R ) );
     }
 
     // Reference resource: http://www.cs.uu.nl/geobook/
-    List<com.fengkeyleaf.util.geom.Vector> query( QueryVector[] R ) {
+    List<Vector> query( QueryVector[] R ) {
         if ( isInvalidR( R, c, isX ) )
             throw new IllegalArgumentException( "Illegal orthogonal searching areas" );
 
         // 1. vSplit <- FINDSPLITNODE(T, x, x')
         RangeNode vSplit = findSplitNode( R );
-        List<com.fengkeyleaf.util.geom.Vector> res = new ArrayList<>();
+        List<Vector> res = new ArrayList<>();
         if ( vSplit == null ) return check2D( R, res );
 
         // 2. if vsplit is a leaf

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="703.3749999999994" y="-126.71791666666672">myLibraries.util.geometry.KdTree.Type</node>
+    <node x="-290.640839493136" y="-47.717916666666724">myLibraries.util.geometry.WindowingQueryTree</node>
+    <node x="-456.9293382352941" y="394.3719166666667">myLibraries.util.geometry.SegmentRangeTree.SegmentRangeNode</node>
+    <node x="-456.9293382352941" y="279.7179166666667">myLibraries.util.geometry.SegmentRangeTree</node>
+    <node x="-75.09431678057933" y="639.4583333333333">myLibraries.util.geometry.PriorityIntervalTree.PriorityNode</node>
+    <node x="752.6249999999994" y="-47.717916666666724">myLibraries.util.geometry.KdTree</node>
+    <node x="-48.594316780579334" y="374.6249999999999">myLibraries.util.geometry.IntervalTree</node>
+    <node x="-55.625670625168425" y="-43.15270246272257">myLibraries.util.geometry.WindowingQueryTree.IntervalLayeredRangeTree</node>
+    <node x="-301.1476715686274" y="215.85895833333336">myLibraries.util.geometry.SegmentRangeTree.SlabRangeTree</node>
+    <node x="1049.6249999999995" y="224.45833333333337">myLibraries.util.geometry.RangeTree.RangeNode</node>
+    <node x="805.3749999999994" y="-126.71791666666672">myLibraries.util.geometry.KdTree.KdNode</node>
+    <node x="-95.59431678057933" y="532.6249999999999">myLibraries.util.geometry.PriorityIntervalTree</node>
+    <node x="-517.9810049019607" y="116.0">myLibraries.util.geometry.SegmentTree</node>
+    <node x="-100.11121223992461" y="453.6249999999999">myLibraries.util.geometry.IntervalRangeTree</node>
+    <node x="-288.4060827339662" y="639.4583333333333">myLibraries.util.geometry.PriorityIntervalTree.PriorityNode.PrioritySearchTree</node>
+    <node x="901.4044117647053" y="145.45833333333337">myLibraries.util.geometry.RangeTree</node>
+    <node x="-815.2310049019608" y="226.15625">myLibraries.util.geometry.SegmentTree.Interval</node>
+    <node x="-578.7110049019608" y="226.15625">myLibraries.util.geometry.SegmentTree.SegmentNode</node>
+    <node x="240.5577423535285" y="453.6249999999999">myLibraries.util.geometry.IntervalTree.IntervalNode</node>
+    <node x="816.8749999999994" y="-205.71791666666672">myLibraries.util.geometry.KdTree.KdNode.Type</node>
+    <node x="110.49999999999989" y="-271.4999999999998">myLibraries.util.tree.AbstractTree</node>
+    <node x="714.6249999999994" y="224.45833333333337">myLibraries.util.geometry.LayeredRangeTree</node>
+    <node x="230.04190286039216" y="532.6249999999999">myLibraries.util.geometry.IntervalRangeTree.IntervalRangeNode</node>
+    <node x="-688.4710049019608" y="226.15625">myLibraries.util.geometry.SegmentTree.Type</node>
+    <node x="907.6249999999994" y="224.45833333333337">myLibraries.util.geometry.RangeTree.LayerNode</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="myLibraries.util.geometry.KdTree.Type" target="myLibraries.util.geometry.KdTree" relationship="INNER_CLASS">
+      <point x="-7.843137268537248E-5" y="14.499666666666572" />
+      <point x="744.3749215686267" y="-73.42625000000015" />
+      <point x="801.1249215686267" y="-73.42625000000015" />
+      <point x="-7.843137268537248E-5" y="-14.50033333333343" />
+    </edge>
+    <edge source="myLibraries.util.geometry.RangeTree.LayerNode" target="myLibraries.util.geometry.RangeTree" relationship="INNER_CLASS">
+      <point x="0.0" y="-14.5" />
+      <point x="968.6249999999994" y="204.45833333333337" />
+      <point x="1114.1249999999995" y="204.45833333333337" />
+      <point x="1114.1249999999995" y="194.45833333333337" />
+      <point x="992.1544117647053" y="194.45833333333337" />
+      <point x="30.25" y="14.5" />
+    </edge>
+    <edge source="myLibraries.util.geometry.PriorityIntervalTree.PriorityNode" target="myLibraries.util.geometry.PriorityIntervalTree" relationship="INNER_CLASS">
+      <point x="0.0" y="14.5" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="myLibraries.util.geometry.WindowingQueryTree" target="myLibraries.util.tree.AbstractTree" relationship="GENERALIZATION">
+      <point x="9.022227951748789" y="-14.126993276973849" />
+      <point x="-184.61861154138722" y="-79.04315212244799" />
+      <point x="-183.214363363382" y="-79.04315212244799" />
+      <point x="-183.214363363382" y="-82.35784872372935" />
+      <point x="192.49958823529414" y="-82.35784872372935" />
+      <point x="-4.1176470574555424E-4" y="-14.5" />
+    </edge>
+    <edge source="myLibraries.util.geometry.KdTree.KdNode.Type" target="myLibraries.util.geometry.KdTree.KdNode" relationship="INNER_CLASS">
+      <point x="-0.0" y="14.5" />
+      <point x="-0.0" y="-14.5" />
+    </edge>
+    <edge source="myLibraries.util.geometry.WindowingQueryTree.IntervalLayeredRangeTree" target="myLibraries.util.geometry.WindowingQueryTree" relationship="INNER_CLASS">
+      <point x="-14.999877058875228" y="-14.5" />
+      <point x="40.37445231595635" y="-33.217916666666724" />
+      <point x="97.0" y="0.0" />
+    </edge>
+    <edge source="myLibraries.util.geometry.SegmentRangeTree.SlabRangeTree" target="myLibraries.util.geometry.WindowingQueryTree.IntervalLayeredRangeTree" relationship="GENERALIZATION">
+      <point x="14.999671568627406" y="14.500041666666647" />
+      <point x="-211.148" y="263.0" />
+      <point x="55.374452315956354" y="263.0" />
+      <point x="1.2294112477917452E-4" y="-14.499916666666707" />
+    </edge>
+    <edge source="myLibraries.util.geometry.LayeredRangeTree" target="myLibraries.util.geometry.RangeTree" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="801.1249999999994" y="204.45833333333337" />
+      <point x="931.6544117647053" y="204.45833333333337" />
+      <point x="-30.25" y="14.5" />
+    </edge>
+    <edge source="myLibraries.util.geometry.IntervalTree.IntervalNode" target="myLibraries.util.geometry.IntervalTree" relationship="INNER_CLASS">
+      <point x="-0.0" y="14.5" />
+      <point x="294.0350390800329" y="482.6249999999999" />
+      <point x="294.0350390800329" y="428.6249999999999" />
+      <point x="15.405683219420666" y="428.6249999999999" />
+      <point x="-0.0" y="-14.5" />
+    </edge>
+    <edge source="myLibraries.util.geometry.WindowingQueryTree.IntervalLayeredRangeTree" target="myLibraries.util.geometry.LayeredRangeTree" relationship="GENERALIZATION">
+      <point x="111.0" y="0.0" />
+      <point x="438.894268505373" y="-28.652702462722573" />
+      <point x="438.894268505373" y="190.74967426685285" />
+      <point x="800.2471820698134" y="190.74967426685285" />
+      <point x="-0.8778179301859836" y="5.917292578766364" />
+    </edge>
+    <edge source="myLibraries.util.geometry.SegmentTree.Type" target="myLibraries.util.geometry.SegmentTree" relationship="INNER_CLASS">
+      <point x="-4.117647058592411E-4" y="14.5" />
+      <point x="-647.4714166666666" y="181.93229166666669" />
+      <point x="-448.9814166666665" y="181.93229166666669" />
+      <point x="-4.117647058592411E-4" y="-14.5" />
+    </edge>
+    <edge source="myLibraries.util.geometry.PriorityIntervalTree.PriorityNode.PrioritySearchTree" target="myLibraries.util.geometry.WindowingQueryTree.IntervalLayeredRangeTree" relationship="GENERALIZATION">
+      <point x="-1.929726488469896E-5" y="-14.500333333333288" />
+      <point x="-203.40610203123106" y="317.94803190231323" />
+      <point x="55.374452315956354" y="317.94803190231323" />
+      <point x="1.2294112477917452E-4" y="-14.499916666666707" />
+    </edge>
+    <edge source="myLibraries.util.geometry.SegmentRangeTree.SegmentRangeNode" target="myLibraries.util.geometry.SegmentRangeTree" relationship="INNER_CLASS">
+      <point x="-3.245745098038128" y="-13.493250000000103" />
+      <point x="-366.1750833333322" y="387.69437405866654" />
+      <point x="-366.9293382352941" y="387.69437405866654" />
+      <point x="-4.117647056318674E-4" y="14.500333333333344" />
+    </edge>
+    <edge source="myLibraries.util.geometry.SegmentRangeTree.SegmentRangeNode" target="myLibraries.util.geometry.SegmentTree.SegmentNode" relationship="GENERALIZATION">
+      <point x="-93.7204117647048" y="2.432083333333196" />
+      <point x="-505.7110049019608" y="411.3039999999999" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="myLibraries.util.geometry.SegmentTree.SegmentNode" target="myLibraries.util.geometry.SegmentTree" relationship="INNER_CLASS">
+      <point x="-4.117647058592411E-4" y="14.5" />
+      <point x="-505.71141666666665" y="170.0" />
+      <point x="-448.9814166666665" y="170.0" />
+      <point x="-4.117647058592411E-4" y="-14.5" />
+    </edge>
+    <edge source="myLibraries.util.geometry.PriorityIntervalTree.PriorityNode" target="myLibraries.util.geometry.IntervalRangeTree.IntervalRangeNode" relationship="GENERALIZATION">
+      <point x="67.0" y="0.0" />
+      <point x="311.9748490061154" y="653.9583333333333" />
+      <point x="-7.0670538542767645" y="16.53273495248152" />
+    </edge>
+    <edge source="myLibraries.util.geometry.IntervalRangeTree.IntervalRangeNode" target="myLibraries.util.geometry.IntervalRangeTree" relationship="INNER_CLASS">
+      <point x="-43.800950369588236" y="-16.784054910242844" />
+      <point x="268.96196208249705" y="530.340945089757" />
+      <point x="268.96196208249705" y="501.8483368532206" />
+      <point x="33.162283008227405" y="501.8483368532206" />
+      <point x="48.27349524815202" y="16.939281942977857" />
+    </edge>
+    <edge source="myLibraries.util.geometry.RangeTree.RangeNode" target="myLibraries.util.geometry.RangeTree" relationship="INNER_CLASS">
+      <point x="0.0" y="-14.5" />
+      <point x="1114.1249999999995" y="194.45833333333337" />
+      <point x="992.1544117647053" y="194.45833333333337" />
+      <point x="30.25" y="14.5" />
+    </edge>
+    <edge source="myLibraries.util.geometry.SegmentTree" target="myLibraries.util.geometry.WindowingQueryTree" relationship="GENERALIZATION">
+      <point x="50.45100490196069" y="14.5" />
+      <point x="-398.53" y="163.0" />
+      <point x="-241.79670022371386" y="163.0" />
+      <point x="-48.15586073057784" y="19.46791666666664" />
+    </edge>
+    <edge source="myLibraries.util.geometry.KdTree.KdNode" target="myLibraries.util.geometry.KdTree" relationship="INNER_CLASS">
+      <point x="-7.843137268537248E-5" y="14.499666666666572" />
+      <point x="857.8749215686267" y="-73.42625000000015" />
+      <point x="801.1249215686267" y="-73.42625000000015" />
+      <point x="-7.843137268537248E-5" y="-14.50033333333343" />
+    </edge>
+    <edge source="myLibraries.util.geometry.PriorityIntervalTree" target="myLibraries.util.geometry.IntervalRangeTree" relationship="GENERALIZATION">
+      <point x="87.5" y="0.0" />
+      <point x="-12.968656801698671" y="547.1249999999999" />
+      <point x="2.1425554382259406" y="13.522175290390692" />
+    </edge>
+    <edge source="myLibraries.util.geometry.PriorityIntervalTree.PriorityNode.PrioritySearchTree" target="myLibraries.util.geometry.PriorityIntervalTree.PriorityNode" relationship="INNER_CLASS">
+      <point x="85.0" y="7.0" />
+      <point x="-118.40608273396617" y="653.9583333333333" />
+      <point x="-96.75019975727275" y="653.9583333333333" />
+      <point x="-96.75019975727275" y="653.3567845828932" />
+      <point x="-65.52798310454068" y="-0.6015487504400312" />
+    </edge>
+    <edge source="myLibraries.util.geometry.RangeTree" target="myLibraries.util.tree.AbstractTree" relationship="GENERALIZATION">
+      <point x="-61.80663407175359" y="1.7161828333333347" />
+      <point x="880.4688714429517" y="161.6745161666667" />
+      <point x="880.4688714429517" y="161.60678933333335" />
+      <point x="192.4999999999999" y="161.60678933333335" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="myLibraries.util.geometry.IntervalTree" target="myLibraries.util.geometry.WindowingQueryTree" relationship="GENERALIZATION">
+      <point x="15.000000000000114" y="-14.5" />
+      <point x="30.40568321942078" y="163.0" />
+      <point x="-219.92170022371386" y="163.0" />
+      <point x="-26.280860730577842" y="13.217916666666653" />
+    </edge>
+    <edge source="myLibraries.util.geometry.SegmentRangeTree" target="myLibraries.util.geometry.SegmentTree" relationship="GENERALIZATION">
+      <point x="-4.153411764705197" y="-13.444583333333298" />
+      <point x="-371.0827499999993" y="230.8826666666667" />
+      <point x="-413.52974999999896" y="230.8826666666667" />
+      <point x="35.451254901961704" y="14.49199999999999" />
+    </edge>
+    <edge source="myLibraries.util.geometry.IntervalRangeTree" target="myLibraries.util.geometry.IntervalTree" relationship="GENERALIZATION">
+      <point x="1.2882787750792204" y="-13.814677930306232" />
+      <point x="-13.822933464845391" y="425.2649155227032" />
+      <point x="-12.114380138551837" y="425.2649155227032" />
+      <point x="-27.520063357972504" y="7.094508975712785" />
+    </edge>
+    <edge source="myLibraries.util.geometry.IntervalRangeTree.IntervalRangeNode" target="myLibraries.util.geometry.IntervalTree.IntervalNode" relationship="GENERALIZATION">
+      <point x="-10.484160506863873" y="-14.221224920802513" />
+      <point x="-0.0" y="-14.5" />
+    </edge>
+    <edge source="myLibraries.util.geometry.SegmentTree.Interval" target="myLibraries.util.geometry.SegmentTree" relationship="INNER_CLASS">
+      <point x="-4.117647058592411E-4" y="14.5" />
+      <point x="-765.7314166666666" y="170.0" />
+      <point x="-448.9814166666665" y="170.0" />
+      <point x="-4.117647058592411E-4" y="-14.5" />
+    </edge>
+    <edge source="myLibraries.util.geometry.SegmentRangeTree.SlabRangeTree" target="myLibraries.util.geometry.SegmentRangeTree" relationship="INNER_CLASS">
+      <point x="-4.117647056318674E-4" y="-14.499666666666684" />
+      <point x="-226.14808333333303" y="345.65001779199997" />
+      <point x="-366.92974999999973" y="345.65001779199997" />
+      <point x="-4.117647056318674E-4" y="14.500333333333344" />
+    </edge>
+    <edge source="myLibraries.util.geometry.KdTree" target="myLibraries.util.tree.AbstractTree" relationship="GENERALIZATION">
+      <point x="-48.5" y="-0.0" />
+      <point x="207.4999999999999" y="-33.217916666666724" />
+      <point x="15.0" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.099511627776001" showDependencies="false" x="88.99524355582275" y="220.18655221909245" />
+  <SelectedNodes>
+    <node>myLibraries.util.geometry.SegmentTree</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

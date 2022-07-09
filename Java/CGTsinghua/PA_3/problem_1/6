@@ -1,0 +1,9 @@
+// https://www.geogebra.org/calculator/djn5whxs
+// ( 2 + 1 + 2 + 5 + 3 + 1 + 3 + 2 + 3 + 5 + 3 + 4 + 5 + 4 + 4 + 1 ) % ( 8 + 1 ) = 48 % 9 = 3
+// comment-out (0, 0) to do the zero-length edge check.
+5
+2 2
+-2 2
+// 0 0
+2 -2
+-2 -2

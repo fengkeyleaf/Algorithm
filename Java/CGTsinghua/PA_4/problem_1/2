@@ -1,0 +1,24 @@
+// https://www.geogebra.org/calculator/cw9asubv
+// 1
+// 0
+// 1
+// 0
+// 1
+// 1
+// 1
+// 0
+// 0
+// 0
+1 10
+0 4
+// searching areas
+0 0 4 4
+0 0 1 1
+-INF -INF INF INF
+-INF -INF 0 0
+-INF -INF 6 6
+-INF -1 6 6
+-2 -INF 6 6
+5 -1 INF INF
+5 -1 INF 8
+5 -1 6 INF

@@ -1,0 +1,12 @@
+// Voronoi: Case 15 - degenerate
+// https://www.geogebra.org/calculator/ar2qj25e
+9
+0 14
+-10 10
+10 10
+-14 0
+0 0
+14 0
+-10 -10
+10 -10
+0 -14

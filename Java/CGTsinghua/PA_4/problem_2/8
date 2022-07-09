@@ -1,0 +1,14 @@
+// https://www.geogebra.org/calculator/w5uzuave
+// arbitrary oriented segments, but no intersecting ones.
+5 4
+-8 1 1 -7
+-5 0 0 -2
+-2 -3 2 -2
+-3 1 5 -1
+-1 2 3 1
+-4 1 1 5
+// searching areas
+-5 0 2 6
+-5 -5 10 10
+-9 -1 1000 1000
+-100 -100 100 100

@@ -19,7 +19,8 @@ import java.util.regex.Pattern;
 /**
  * submitting version
  *
- * @author       Xiaoyu Tongyang, or call me sora for short
+ * @author Xiaoyu Tongyang, or call me sora for short
+ * @see <a href="https://fengkeyleaf.com">person website</a>
  */
 
 public final class Main {

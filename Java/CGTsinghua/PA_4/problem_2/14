@@ -1,0 +1,47 @@
+// https://www.geogebra.org/calculator/b7fqeedq
+// all verticals on the same line, and so as horizontals
+// without intersecting intervals.
+// 4
+// 4
+// 4
+// 4
+// 4
+// 6
+// 7
+// 0
+// 0
+20 9
+// horizontal intervals
+-18 0 -16 0
+-14 0 -12 0
+-10 0 -8 0
+-4 0 -6 0
+2 0 0 0
+-2 0 0 0
+6 0 4 0
+10 0 8 0
+14 0 12 0
+16 0 18 0
+
+// vertical intervals
+0 18 0 16
+0 12 0 14
+0 8 0 10
+0 4 0 6
+0 -2 0 0
+0 0 0 2
+0 -4 0 -6
+0 -8 0 -10
+0 -14 0 -12
+0 -18 0 -16
+
+// searching ares
+-1 -1 0 0
+0 0 1 1
+-1 0 0 1
+0 -1 1 0
+-2 -2 2 2
+0 -3 11 0
+-11 0 0 7
+1 1 2 2
+-2 -2 -1 -1

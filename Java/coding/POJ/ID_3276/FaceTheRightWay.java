@@ -10,8 +10,9 @@ package coding.POJ.ID_3276;
  *     $1.0$
  */
 
-import myLibraries.io.ProcessingFile;
-import myLibraries.io.ReadFromStdOrFile;
+import coding.POJ.POJMain;
+import com.fengkeyleaf.io.ProcessingFile;
+import com.fengkeyleaf.io.ReadFromStdOrFile;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -20,7 +21,8 @@ import java.util.Scanner;
  * Face The Right Way
  * @see <a href=http://poj.org/problem?id=3276>Face The Right Way</a>
  *
- * @author       Xiaoyu Tongyang, or call me sora for short
+ * @author Xiaoyu Tongyang, or call me sora for short
+ * @see <a href="https://fengkeyleaf.com">person website</a>
  */
 
 public final class FaceTheRightWay implements ProcessingFile {
@@ -113,7 +115,7 @@ public final class FaceTheRightWay implements ProcessingFile {
 
     public static
     void main( String[] args ) {
-        new FaceTheRightWay( ReadFromStdOrFile.getFilePathPOJ( 3276, 1 ) ); // 3 3
+        new FaceTheRightWay( POJMain.getFilePathPOJ( 3276, 1 ) ); // 3 3
 //        new FaceTheRightWay( ReadFromStdOrFile.getFilePathPOJ( 3276, 2 ) ); // 1 0
     }
 }

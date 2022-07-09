@@ -1,0 +1,61 @@
+FINDSPLITNODE(T,x,x')
+Input. A tree T and two values x and x' with x <= x'.
+Output. The node ν where the paths to x and x' split, or the leaf where both
+paths end.
+1. ν <- root(T)
+2. while ν is not a leaf and (x' <= xν or x > xν )
+    3. do if x' <= xν
+        4. then ν ←lc(ν)
+        5. else ν ←rc(ν)
+6. return ν
+
+
+Algorithm 1DRANGEQUERY(T, [x : x'])
+Input. A binary search tree T and a range [x : x'].
+Output. All points stored in T that lie in the range.
+1. vSplit <- FINDSPLITNODE(T,x,x')
+2. if vSplit is a leaf
+3. then Check if the point stored at vSplit must be reported.
+4. else (* Follow the path to x and report the points in subtrees right of the path. *)
+5.v <- lc(vSplit)
+6. while v is not a leaf
+7. do if x <= vx
+8. then REPORTSUBTREE(rc(v))
+9. v <- lc(v)
+10. else v <- rc(v)
+11. Check if the point stored at the leaf v must be reported.
+12. Similarly, follow the path to x', report the points in subtrees left of the path, 
+and check if the point stored at the leaf where the path ends must be reported.
+
+
+Algorithm BUILD2DRANGETREE(P)
+Input. A set P of points in the plane.
+Output. The root of a 2-dimensional range tree.
+1. Construct the associated structure: Build a binary search tree Tassoc on the set Py of ycoordinates
+of the points in P. Store at the leaves of Tassoc not just the y-coordinate of the points in Py, but the points themselves.
+2. if P contains only one point
+    3. then Create a leaf n storing this point, and make Tassoc the associated structure of n.
+4. else Split P into two subsets; one subset Pleft contains the points with x-coordinate less than or equal to xmid, the median x-coordinate, and the other subset Pright contains the points with x-coordinate larger than xmid.
+    5. vleft <- BUILD2DRANGETREE(Pleft)
+    6. vright <- BUILD2DRANGETREE(Pright)
+7. Create a node n storing xmid, make nleft the left child of n, make nright the right child of n, and make Tassoc the associated structure of n.
+8. return n
+
+
+Algorithm 2DRANGEQUERY(T, [x : x'] x [y : y'])
+Input. A 2-dimensional range tree T and a range [x : x'] x [y : y'].
+Output. All points in T that lie in the range.
+1. vSplit <- FINDSPLITNODE(T, x, x')
+2. if vsplit is a leaf
+3. then Check if the point stored at nSplit must be reported.
+4. else (* Follow the path to x and call 1DRANGEQUERY on the subtrees right of the path. * )
+5. n <- lc(vSplit)
+6. while v is not a leaf
+7. do if x <= xv
+8. then 1DRANGEQUERY(Tassoc(rc(n)), [y : y'])
+9. v <- lc(v)
+10. else v <- rc(v)
+11. Check if the point stored at v must be reported.
+12. Similarly, follow the path from rc(vSplit) to x', 
+call 1DRANGEQUERY with the range [y : y'] on the associated structures of subtrees left of the path, 
+and check if the point stored at the leaf where the path ends must be reported.

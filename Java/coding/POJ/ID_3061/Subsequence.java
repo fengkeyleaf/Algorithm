@@ -10,9 +10,10 @@ package coding.POJ.ID_3061;
  *     $1.0$
  */
 
-import myLibraries.io.ProcessingFile;
-import myLibraries.io.ReadFromStdOrFile;
-import myLibraries.util.MyCollections;
+import coding.POJ.POJMain;
+import com.fengkeyleaf.io.ProcessingFile;
+import com.fengkeyleaf.io.ReadFromStdOrFile;
+import com.fengkeyleaf.util.MyCollections;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,8 @@ import java.util.Scanner;
  * Subsequence
  * @see <a href=http://poj.org/problem?id=3061>Subsequence</a>
  *
- * @author       Xiaoyu Tongyang, or call me sora for short
+ * @author Xiaoyu Tongyang, or call me sora for short
+ * @see <a href="https://fengkeyleaf.com">person website</a>
  */
 
 public final class Subsequence implements ProcessingFile {
@@ -95,7 +97,7 @@ public final class Subsequence implements ProcessingFile {
         // give non-positive S, no need to check if i is out of index
         for ( int i = 0; numbers.get( i ) + target <= maxSum; i++ ) {
             // S_t - S_i >= S -> S_t >= S + S_i
-            int endIndex = MyCollections.ceilingBound( numbers, i, i + minLength,
+            int endIndex = MyCollections.ceilBound( numbers, i, i + minLength,
                     numbers.get( i ) + target );
             minLength = Math.min( minLength, endIndex - i );
         }
@@ -162,6 +164,6 @@ public final class Subsequence implements ProcessingFile {
     public static
     void main( String[] args ) {
         testOne();
-//        new Subsequence( ReadFromStdOrFile.getFilePathPOJ( 3061, 1 ) );
+        new Subsequence( POJMain.getFilePathPOJ( 3061, 1 ) );
     }
 }

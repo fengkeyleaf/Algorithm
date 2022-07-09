@@ -1,0 +1,35 @@
+Algorithm MAPOVERLAY(S1,S2)
+Input. Two planar subdivisions S1 and S2 stored in doubly-connected edge lists.
+Output. The overlay of S1 and S2 stored in a doubly-connected edge list D.
+1. Copy the doubly-connected edge lists for S1 and S2 to a new doubly-connected edge list D.
+2. Compute all intersections between edges from S1 and S2 with the plane sweep algorithm of Section 2.1. In addition to the actions on T and Q required at the event points, do the following:
+2.1 Update D as explained above if the event involves edges of both S1 and S2. (This was explained for the case where an edge of S1 passes through a vertex of S2.)
+updateD(I)
+2.2 Store the half-edge immediately to the left of the event point at the vertex in D representing it.
+3. (* Now D is the doubly-connected edge list for O(S1,S2), except that the information about the faces has not been computed yet. *)
+4. Determine the boundary cycles in O(S1,S2) by traversing D.
+5. Construct the graph G whose nodes correspond to boundary cycles and whose arcs connect each hole cycle to the cycle to the left of its leftmost vertex, and compute its connected components. (The information to determine the arcs of G has been computed in line 2, second item.)
+6. for each connected component in G
+    7. do Let C be the unique outer boundary cycle in the component and let f denote the face bounded by the cycle. Create a face record for f , set OuterComponent( f ) to some half-edge of C, and construct the list InnerComponents( f ) consisting of pointers to one half-edge in each hole cycle in the component. Let the IncidentFace() pointers of all half-edges in the cycles point to the face record of f .
+8. Label each face of O(S1,S2) with the names of the faces of S1 and S2 containing it, as explained above.
+
+updateD(I)
+1. if intersection is formed from two edges of S1 and S2 
+    2. then do what is explained in the textbook.
+3. else if intersection is formed from one edge and one vertex and the two edges are parallel. ( the other edge is the one incident to the vertex )
+    4. then if the intersection is left EndPoint.
+        5. then do split the edge into two parts, with the vertex as the splitting point.
+    6. else ( * the intersection is right EndPoint. * )
+        7. then do split the edge into two parts, and merge two dulicate half-edges into one.
+8. else if intersection is formed from two vertices and the two edges are parallel and the intersection is right Endpoint ( both edges are incident to their origin vertex )
+    9. then do merge two duplicate half-edges into one.
+
+Algorithm INTERSECTHALFPLANES(H)
+Input. A set H of n half-planes in the plane.
+Output. The convex polygonal region C := { intersection area of h, where h∈H }.
+1. if card(H) = 1
+    2. then C <- the unique half-plane h ∈ H
+    3. else Split H into sets H1 and H2 of size [n/2] and [n/2].
+        4. C1 <- INTERSECTHALFPLANES(H1)
+        5. C2 <- INTERSECTHALFPLANES(H2)
+        6. C <- INTERSECTCONVEXREGIONS(C1,C2)

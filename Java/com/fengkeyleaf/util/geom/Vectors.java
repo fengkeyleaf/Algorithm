@@ -656,41 +656,22 @@ public final class Vectors {
         return findLTL( Arrays.asList( P ) );
     }
 
-    private static
-    void testSortByAngle() {
-        List<com.fengkeyleaf.util.geom.Vector> points = new ArrayList<>();
-        points.add( com.fengkeyleaf.util.geom.Vector.origin );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 1, 1 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 0, 1 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 1, 0 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( -1, 1 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( -1, 1 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 1, -1 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( -1, -1 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( -1, 0 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 0, -1 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( -2, 2 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 2, -2 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 2, 2 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( -4, -4 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 0, 2 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 0, -3 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( -2, 0 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 2, 0 ) );
+    /**
+     * Are all points are the same line?
+     */
 
-        points.forEach( p -> {
-            p.x += 10;
-            p.y += 10;
-        } );
+    public static<E extends Vector>
+    boolean isAllOnSameLine( List<E> P ) {
+        if ( P == null || P.size() < 3 ) return false;
 
-        System.out.println( sortByAngleClockWise( com.fengkeyleaf.util.geom.Vector.origin, points ) );
+        for ( int i = 0; i < P.size() - 2; i++ ) {
+            if ( !MyMath.isEqualZero(
+                    Triangles.areaTwo( P.get( i ), P.get( i + 1 ), P.get( i + 2 ) )
+                  ) ) {
+                return false;
+            }
+        }
 
-        System.out.println( firstClockWise( com.fengkeyleaf.util.geom.Vector.origin, new com.fengkeyleaf.util.geom.Vector( 0, 1 ), points ) ); // (0, 2)
-        System.out.println( firstCounterClockWise( com.fengkeyleaf.util.geom.Vector.origin, new Vector( 0, 1 ), points ) ); // (0, 2), (-1, 1)
-    }
-
-    public static
-    void main( String[] args ) {
-        testSortByAngle();
+        return true;
     }
 }

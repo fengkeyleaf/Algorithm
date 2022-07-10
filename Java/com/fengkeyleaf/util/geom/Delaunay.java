@@ -56,6 +56,10 @@ public final class Delaunay {
         // remove duplicate points
         P = MyCollections.removeDuplicates( P, Vectors::sortByX );
 
+        // points are too few to form a triangle,
+        // or all remained points are the same line.
+        if ( P.size() < 3 || Vectors.isAllOnSameLine( P ) ) return null;
+
         // 1. Let p0 be the lexicographically highest point of P, that is,
         // the rightmost among the points with largest y-coordinate.
         Vertex p0 = CompareElement.max( Vectors::sortByY, P ); // P cannot be null.
@@ -138,11 +142,42 @@ public final class Delaunay {
         assert visualization( P, D );
 
         // 19. Discard p−1 and p−2 with all their incident edges from T.
-        pMin1.allOutGoingEdges().forEach( HalfEdge::delete );
-        pMin2.allOutGoingEdges().forEach( HalfEdge::delete );
+        discard( D, pMin1, pMin2 );
 
         // 20. return T
         return check( D, P );
+    }
+
+    static
+    void discard( DelaunaySearch D, Vertex pMin1, Vertex pMin2 ) {
+        assert D.outer.innerComponents.size() == 1;
+        HalfEdge e = findBoundary( D );
+
+        pMin1.allOutGoingEdges().forEach( HalfEdge::delete );
+        pMin2.allOutGoingEdges().forEach( HalfEdge::delete );
+
+        D.outer.innerComponents.clear();
+        D.outer.innerComponents.add( e );
+        assert check( D );
+    }
+
+    private static
+    boolean check( DelaunaySearch D ) {
+        D.outer.innerComponents.get( 0 ).walkAroundVertex().forEach( v -> {
+            assert v.mappingID >= 0;
+        } );
+
+        return true;
+    }
+
+    static
+    HalfEdge findBoundary( DelaunaySearch D ) {
+        HalfEdge e = D.outer.innerComponents.get( 0 );
+        assert e.twin.walkAroundVertex().size() == 3;
+        assert e.twin.next.origin.mappingID >= 0;
+        assert e.twin.next.next.origin.mappingID >= 0;
+
+        return e.twin.next;
     }
 
     /**
@@ -150,7 +185,7 @@ public final class Delaunay {
      * Debugger purpose.
      * */
 
-    private static
+    static
     boolean writeFile( List<Vertex> points ) {
         StringBuilder text = new StringBuilder( points.size() + "\n" );
         points.forEach( p -> text.append( ( int ) p.x ).append( " " ).append( ( int ) p.y ).append( "\n" ) );
@@ -174,7 +209,8 @@ public final class Delaunay {
         DrawingProgram drawer = new DrawingProgram( "Conceptual Delaunay Triangulation", b.width, b.height );
 
         drawer.drawPoints( DrawingProgram.NORMAL_POLYGON_COLOR, points );
-        Face.getInners( P, D.outer ).forEach( f -> drawer.drawPoly( DrawingProgram.NORMAL_POLYGON_COLOR, f ) );
+//        Face.getInners( P, D.outer ).forEach( f -> drawer.drawPoly( DrawingProgram.NORMAL_POLYGON_COLOR, f ) );
+        D.outer.getInners().forEach( f -> drawer.drawPoly( DrawingProgram.NORMAL_POLYGON_COLOR, f ) );
 
         drawer.initialize();
         return true;
@@ -570,7 +606,7 @@ public final class Delaunay {
     private static
     boolean voronoiCheck( List<Vertex> vertices ) {
         List<Vector> siteFaces = new ArrayList<>( vertices.size() );
-        vertices.forEach( v -> siteFaces.add( v ) );
+        siteFaces.addAll( vertices );
 
         visualization( siteFaces );
         return true;
@@ -582,7 +618,8 @@ public final class Delaunay {
         BoundingBox b = VoronoiDiagrams.voronoiDiagrams( sites );
         DrawingProgram program = new DrawingProgram( "Dual Graph: Voronoi Diagrams", b.width, b.width );
         program.drawPoints( DrawingProgram.NORMAL_POLYGON_COLOR, sites );
-        b.outer.innerComponents.forEach( e -> program.drawPoly( DrawingProgram.NORMAL_POLYGON_COLOR, e.twin.incidentFace ) );
+        assert b.outer.innerComponents.size() == 1;
+        program.drawPolyAll( DrawingProgram.NORMAL_POLYGON_COLOR, b.outer );
 
         List<Circle> circles = new ArrayList<>( b.vertices.size() + 1 );
         b.vertices.forEach( v -> circles.add( v.circle ) );

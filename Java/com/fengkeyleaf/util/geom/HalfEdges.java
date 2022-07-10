@@ -24,7 +24,7 @@ import java.util.List;
  * @since  1.0
  */
 
-public final class HalfEdges {
+final class HalfEdges {
 
     /**
      * connect vertex left and vertex, edge.origin,
@@ -225,7 +225,7 @@ public final class HalfEdges {
     }
 
     /**
-     * sort half-edges in clock wise order with the point, {@code i} as the center.
+     * Sort half-edges in clock wise order with the point i as the center.
      *
      * @param    i center point.
      * @return   half-edges sorted in clock wise order.

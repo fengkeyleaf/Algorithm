@@ -82,32 +82,7 @@ public class Face {
     }
 
     /**
-     * Get all faces contained in the outer face.
-     * */
-
-    // TODO: 6/22/2022 something may go wrong with the concept of innerComponents()
-    static
-    List<Face> getInners( List<Vertex> vertices, Face outer ) {
-        outer.isVisited = true;
-
-        List<Face> l = new ArrayList<>();
-        vertices.forEach( v -> getInners( v, outer, l ) );
-
-        return reset( l );
-    }
-
-    private static
-    void getInners( Vertex v, Face outer, List<Face> l ) {
-        v.allOutGoingEdges().forEach( e -> {
-            if ( e.incidentFace != outer && !e.incidentFace.isVisited ) {
-                e.incidentFace.isVisited = true;
-                l.add( e.incidentFace );
-            }
-        } );
-    }
-
-    /**
-     * get all inner faces contained in this face.
+     * Get all inner faces contained in this face.
      *
      * @return all inner faces contained in this face.
      */
@@ -128,8 +103,8 @@ public class Face {
     }
 
     /**
-     * walk around all halfEdges, starting at face
-     * and get visited halfEdges
+     * walk around all halfEdges, starting at this face
+     * and get visited halfEdges.
      * */
 
     public List<HalfEdge> walkAroundEdge() {
@@ -137,10 +112,8 @@ public class Face {
     }
 
     /**
-     * walk around all halfEdges, starting at face
-     * and get visited vertices
-     *
-     * walkAroundVertexFace() in JavaScript Version
+     * walk around all halfEdges, starting at this face
+     * and get visited vertices.
      * */
 
     public List<Vertex> walkAroundVertex() {
@@ -173,6 +146,8 @@ public class Face {
      * Is the point inside this convex hull?
      * but excluding the boundary.
      *
+     * Time Complexity: O( n ), where n is the number of convex hull vertex.
+     *
      * @param  p point to be tested to see if it's inside the convex hull, {@code c}.
      * @return true, p is inside c; false, not inside.
      */
@@ -198,6 +173,8 @@ public class Face {
      * Is the point on this convex hull?
      * including the boundary.
      *
+     * Time Complexity: O( n ), where n is the number of convex hull vertex.
+     *
      * @param  p point to be tested to see if it's on the convex hull, {@code c}.
      * @return true, p lies on c; false, not on c.
      */
@@ -218,18 +195,36 @@ public class Face {
     }
 
     /**
-     * is the point inside This Polygon?
+     * Is the point inside This Polygon?
      *
-     * @deprecated not full test
+     * This method will triangulate this polygon first and then test to see
+     * if the point p is inside one of the triangles.
+     *
+     * Time Complexity: O( nlogn ), where n is the number of convex hull vertex.
      * */
 
-    // TODO: 6/30/2022 not full test
-    @Deprecated
     public boolean isInsidePolygon( Vector p ) {
         List<List<Face>> T = Triangulation.triangulate( MonotonePolygons.makeMonotone( copy() ) );
         for ( List<Face> F : T )
             for ( Face f : F )
                 if ( !f.isInsideConvexHull( p ) )
+                    return false;
+
+        return true;
+    }
+
+    /**
+     * Is the point On This Polygon?
+     *
+     * This method will triangulate this polygon first and then test to see
+     * if the point p is inside one of the triangles.
+     * */
+
+    public boolean isOnPolygon( Vector p ) {
+        List<List<Face>> T = Triangulation.triangulate( MonotonePolygons.makeMonotone( copy() ) );
+        for ( List<Face> F : T )
+            for ( Face f : F )
+                if ( !f.isOnConvexHull( p ) )
                     return false;
 
         return true;
@@ -248,20 +243,6 @@ public class Face {
         P.forEach( v -> V.add( new Vertex( ( Vector ) v ) ) );
 
         return Polygons.getDCEL( V )[ 1 ];
-    }
-
-    /**
-     * is the point On This Polygon?
-     * */
-
-    public boolean isOnPolygon( Vector p ) {
-        List<List<Face>> T = Triangulation.triangulate( MonotonePolygons.makeMonotone( copy() ) );
-        for ( List<Face> F : T )
-            for ( Face f : F )
-                if ( !f.isOnConvexHull( p ) )
-                    return false;
-
-        return true;
     }
 
     @Override

@@ -24,6 +24,39 @@ import java.util.List;
 
 final class TestVector {
 
+    private static
+    void testSortByAngle() {
+        List<com.fengkeyleaf.util.geom.Vector> points = new ArrayList<>();
+        points.add( com.fengkeyleaf.util.geom.Vector.origin );
+        points.add( new com.fengkeyleaf.util.geom.Vector( 1, 1 ) );
+        points.add( new com.fengkeyleaf.util.geom.Vector( 0, 1 ) );
+        points.add( new com.fengkeyleaf.util.geom.Vector( 1, 0 ) );
+        points.add( new com.fengkeyleaf.util.geom.Vector( -1, 1 ) );
+        points.add( new com.fengkeyleaf.util.geom.Vector( -1, 1 ) );
+        points.add( new com.fengkeyleaf.util.geom.Vector( 1, -1 ) );
+        points.add( new com.fengkeyleaf.util.geom.Vector( -1, -1 ) );
+        points.add( new com.fengkeyleaf.util.geom.Vector( -1, 0 ) );
+        points.add( new com.fengkeyleaf.util.geom.Vector( 0, -1 ) );
+        points.add( new com.fengkeyleaf.util.geom.Vector( -2, 2 ) );
+        points.add( new com.fengkeyleaf.util.geom.Vector( 2, -2 ) );
+        points.add( new com.fengkeyleaf.util.geom.Vector( 2, 2 ) );
+        points.add( new com.fengkeyleaf.util.geom.Vector( -4, -4 ) );
+        points.add( new com.fengkeyleaf.util.geom.Vector( 0, 2 ) );
+        points.add( new com.fengkeyleaf.util.geom.Vector( 0, -3 ) );
+        points.add( new com.fengkeyleaf.util.geom.Vector( -2, 0 ) );
+        points.add( new com.fengkeyleaf.util.geom.Vector( 2, 0 ) );
+
+        points.forEach( p -> {
+            p.x += 10;
+            p.y += 10;
+        } );
+
+        System.out.println( Vectors.sortByAngleClockWise( com.fengkeyleaf.util.geom.Vector.origin, points ) );
+
+        System.out.println( Vectors.firstClockWise( com.fengkeyleaf.util.geom.Vector.origin, new com.fengkeyleaf.util.geom.Vector( 0, 1 ), points ) ); // (0, 2)
+        System.out.println( Vectors.firstCounterClockWise( com.fengkeyleaf.util.geom.Vector.origin, new Vector( 0, 1 ), points ) ); // (0, 2), (-1, 1)
+    }
+
     static
     void test1() {
         //        System.out.println( new Line( -2,-1.6666666666666667, -28.2828568570857,47.1380947618095 ).getVector().lengthSq() );

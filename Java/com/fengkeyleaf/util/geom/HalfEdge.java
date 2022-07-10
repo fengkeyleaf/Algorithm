@@ -154,6 +154,11 @@ public class HalfEdge {
         v = null;
     }
 
+    /**
+     * Walk around all halfEdges connected to this one,
+     * and get vertices incident to them.
+     * */
+
     public List<Vertex> walkAroundVertex() {
         final List<Vertex> vertices = new ArrayList<>();
         HalfEdge e = this;
@@ -168,7 +173,7 @@ public class HalfEdge {
     }
 
     /**
-     * walk around all halfEdges, starting at innerComponent
+     * Walk around and get all halfEdges connected to this one.
      * */
 
     public List<HalfEdge> walkAroundEdge() {
@@ -199,7 +204,7 @@ public class HalfEdge {
     }
 
     /**
-     * split the edge into two parts,
+     * Split the edge into two parts,
      * which means the split point must be on the edge.
      *
      * Note that given edge must have next() and prev(),
@@ -278,10 +283,10 @@ public class HalfEdge {
     }
 
     /**
-     * delete the give edge from its DCEL
+     * Delete this edge from its DCEL.
      *
      * Note that given edge must have next() and prev(),
-     * they should be null. This is true for its twin edge as well.
+     * they shouldn't be null. This is true for its twin edge as well.
      *
      * @return [remained face, deleted face]
      * */
@@ -363,7 +368,7 @@ public class HalfEdge {
     }
 
     /**
-     * get all inner faces bounded by this half-edge, but not including holes.
+     * Get all inner faces bounded by this half-edge, but not including holes.
      *
      * @return hale-edges corresponding to each face inside the outer face ( they're not holes ).
      */

@@ -26,35 +26,35 @@ final class TestVector {
 
     private static
     void testSortByAngle() {
-        List<com.fengkeyleaf.util.geom.Vector> points = new ArrayList<>();
-        points.add( com.fengkeyleaf.util.geom.Vector.origin );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 1, 1 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 0, 1 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 1, 0 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( -1, 1 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( -1, 1 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 1, -1 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( -1, -1 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( -1, 0 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 0, -1 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( -2, 2 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 2, -2 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 2, 2 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( -4, -4 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 0, 2 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 0, -3 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( -2, 0 ) );
-        points.add( new com.fengkeyleaf.util.geom.Vector( 2, 0 ) );
+        List<Vector> points = new ArrayList<>();
+        points.add( Vector.origin );
+        points.add( new Vector( 1, 1 ) );
+        points.add( new Vector( 0, 1 ) );
+        points.add( new Vector( 1, 0 ) );
+        points.add( new Vector( -1, 1 ) );
+        points.add( new Vector( -1, 1 ) );
+        points.add( new Vector( 1, -1 ) );
+        points.add( new Vector( -1, -1 ) );
+        points.add( new Vector( -1, 0 ) );
+        points.add( new Vector( 0, -1 ) );
+        points.add( new Vector( -2, 2 ) );
+        points.add( new Vector( 2, -2 ) );
+        points.add( new Vector( 2, 2 ) );
+        points.add( new Vector( -4, -4 ) );
+        points.add( new Vector( 0, 2 ) );
+        points.add( new Vector( 0, -3 ) );
+        points.add( new Vector( -2, 0 ) );
+        points.add( new Vector( 2, 0 ) );
 
         points.forEach( p -> {
             p.x += 10;
             p.y += 10;
         } );
 
-        System.out.println( Vectors.sortByAngleClockWise( com.fengkeyleaf.util.geom.Vector.origin, points ) );
+        System.out.println( Vectors.sortByAngleClockWise( Vector.origin, points ) );
 
-        System.out.println( Vectors.firstClockWise( com.fengkeyleaf.util.geom.Vector.origin, new com.fengkeyleaf.util.geom.Vector( 0, 1 ), points ) ); // (0, 2)
-        System.out.println( Vectors.firstCounterClockWise( com.fengkeyleaf.util.geom.Vector.origin, new Vector( 0, 1 ), points ) ); // (0, 2), (-1, 1)
+        System.out.println( Vectors.firstClockWise( Vector.origin, new Vector( 0, 1 ), points ) ); // (0, 2)
+        System.out.println( Vectors.firstCounterClockWise( Vector.origin, new Vector( 0, 1 ), points ) ); // (0, 2), (-1, 1)
     }
 
     static
@@ -75,32 +75,26 @@ final class TestVector {
 
     static
     void testAngle() {
-        Vector v1 = new Vector( 0, 1 );
-        Vector v2 = new Vector( 1, 100000000 );
-        Vector v3 = new Vector( 2, 190000000 );
-        Vector v4 = new Vector( -1, 1 );
-        System.out.println( v1.angleTo( v2 ) );
-        System.out.println( v1.angleTo( v3 ) );
-        System.out.println( MyMath.isEqualZero( v1.angleTo( v3 ) ) );
+        Vertex v1 = new Vertex( -1, 1 );
+        Vertex v2 = new Vertex( 0, 1 );
+        Vertex v3 = new Vertex( Vector.origin );
+        Vertex v4 = new Vertex( 1, 1 );
+        int coor = 100000000; // 10 ^ 8
+        Vertex v5 = new Vertex( coor, coor - 1 );
+        System.out.println( v2.angleTo( v4 ) );
+        System.out.println( v2.angleTo( v5 ) );
+        System.out.println( MyMath.isEqual( v2.angleTo( v4 ), v2.angleTo( v5 ) ) );
 
-
-        Vertex ve1 = new Vertex( v4 );
-        Vertex ve2 = new Vertex( v1 );
-
-        Vertex ve3 = new Vertex( Vector.origin );
-        Vertex ve4 = new Vertex( v2 );
-        Vertex ve5 = new Vertex( v3 );
-
-        HalfEdge e1 = new HalfEdge( ve1 );
-        HalfEdge e2 = new HalfEdge( ve2 );
+        HalfEdge e1 = new HalfEdge( v1 );
+        HalfEdge e2 = new HalfEdge( v2 );
         e1.setTwins( e2 );
 
-        HalfEdge e3 = new HalfEdge( ve3 );
-        HalfEdge e4 = new HalfEdge( ve4 );
+        HalfEdge e3 = new HalfEdge( v3 );
+        HalfEdge e4 = new HalfEdge( v4 );
         e3.setTwins( e4 );
 
-        HalfEdge e5 = new HalfEdge( ve3 );
-        HalfEdge e6 = new HalfEdge( ve5 );
+        HalfEdge e5 = new HalfEdge( v3 );
+        HalfEdge e6 = new HalfEdge( v5 );
         e5.setTwins( e6 );
 
         e1.connect( e2 );
@@ -111,14 +105,14 @@ final class TestVector {
         e4.connect( e3 );
         e3.connect( e6 );
 
-        ve1.incidentEdge = e1;
-        ve2.incidentEdge = e2;
+        v1.incidentEdge = e1;
+        v2.incidentEdge = e2;
 
-        ve3.incidentEdge = e3;
-        ve3.incidentEdge = e5;
+        v3.incidentEdge = e3;
+        v3.incidentEdge = e5;
 
-        ve4.incidentEdge = e4;
-        ve5.incidentEdge = e6;
+        v4.incidentEdge = e4;
+        v5.incidentEdge = e6;
 
         Face f = new Face( e1 );
         e1.incidentFace = f;
@@ -128,30 +122,31 @@ final class TestVector {
         e5.incidentFace = f;
         e6.incidentFace = f;
 
-        HalfEdge e7 = new HalfEdge( ve3 );
-        HalfEdge e8 = new HalfEdge( ve2 );
+        HalfEdge e7 = new HalfEdge( v3 );
+        HalfEdge e8 = new HalfEdge( v2 );
         e7.setTwins( e8 );
 
         e7.incidentFace = f;
         e8.incidentFace = f;
 
         System.out.println();
-//        System.out.println( ve2.firstClockWiseEdge( ve1 ) );
-//        HalfEdges.connectBoth( ve2, ve3, e7 );
-        System.out.println( ve3.allIncidentEdges() );
-        // [2(0.0, 0.0) -> 4(2.0, 1.9E8), 4(2.0, 1.9E8) -> 2(0.0, 0.0), 2(0.0, 0.0) -> 3(1.0, 1.0E8), 3(1.0, 1.0E8) -> 2(0.0, 0.0)]
+        System.out.println( v3.firstClockWiseEdge( v2 ) ); // res: (0.0, 0.0) -> 4(1.0E8, 9.9999999E7), but should be 2(0.0, 0.0) -> 3(1.0, 1.0)
+        HalfEdges.connectBoth( v2, v3, e7 );
+        System.out.println( v3.allIncidentEdges() );
+        // [2(0.0, 0.0) -> 4(1.0E8, 9.9999999E7), 4(1.0E8, 9.9999999E7) -> 2(0.0, 0.0), 2(0.0, 0.0) -> 1(0.0, 1.0), 1(0.0, 1.0) -> 2(0.0, 0.0)]
 
         List<HalfEdge> E = new ArrayList<>();
-        E.add( e3 );
-        E.add( e4 );
+        E.add( e7 );
         E.add( e5 );
         E.add( e6 );
-        E.add( e7 );
+        E.add( e3 );
         E.add( e8 );
+        E.add( e4 );
 
-        ve3.connect( E );
-        System.out.println( ve3.allIncidentEdges() );
-        // [2(0.0, 0.0) -> 3(1.0, 1.0E8), 3(1.0, 1.0E8) -> 2(0.0, 0.0), 2(0.0, 0.0) -> 4(2.0, 1.9E8), 4(2.0, 1.9E8) -> 2(0.0, 0.0), 2(0.0, 0.0) -> 1(0.0, 1.0), 1(0.0, 1.0) -> 2(0.0, 0.0)]
+        E = HalfEdges.sortInClockWise( E, v3 );
+//        v3.connect( E );
+        System.out.println( v3.allIncidentEdges() );
+        // [2(0.0, 0.0) -> 1(0.0, 1.0), 1(0.0, 1.0) -> 2(0.0, 0.0), 2(0.0, 0.0) -> 3(1.0, 1.0), 3(1.0, 1.0) -> 2(0.0, 0.0), 2(0.0, 0.0) -> 4(1.0E8, 9.9999999E7), 4(1.0E8, 9.9999999E7) -> 2(0.0, 0.0)]
     }
 
     public static

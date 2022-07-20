@@ -243,6 +243,7 @@ Only support 2-dimensional scenario.
 | Find the first ClockWise Edge with two vertices destination and origin | [HalfEdge firstClockWiseEdge(  Vertex origin )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/Vertex.java#L210) |
 | Find the first CounterClockWise Edge with two vertices destination and origin | [HalfEdge firstCounterClockWiseEdge( Vertex destination )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/Vertex.java#L245) |
 | Connect two vertices by adding new half-edges                | [Face connect( Vertex v )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/Vertex.java#L279) |
+| Re-connect half-edges incident to this vertex.(Duality Implementation) | [void connect( List<HalfEdge\> E )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/Vertex.java#L302) |
 
 ##### 2.3.1.2 Half-edge
 

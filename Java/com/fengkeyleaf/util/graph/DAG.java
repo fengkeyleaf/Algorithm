@@ -68,7 +68,9 @@ public class DAG<E extends Vertex> extends Graph<E> {
         // (i + 1)th, (i + 2)th, and so on
         for ( Vertex vertex : finishes )
             for ( Vertex neighbour : vertex.neighbours )
-                if ( finishingOrder[ neighbour.ID ] < finishingOrder[ vertex.ID ] )
+                // be careful with the case where a vertex connecting to itself,
+                // which is illegal.
+                if ( finishingOrder[ neighbour.ID ] <= finishingOrder[ vertex.ID ] )
                     return false;
 
         // handle an empty graph

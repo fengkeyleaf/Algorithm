@@ -329,7 +329,7 @@ class WindowingQueryTree extends AbstractTree<Line> {
          * */
 
         private boolean visualization( QueryVector[] RStr, List<Vector> res ) {
-            BoundingBox b = BoundingBox.getBoundingBox( P, BoundingBox.OFFSET );
+            BoundingBox b = BoundingBox.getBox( P, BoundingBox.OFFSET );
 
             List<Vector> R = new ArrayList<>( 2 );
             R.add( RStr[ 0 ].getVector( b, false ) );
@@ -482,7 +482,7 @@ class WindowingQueryTree extends AbstractTree<Line> {
             P.add( i.startPoint );
             P.add( i.endPoint );
         } );
-        BoundingBox b = BoundingBox.getBoundingBox( P, BoundingBox.OFFSET );
+        BoundingBox b = BoundingBox.getBox( P, BoundingBox.OFFSET );
 
         int size = Math.abs( ( int ) MyMath.findMaxMinInAbs( b.maxX, b.maxY, b.minX, b.minY )[ 1 ] ) * 2;
         DrawingProgram drawer = new DrawingProgram( title, size, size );
@@ -562,7 +562,7 @@ class WindowingQueryTree extends AbstractTree<Line> {
             P.add( i.startPoint );
             P.add( i.endPoint );
         } );
-        BoundingBox b = BoundingBox.getBoundingBox( P, BoundingBox.OFFSET );
+        BoundingBox b = BoundingBox.getBox( P, BoundingBox.OFFSET );
 
         int size = Math.abs( ( int ) MyMath.findMaxMinInAbs( b.maxX, b.maxY, b.minX, b.minY )[ 1 ] ) * 2;
         DrawingProgram drawer = new DrawingProgram( title , size, size );

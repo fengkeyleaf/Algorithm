@@ -169,9 +169,13 @@ public class Segment extends Ray
 
     @Override
     public Vector[] intersect( Intersection s ) {
-        if ( s instanceof Segment )
-            return new Vector[] { GeometricIntersection.segments( this, ( Segment ) s ) };
-        else if ( s instanceof Arc )
+        if ( s instanceof Segment ) {
+            Vector i = GeometricIntersection.segments( this, ( Segment ) s );
+            return i == null ? new Vector[] {} : new Vector[] { i };
+        } else if ( s instanceof Line ) {
+            Vector i = GeometricIntersection.lineSegment(( Line ) s, this );
+            return i == null ? new Vector[] {} : new Vector[] { i };
+        } else if ( s instanceof Arc )
             return GeometricIntersection.lineArc( this, ( Arc ) s );
         else if ( s instanceof Circle )
             return GeometricIntersection.segmentCircle( this, ( Circle ) s );

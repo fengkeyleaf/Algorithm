@@ -50,7 +50,7 @@ public final class Delaunay {
     // Input. A set P of n+1 points in the plane.
     // Output. A Delaunay triangulation of P.
     public static
-    Face delaunayTriangulation( List<Vertex> P ) {
+    Face triangulate( List<Vertex> P ) {
         if ( P == null || P.isEmpty() ) return null;
 
         // remove duplicate points
@@ -116,7 +116,7 @@ public final class Delaunay {
         // 4. Compute a random permutation p1, p2, ... , pn of P\{p0}.
         MyCollections.randomPermutation( points );
 
-        assert writeFile( points );
+        assert Checker.writeFile( points );
         // 5. for r <- 1 to n
         for ( int i = 0; i < points.size(); i++ ) {
             Vertex pr = points.get( i );
@@ -139,13 +139,13 @@ public final class Delaunay {
         }
 
         // visualize delaunay triangulation with p-1 and p-2.
-        assert visualization( P, D );
+        assert Checker.visualization( P, D );
 
         // 19. Discard p−1 and p−2 with all their incident edges from T.
         discard( D, pMin1, pMin2 );
 
         // 20. return T
-        return check( D, P );
+        return Checker.check( D, P );
     }
 
     static
@@ -158,16 +158,7 @@ public final class Delaunay {
 
         D.outer.innerComponents.clear();
         D.outer.innerComponents.add( e );
-        assert check( D );
-    }
-
-    private static
-    boolean check( DelaunaySearch D ) {
-        D.outer.innerComponents.get( 0 ).walkAroundVertex().forEach( v -> {
-            assert v.mappingID >= 0;
-        } );
-
-        return true;
+        assert Checker.check( D );
     }
 
     static
@@ -178,42 +169,6 @@ public final class Delaunay {
         assert e.twin.next.next.origin.mappingID >= 0;
 
         return e.twin.next;
-    }
-
-    /**
-     * write current random permutation of the points excluding p0 to a file.
-     * Debugger purpose.
-     * */
-
-    static
-    boolean writeFile( List<Vertex> points ) {
-        StringBuilder text = new StringBuilder( points.size() + "\n" );
-        points.forEach( p -> text.append( ( int ) p.x ).append( " " ).append( ( int ) p.y ).append( "\n" ) );
-
-        // file path only limited to IDEA.
-        MyWriter.writeToFile( "src/CGTsinghua/PA_3/problem_1/0", text.toString() );
-        return true;
-    }
-
-    /**
-     * visualize delaunay triangulation with p-1 and p-2.
-     * */
-
-    private static
-    boolean visualization( List<Vertex> P, DelaunaySearch D ) {
-        List<Vector> points = new ArrayList<>( P.size() + 1 );
-        points.addAll( P );
-        BoundingBox b = BoundingBox.getBoundingBox( points, 10 );
-        if ( b == null ) return true;
-
-        DrawingProgram drawer = new DrawingProgram( "Conceptual Delaunay Triangulation", b.width, b.height );
-
-        drawer.drawPoints( DrawingProgram.NORMAL_POLYGON_COLOR, points );
-//        Face.getInners( P, D.outer ).forEach( f -> drawer.drawPoly( DrawingProgram.NORMAL_POLYGON_COLOR, f ) );
-        D.outer.getInners().forEach( f -> drawer.drawPoly( DrawingProgram.NORMAL_POLYGON_COLOR, f ) );
-
-        drawer.initialize();
-        return true;
     }
 
     /**
@@ -531,131 +486,181 @@ public final class Delaunay {
                 pj.mappingID >= 0 && pi.mappingID >= 0;
     }
 
-    //-------------------------------------------------------
-    // Check integrity of Delaunay Triangulation data structure.
-    //-------------------------------------------------------
+    //----------------------------------------------------------
+    // Class Checker
+    //----------------------------------------------------------
 
-    private static
-    Face check( DelaunaySearch D, List<Vertex> P ) {
-        BoundingBox b = new BoundingBox( D.outer );
-        // let the infinite face contain all triangles.
+    static class Checker {
+        static
+        boolean check( DelaunaySearch D ) {
+            D.outer.innerComponents.get( 0 ).walkAroundVertex().forEach( v -> {
+                assert v.mappingID >= 0;
+            } );
+
+            return true;
+        }
+
+        /**
+         * write current random permutation of the points excluding p0 to a file.
+         * Debugger purpose.
+         * */
+
+        static
+        boolean writeFile( List<Vertex> points ) {
+            StringBuilder text = new StringBuilder( points.size() + "\n" );
+            points.forEach( p -> text.append( ( int ) p.x ).append( " " ).append( ( int ) p.y ).append( "\n" ) );
+
+            // file path only limited to IDEA.
+            MyWriter.writeToFile( "src/CGTsinghua/PA_3/problem_1/0", text.toString() );
+            return true;
+        }
+
+        /**
+         * visualize delaunay triangulation with p-1 and p-2.
+         * */
+
+        static
+        boolean visualization( List<Vertex> P, DelaunaySearch D ) {
+            List<Vector> points = new ArrayList<>( P.size() + 1 );
+            points.addAll( P );
+            BoundingBox b = BoundingBox.getBox( points, 10 );
+            if ( b == null ) return true;
+
+            DrawingProgram drawer = new DrawingProgram( "Conceptual Delaunay Triangulation", b.width, b.height );
+
+            drawer.drawPoints( DrawingProgram.NORMAL_POLYGON_COLOR, points );
+            D.outer.getInners().forEach( f -> drawer.drawPoly( DrawingProgram.NORMAL_POLYGON_COLOR, f ) );
+
+            drawer.initialize();
+            return true;
+        }
+
+        //-------------------------------------------------------
+        // Check integrity of Delaunay Triangulation data structure.
+        //-------------------------------------------------------
+
+        static
+        Face check( DelaunaySearch D, List<Vertex> P ) {
+            BoundingBox b = new BoundingBox( D.outer );
+            // let the infinite face contain all triangles.
 //        b.resetInnerFaces( P.size() < 3 ? new ArrayList<>() : Face.getInners( P, D.outer ) );
 //        b.F = P.size() < 3 ? new ArrayList<>() : D.outer.getInners();
 
-        // Check integrity of Delaunay Triangulation
-        assert check( P );
-        assert voronoiCheck( P );
+            // Check integrity of Delaunay Triangulation
+            assert check( P );
+            assert voronoiCheck( P );
 
-        Node.resetMappingID( P );
-        return D.outer;
-    }
+            Node.resetMappingID( P );
+            return D.outer;
+        }
 
-    private static
-    boolean check( List<Vertex> P ) {
-        if ( P.size() < 3 ) return true;
+        private static
+        boolean check( List<Vertex> P ) {
+            if ( P.size() < 3 ) return true;
 
-        // take advantage of DFS to do the checking.
-        // i.e. regard DCEL as some type of graph.
-        P.get( 0 ).mappingID = 1;
-        check( P.get( 0 ), P );
+            // take advantage of DFS to do the checking.
+            // i.e. regard DCEL as some type of graph.
+            P.get( 0 ).mappingID = 1;
+            check( P.get( 0 ), P );
 
-        return true;
-    }
+            return true;
+        }
 
-    private static
-    void check( Vertex v, List<Vertex> vertices ) {
-        // base case
-        if ( v.mappingID > 0 ) return;
-        v.mappingID = 1;
+        private static
+        void check( Vertex v, List<Vertex> vertices ) {
+            // base case
+            if ( v.mappingID > 0 ) return;
+            v.mappingID = 1;
 
-        // recursive process
-        List<HalfEdge> outGoings = v.allOutGoingEdges();
-        outGoings.forEach( e -> {
-            isOnlyThree( e.incidentFace, vertices );
-            isOnlyThree( e.twin.incidentFace, vertices );
-            check( e.next.origin, vertices );
-        } );
-    }
-
-    // Theorem 9.6 Let P be a set of points in the plane.
-    // (i) Three points pi, pj, pk ∈ P are
-    // vertices of the same face of the Delaunay graph of P
-    // if and only if the circle through pi, pj, pk contains
-    // no point of P in its interior.
-    private static
-    void isOnlyThree( Face f, List<Vertex> vertices ) {
-        List<Vertex> three = f.walkAroundVertex();
-        List<Vertex> removed = new ArrayList<>( vertices );
-        three.forEach( removed::remove );
-
-        // all other vertices lying outside the circle formed by current three vertices.
-        removed.forEach( v -> {
-            assert Circles.inCircle( three.get( 0 ), three.get( 1 ), three.get( 2 ), v ) < 0;
-        } );
-    }
-
-    // TODO: 4/6/2022 verify (ii), but how to do it?
-    // (ii) Two points pi, pj ∈ P form an edge of the Delaunay graph of P if and only
-    // if there is a closed disc C that contains pi and pj on its boundary and does
-    // not contain any other point of P.
-
-    // Although, it's difficult to verify (ii),
-    // but in the following, we'll compute corresponding Voronoi diagrams
-    // to verify the delaunay triangulation.
-    // TODO: 4/15/2022 zero-length edge verification, but how to do it?
-    private static
-    boolean voronoiCheck( List<Vertex> vertices ) {
-        List<Vector> siteFaces = new ArrayList<>( vertices.size() );
-        siteFaces.addAll( vertices );
-
-        visualization( siteFaces );
-        return true;
-    }
-
-    private static
-    void visualization( List<Vector> sites ) {
-        // visualization verification.
-        BoundingBox b = VoronoiDiagrams.voronoiDiagrams( sites );
-        DrawingProgram program = new DrawingProgram( "Dual Graph: Voronoi Diagrams", b.width, b.width );
-        program.drawPoints( DrawingProgram.NORMAL_POLYGON_COLOR, sites );
-        assert b.outer.innerComponents.size() == 1;
-        program.drawPolyAll( DrawingProgram.NORMAL_POLYGON_COLOR, b.outer );
-
-        List<Circle> circles = new ArrayList<>( b.vertices.size() + 1 );
-        b.vertices.forEach( v -> circles.add( v.circle ) );
-        program.drawCircles( VoronoiDiagrams.vertexCircleColor, circles );
-
-        program.initialize();
-
-        // computational verification.
-        voronoiCheck( b );
-    }
-
-    private static
-    void voronoiCheck( BoundingBox b ) {
-        b.vertices.forEach( v -> {
+            // recursive process
             List<HalfEdge> outGoings = v.allOutGoingEdges();
-
-            // every Voronoi edge indicate a delaunay triangulation edge between two sites.
             outGoings.forEach( e -> {
-                VoronoiFace f1 = ( VoronoiFace ) e.incidentFace;
-                VoronoiFace f2 = ( VoronoiFace ) e.twin.incidentFace;
-                assert f1 != f2;
-
-                // does f1.site connect to f2.site?
-                // i.e. do they form a delaunay triangulation edge?
-                assert voronoiCheck( ( Vertex ) f1.site, ( Vertex ) f2.site );
+                isOnlyThree( e.incidentFace, vertices );
+                isOnlyThree( e.twin.incidentFace, vertices );
+                check( e.next.origin, vertices );
             } );
-        } );
-    }
+        }
 
-    static
-    boolean voronoiCheck( Vertex v1, Vertex v2 ) {
-        assert v1.incidentEdge != null : v1;
+        // Theorem 9.6 Let P be a set of points in the plane.
+        // (i) Three points pi, pj, pk ∈ P are
+        // vertices of the same face of the Delaunay graph of P
+        // if and only if the circle through pi, pj, pk contains
+        // no point of P in its interior.
+        private static
+        void isOnlyThree( Face f, List<Vertex> vertices ) {
+            List<Vertex> three = f.walkAroundVertex();
+            List<Vertex> removed = new ArrayList<>( vertices );
+            three.forEach( removed::remove );
 
-        for ( HalfEdge e : v1.allIncomingEdges() )
-            if ( e.origin == v2 ) return true;
+            // all other vertices lying outside the circle formed by current three vertices.
+            removed.forEach( v -> {
+                assert Circles.inCircle( three.get( 0 ), three.get( 1 ), three.get( 2 ), v ) < 0;
+            } );
+        }
 
-        return false;
+        // TODO: 4/6/2022 verify (ii), but how to do it?
+        // (ii) Two points pi, pj ∈ P form an edge of the Delaunay graph of P if and only
+        // if there is a closed disc C that contains pi and pj on its boundary and does
+        // not contain any other point of P.
+
+        // Although, it's difficult to verify (ii),
+        // but in the following, we'll compute corresponding Voronoi diagrams
+        // to verify the delaunay triangulation.
+        // TODO: 4/15/2022 zero-length edge verification, but how to do it?
+        private static
+        boolean voronoiCheck( List<Vertex> vertices ) {
+            List<Vector> siteFaces = new ArrayList<>( vertices.size() );
+            siteFaces.addAll( vertices );
+
+            visualization( siteFaces );
+            return true;
+        }
+
+        private static
+        void visualization( List<Vector> sites ) {
+            // visualization verification.
+            BoundingBox b = VoronoiDiagrams.voronoiDiagrams( sites );
+            DrawingProgram program = new DrawingProgram( "Dual Graph: Voronoi Diagrams", b.width, b.width );
+            program.drawPoints( DrawingProgram.NORMAL_POLYGON_COLOR, sites );
+            assert b.outer.innerComponents.size() == 1;
+            program.drawPolyAll( DrawingProgram.NORMAL_POLYGON_COLOR, b.outer );
+
+            List<Circle> circles = new ArrayList<>( b.vertices.size() + 1 );
+            b.vertices.forEach( v -> circles.add( v.circle ) );
+            program.drawCircles( VoronoiDiagrams.vertexCircleColor, circles );
+
+            program.initialize();
+
+            // computational verification.
+            voronoiCheck( b );
+        }
+
+        private static
+        void voronoiCheck( BoundingBox b ) {
+            b.vertices.forEach( v -> {
+                List<HalfEdge> outGoings = v.allOutGoingEdges();
+
+                // every Voronoi edge indicate a delaunay triangulation edge between two sites.
+                outGoings.forEach( e -> {
+                    VoronoiFace f1 = ( VoronoiFace ) e.incidentFace;
+                    VoronoiFace f2 = ( VoronoiFace ) e.twin.incidentFace;
+                    assert f1 != f2;
+
+                    // does f1.site connect to f2.site?
+                    // i.e. do they form a delaunay triangulation edge?
+                    assert voronoiCheck( ( Vertex ) f1.site, ( Vertex ) f2.site );
+                } );
+            } );
+        }
+
+        static
+        boolean voronoiCheck( Vertex v1, Vertex v2 ) {
+            assert v1.incidentEdge != null : v1;
+
+            for ( HalfEdge e : v1.allIncomingEdges() )
+                if ( e.origin == v2 ) return true;
+
+            return false;
+        }
     }
 }

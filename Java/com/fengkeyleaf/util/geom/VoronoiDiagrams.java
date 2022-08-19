@@ -136,7 +136,7 @@ public final class VoronoiDiagrams {
         else
             segments = getSegmentsByVertex( b.vertices );
 
-        assert visualizeSegments( segments, b );
+        assert Checker.visualizeSegments( segments, b );
         return segments;
     }
 
@@ -193,16 +193,6 @@ public final class VoronoiDiagrams {
         Node.resetMappingID( vertices );
 
         return segments;
-    }
-
-    private static
-    boolean visualizeSegments( List<Line> segments, BoundingBox b ) {
-        int size = b.findVisualizationArea( BoundingBox.OFFSET );
-        DrawingProgram drawer = new DrawingProgram( "Voronoi: segment", size, size );
-        drawer.drawLinesWithPoints( DrawingProgram.NORMAL_POLYGON_COLOR, segments );
-
-        drawer.initialize();
-        return true;
     }
 
     //-------------------------------------------------------
@@ -293,7 +283,7 @@ public final class VoronoiDiagrams {
 
         // Check integrity of Voronoi Diagram data structure when assert is enabled.
         // and return the bounding box.
-        return check( box, sites );
+        return Checker.check( box, sites );
     }
 
     /**
@@ -386,132 +376,6 @@ public final class VoronoiDiagrams {
     }
 
     //-------------------------------------------------------
-    // Check integrity of Voronoi Diagram data structure.
-    //-------------------------------------------------------
-
-    private static
-    BoundingBox check( BoundingBox box, List<Face> sites ) {
-        if ( box == null ) return null;
-
-        // check every site to be the right cell ( Voronoi Face )
-        box.F.forEach( f -> {
-            assert ( ( VoronoiFace ) f ).check() : f + " " + ( ( VoronoiFace ) f ).site;
-        } );
-
-        // check integrity of Voronoi vertex and edge
-        List<VoronoiFace> cells = new ArrayList<>( sites.size() );
-        sites.forEach( s -> {
-            // duplicate site(s) hasn't been assigned outComponent, ignore them.
-            if ( s.outComponent != null )
-                cells.add( ( VoronoiFace ) s );
-        } );
-        box.vertices.forEach( v -> {
-            assert isVoronoiVertex( v, cells );
-            assert isVoronoiEdge( v, cells, box.vertices );
-        } );
-
-        return box;
-    }
-
-    // Theorem 7.4 For the Voronoi diagram Vor(P) of a set of points P the following holds:
-    // (i) A point q is a vertex of Vor(P) if and only if its largest empty circle Cp(q)
-    // contains three or more sites on its boundary.
-    // TODO: 1/21/2022 duality and inCircle test to do the check
-    private static
-    boolean isVoronoiVertex( VoronoiVertex v, List<VoronoiFace> sites ) {
-        List<HalfEdge> outgoingEdges = v.allOutGoingEdges();
-
-        // get vertices closet to the voronoi vertex
-        List<VoronoiFace> closetSites = new ArrayList<>( outgoingEdges.size() );
-        outgoingEdges.forEach( e -> closetSites.add( ( VoronoiFace ) e.incidentFace ) );
-
-        // they should be on the boundary of the circle defined by the vertex
-        closetSites.forEach( s -> {
-            assert MyMath.isEqual( new Line( s.site, v.circle.center ).getVector().length(), v.circle.radius ) : s.site + " " + new Line( s.site, v.circle.center ).getVector().length() + " " + v.circle;
-        } );
-
-        // remove them from the site list
-        closetSites.forEach( sites::remove );
-
-        // other sites should not be on or inside the circle
-        sites.forEach( s -> {
-            assert MyMath.doubleCompare( new Line( s.site, v.circle.center ).getVector().length(), v.circle.radius ) > 0;
-        } );
-
-        return true;
-    }
-
-    // (ii) The bisector between sites pi and pj defines an edge of Vor(P)
-    // if and only if there is a point q on the bisector such that Cp(q)
-    // contains both pi and pj on its boundary but no other site.
-    private static
-    boolean isVoronoiEdge( VoronoiVertex v, List<VoronoiFace> sites,
-                           List<VoronoiVertex> vertices ) {
-
-        List<HalfEdge> outgoingEdges = v.allOutGoingEdges();
-
-        outgoingEdges.forEach( e -> {
-            VoronoiFace f1 = ( VoronoiFace ) e.incidentFace;
-            VoronoiFace f2 = ( VoronoiFace ) e.twin.incidentFace;
-
-            // remove the two sites from the site list.
-            List<VoronoiFace> siteList = new ArrayList<>( sites );
-            siteList.remove( f1 );
-            siteList.remove( f2 );
-
-            // center of the circle, formed by f1, f2 and arbitrary one from the list,
-            // cannot be on the Vornoni edge of f1 and f2.
-            assert isVoronoiEdge( f1.site, f2.site, e, siteList, vertices );
-        } );
-
-        return true;
-    }
-
-    /**
-     * check the center of the circle formed by arbitrary three sites (pi, pj, pk) are not
-     * on the Voronoi edge that is also a bisector of pi and pj.
-     * Unless the center is also a Voronoi vertex of them.
-     * Assume this is equivalent to (ii), but not for sure.
-     *
-     * @param sites sites that have removed those at which p1 and p2 are
-     */
-
-    // TODO: 2/7/2022 equivalent to (ii)?
-    private static
-    boolean isVoronoiEdge( Vector p1, Vector p2, HalfEdge edge,
-                           List<VoronoiFace> sites, List<VoronoiVertex> vertices ) {
-
-        Vector mid = p1.getMid( p2 );
-        // pi and pj are the closet to the mid,
-        // which is the center of the circle defined by pi and pj
-        assert MyMath.isEqual( new Line( p1, mid ).getVector().length(), new Line( p2, mid ).getVector().length() );
-
-        // other sites should not be on or inside the circle
-        sites.forEach( s -> {
-            Circle circle = Circles.getCircleByThreePoints( p1, p2, s.site );
-            Segment segment = new Segment( edge.origin, edge.next.origin );
-            // p1, p2 and s.site are on the same line.
-            // no way to get a circle out of them in this case.
-            assert ( circle == null && MyMath.isEqualZero( Triangles.areaTwo( p1, p2, s.site ) ) ) ||
-                        // the center of the circle should not be on the Voronoi edge.
-                        !segment.isOnThisSegment( circle.center ) ||
-                            // except that the center is already a Voronoi vertex.
-                            isVoronoiVertex( circle.center, vertices );
-        } );
-
-        return true;
-    }
-
-    private static
-    boolean isVoronoiVertex( Vector center, List<VoronoiVertex> vertices ) {
-        for ( VoronoiVertex v : vertices ) {
-            if ( center.equalsXAndY( v ) ) return true;
-        }
-
-        return false;
-    }
-
-    //-------------------------------------------------------
     // attach to the bounding box
     //-------------------------------------------------------
 
@@ -523,7 +387,7 @@ public final class VoronoiDiagrams {
         sites.forEach( s -> points.add( ( ( VoronoiFace ) s ).site ) );
         points.addAll( vertices );
 
-        return BoundingBox.getBoundingBox( points, BoundingBox.OFFSET );
+        return BoundingBox.getBox( points, BoundingBox.OFFSET );
     }
 
     // use Bentley Ottmann's algorithm ( Geometric intersection algorithm ) to report
@@ -550,7 +414,7 @@ public final class VoronoiDiagrams {
             boxLines.add( s );
         } );
 
-        assert visualizeIntersection( sites, boxLines, danglings, box, imaginaryBox );
+        assert Checker.visualizeIntersection( sites, boxLines, danglings, box, imaginaryBox );
 
         // attach danglings to the box.
         // check every dangling to see if it intersects one of the box edges.
@@ -649,66 +513,6 @@ public final class VoronoiDiagrams {
         HalfEdges.connect( splits.get( 0 ), splits.get( 1 ), e.edge,
                 ( ( VoronoiFace ) e.edge.incidentFace ).site,
                 ( ( VoronoiFace ) e.edge.twin.incidentFace ).site );
-    }
-
-    /**
-     * visualize the area covering sites, Voronoi vertices and the bounding box.
-     * */
-
-    private static
-    boolean visualizeIntersection( List<Face> sites, List<Segment> boxLines,
-                                   List<EventSite> danglings,
-                                   BoundingBox box, BoundingBox imaginaryBox ) {
-
-        ;
-        int size = imaginaryBox.findVisualizationArea( BoundingBox.OFFSET );
-        DrawingProgram program = new DrawingProgram( "Voronoi: box intersection", size, size );
-
-        List<Line> shapes = new ArrayList<>( boxLines.size() + danglings.size() + 1 );
-        shapes.addAll( boxLines );
-
-        List<Vector> intersections = new ArrayList<>();
-        // iterate every dangling.
-        danglings.forEach( e -> {
-            assert e.direction != null;
-
-            // iterate every box edge
-            boxLines.forEach( l -> {
-                Vector intersection = e.bisector.intersect( l )[ 0 ];
-
-                if ( intersection != null && // have intersection of this box edge.
-                        // intersection must be on/in the box,
-                        // including the ones on the boundary.
-                        box.isOnThisBox( intersection ) ) {
-
-                    // this dangling is not just ray, but a line.
-                    if ( e.edge.origin == null && e.edge.twin.origin == null ) {
-                        shapes.add( e.bisector.getSegment( imaginaryBox ) );
-                        intersections.add( intersection );
-                    }
-                    // this dangling is a ray
-                    else {
-                        HalfEdge edge = e.edge.origin == null ? e.edge.twin : e.edge;
-                        // the direction of the vector ( intersection - voronoi vertex ) is the same as
-                        // that of current breakpoint is moving along
-                        if ( MyMath.isPositive( intersection.subtract( edge.origin ).dot( e.direction ) ) ) {
-                            intersections.add( intersection );
-                            shapes.add( new Ray( edge.origin, intersection ).getSegment( imaginaryBox ) );
-                        }
-                    }
-                }
-            } );
-        } );
-
-        List<Vector> sitePoints = new ArrayList<>( sites.size() + 1 );
-        sites.forEach( s -> sitePoints.add( ( ( VoronoiFace ) s ).site ) );
-
-        program.drawLines( DrawingProgram.NORMAL_POLYGON_COLOR, shapes );
-        program.drawPoints( DrawingProgram.INTERSECTION_COLOR, intersections );
-        program.drawPoints( Color.CYAN, sitePoints );
-
-        program.initialize();
-        return true;
     }
 
     //-------------------------------------------------------
@@ -1070,16 +874,6 @@ public final class VoronoiDiagrams {
         checkTripleRightCircle( gamma, updated, left, right, eventQueue, statusTree );
     }
 
-    private static
-    boolean check( Vertex origin, HalfEdge[] originals, HalfEdge merge ) {
-        assert originals[ 0 ].origin == origin;
-        assert originals[ 1 ].origin == origin;
-        assert merge.origin == null || merge.origin == origin : merge + " " + origin;
-        assert merge.twin.origin == null || merge.twin.origin == origin : merge.twin + " " + origin;
-
-        return true;
-    }
-
     /**
      * attach dangling edges of the Voronoi vertex
      * and set up their next and pre points correctly
@@ -1118,7 +912,7 @@ public final class VoronoiDiagrams {
 
         // set their twin edges
         setTwins( facesByEdges );
-        assert check( vertex, originalEdges, mergeEdge );
+        assert Checker.check( vertex, originalEdges, mergeEdge );
     }
 
     /**
@@ -1159,5 +953,217 @@ public final class VoronoiDiagrams {
                 return false;
 
         return true;
+    }
+
+    //----------------------------------------------------------
+    // Class Checker
+    //----------------------------------------------------------
+
+    static class Checker {
+        static
+        boolean visualizeSegments( List<Line> segments, BoundingBox b ) {
+            int size = b.findVisualizationArea( BoundingBox.OFFSET );
+            DrawingProgram drawer = new DrawingProgram( "Voronoi: segment", size, size );
+            drawer.drawSegments( DrawingProgram.NORMAL_POLYGON_COLOR, segments );
+
+            drawer.initialize();
+            return true;
+        }
+
+        //-------------------------------------------------------
+        // Check integrity of Voronoi Diagram data structure.
+        //-------------------------------------------------------
+
+        static
+        BoundingBox check( BoundingBox box, List<Face> sites ) {
+            if ( box == null ) return null;
+
+            // check every site to be the right cell ( Voronoi Face )
+            box.F.forEach( f -> {
+                assert ( ( VoronoiFace ) f ).check() : f + " " + ( ( VoronoiFace ) f ).site;
+            } );
+
+            // check integrity of Voronoi vertex and edge
+            List<VoronoiFace> cells = new ArrayList<>( sites.size() );
+            sites.forEach( s -> {
+                // duplicate site(s) hasn't been assigned outComponent, ignore them.
+                if ( s.outComponent != null )
+                    cells.add( ( VoronoiFace ) s );
+            } );
+            box.vertices.forEach( v -> {
+                assert isVoronoiVertex( v, cells );
+                assert isVoronoiEdge( v, cells, box.vertices );
+            } );
+
+            return box;
+        }
+
+        // Theorem 7.4 For the Voronoi diagram Vor(P) of a set of points P the following holds:
+        // (i) A point q is a vertex of Vor(P) if and only if its largest empty circle Cp(q)
+        // contains three or more sites on its boundary.
+        // TODO: 1/21/2022 duality and inCircle test to do the check
+        private static
+        boolean isVoronoiVertex( VoronoiVertex v, List<VoronoiFace> sites ) {
+            List<HalfEdge> outgoingEdges = v.allOutGoingEdges();
+
+            // get vertices closet to the voronoi vertex
+            List<VoronoiFace> closetSites = new ArrayList<>( outgoingEdges.size() );
+            outgoingEdges.forEach( e -> closetSites.add( ( VoronoiFace ) e.incidentFace ) );
+
+            // they should be on the boundary of the circle defined by the vertex
+            closetSites.forEach( s -> {
+                assert MyMath.isEqual( new Line( s.site, v.circle.center ).getVector().length(), v.circle.radius ) : s.site + " " + new Line( s.site, v.circle.center ).getVector().length() + " " + v.circle;
+            } );
+
+            // remove them from the site list
+            closetSites.forEach( sites::remove );
+
+            // other sites should not be on or inside the circle
+            sites.forEach( s -> {
+                assert MyMath.doubleCompare( new Line( s.site, v.circle.center ).getVector().length(), v.circle.radius ) > 0;
+            } );
+
+            return true;
+        }
+
+        // (ii) The bisector between sites pi and pj defines an edge of Vor(P)
+        // if and only if there is a point q on the bisector such that Cp(q)
+        // contains both pi and pj on its boundary but no other site.
+        private static
+        boolean isVoronoiEdge( VoronoiVertex v, List<VoronoiFace> sites,
+                               List<VoronoiVertex> vertices ) {
+
+            List<HalfEdge> outgoingEdges = v.allOutGoingEdges();
+
+            outgoingEdges.forEach( e -> {
+                VoronoiFace f1 = ( VoronoiFace ) e.incidentFace;
+                VoronoiFace f2 = ( VoronoiFace ) e.twin.incidentFace;
+
+                // remove the two sites from the site list.
+                List<VoronoiFace> siteList = new ArrayList<>( sites );
+                siteList.remove( f1 );
+                siteList.remove( f2 );
+
+                // center of the circle, formed by f1, f2 and arbitrary one from the list,
+                // cannot be on the Vornoni edge of f1 and f2.
+                assert isVoronoiEdge( f1.site, f2.site, e, siteList, vertices );
+            } );
+
+            return true;
+        }
+
+        /**
+         * check the center of the circle formed by arbitrary three sites (pi, pj, pk) are not
+         * on the Voronoi edge that is also a bisector of pi and pj.
+         * Unless the center is also a Voronoi vertex of them.
+         * Assume this is equivalent to (ii), but not for sure.
+         *
+         * @param sites sites that have removed those at which p1 and p2 are
+         */
+
+        // TODO: 2/7/2022 equivalent to (ii)?
+        private static
+        boolean isVoronoiEdge( Vector p1, Vector p2, HalfEdge edge,
+                               List<VoronoiFace> sites, List<VoronoiVertex> vertices ) {
+
+            Vector mid = p1.getMid( p2 );
+            // pi and pj are the closet to the mid,
+            // which is the center of the circle defined by pi and pj
+            assert MyMath.isEqual( new Line( p1, mid ).getVector().length(), new Line( p2, mid ).getVector().length() );
+
+            // other sites should not be on or inside the circle
+            sites.forEach( s -> {
+                Circle circle = Circles.getCircleByThreePoints( p1, p2, s.site );
+                Segment segment = new Segment( edge.origin, edge.next.origin );
+                // p1, p2 and s.site are on the same line.
+                // no way to get a circle out of them in this case.
+                assert ( circle == null && MyMath.isEqualZero( Triangles.areaTwo( p1, p2, s.site ) ) ) ||
+                        // the center of the circle should not be on the Voronoi edge.
+                        !segment.isOnThisSegment( circle.center ) ||
+                        // except that the center is already a Voronoi vertex.
+                        isVoronoiVertex( circle.center, vertices );
+            } );
+
+            return true;
+        }
+
+        private static
+        boolean isVoronoiVertex( Vector center, List<VoronoiVertex> vertices ) {
+            for ( VoronoiVertex v : vertices ) {
+                if ( center.equalsXAndY( v ) ) return true;
+            }
+
+            return false;
+        }
+
+        /**
+         * visualize the area covering sites, Voronoi vertices and the bounding box.
+         * */
+
+        static
+        boolean visualizeIntersection( List<Face> sites, List<Segment> boxLines,
+                                       List<EventSite> danglings,
+                                       BoundingBox box, BoundingBox imaginaryBox ) {
+
+            ;
+            int size = imaginaryBox.findVisualizationArea( BoundingBox.OFFSET );
+            DrawingProgram program = new DrawingProgram( "Voronoi: box intersection", size, size );
+
+            List<Line> shapes = new ArrayList<>( boxLines.size() + danglings.size() + 1 );
+            shapes.addAll( boxLines );
+
+            List<Vector> intersections = new ArrayList<>();
+            // iterate every dangling.
+            danglings.forEach( e -> {
+                assert e.direction != null;
+
+                // iterate every box edge
+                boxLines.forEach( l -> {
+                    Vector intersection = e.bisector.intersect( l )[ 0 ];
+
+                    if ( intersection != null && // have intersection of this box edge.
+                            // intersection must be on/in the box,
+                            // including the ones on the boundary.
+                            box.isOnThisBox( intersection ) ) {
+
+                        // this dangling is not just ray, but a line.
+                        if ( e.edge.origin == null && e.edge.twin.origin == null ) {
+                            shapes.add( e.bisector.getSegment( imaginaryBox ) );
+                            intersections.add( intersection );
+                        }
+                        // this dangling is a ray
+                        else {
+                            HalfEdge edge = e.edge.origin == null ? e.edge.twin : e.edge;
+                            // the direction of the vector ( intersection - voronoi vertex ) is the same as
+                            // that of current breakpoint is moving along
+                            if ( MyMath.isPositive( intersection.subtract( edge.origin ).dot( e.direction ) ) ) {
+                                intersections.add( intersection );
+                                shapes.add( new Ray( edge.origin, intersection ).getSegment( imaginaryBox ) );
+                            }
+                        }
+                    }
+                } );
+            } );
+
+            List<Vector> sitePoints = new ArrayList<>( sites.size() + 1 );
+            sites.forEach( s -> sitePoints.add( ( ( VoronoiFace ) s ).site ) );
+
+            program.drawLines( DrawingProgram.NORMAL_POLYGON_COLOR, shapes );
+            program.drawPoints( DrawingProgram.INTERSECTION_COLOR, intersections );
+            program.drawPoints( Color.CYAN, sitePoints );
+
+            program.initialize();
+            return true;
+        }
+
+        static
+        boolean check( Vertex origin, HalfEdge[] originals, HalfEdge merge ) {
+            assert originals[ 0 ].origin == origin;
+            assert originals[ 1 ].origin == origin;
+            assert merge.origin == null || merge.origin == origin : merge + " " + origin;
+            assert merge.twin.origin == null || merge.twin.origin == origin : merge.twin + " " + origin;
+
+            return true;
+        }
     }
 }

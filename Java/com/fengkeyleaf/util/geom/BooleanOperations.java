@@ -55,7 +55,7 @@ public final class BooleanOperations {
     /**
      * compute the intersection of two subdivisions, P1 ∩ P2.
      *
-     * @return [ [ included faces ], [ excluded faces ] ]
+     * @return [ included faces ]
      */
 
     public static
@@ -75,7 +75,7 @@ public final class BooleanOperations {
         return Checker.check( s1, s2, F, intersectionStr );
     }
 
-    private static
+    static
     boolean contains( GraphVertex v, Face s ) {
         assert v.f.parents != null;
 
@@ -88,7 +88,7 @@ public final class BooleanOperations {
     /**
      * compute the union of two subdivisions, P1 ∪ P2,
      *
-     * @return [ [ included faces ], [ excluded faces ] ]
+     * @return [ included faces ]
      */
 
     public static
@@ -110,7 +110,7 @@ public final class BooleanOperations {
     /**
      * compute the difference of two subdivisions, P1 \ P2.
      *
-     * @return [ [ included faces ], [ excluded faces ] ]
+     * @return [ included faces ]
      */
 
     public static
@@ -142,7 +142,7 @@ public final class BooleanOperations {
             return F;
         }
 
-        static final Color coverColor = new Color( 221, 221, 221, 160 );
+        private static final Color COVER_COLOR = new Color( 221, 221, 221, 160 );
 
         static
         boolean visualization( Face s1, Face s2,
@@ -158,7 +158,7 @@ public final class BooleanOperations {
             } );
 
             F.forEach( f -> {
-                drawer.fillPoly( coverColor, f );
+                drawer.fillPoly( COVER_COLOR, f );
                 f.innerComponents.forEach( e -> {
                     if ( !t.containsKey( e.twin.incidentFace.ID ) )
                         drawer.fillPoly( Color.white, e.twin.incidentFace );

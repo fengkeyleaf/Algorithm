@@ -85,7 +85,7 @@ final class DelaunayTest {
 
         List<Vector> points = new ArrayList<>( vertices.size() );
         points.addAll( vertices );
-        BoundingBox b = BoundingBox.getBoundingBox( points, 10 );
+        BoundingBox b = BoundingBox.getBox( points, 10 );
         DrawingProgram drawer = new DrawingProgram( "", b.width, b.height );
         Arrays.asList( faces ).forEach( face -> drawer.drawPoly( DrawingProgram.NORMAL_POLYGON_COLOR, face ) );
 

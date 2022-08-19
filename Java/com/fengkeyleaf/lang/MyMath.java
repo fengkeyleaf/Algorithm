@@ -22,7 +22,10 @@ package com.fengkeyleaf.lang;
 import com.fengkeyleaf.util.CompareElement;
 import com.fengkeyleaf.util.geom.Vector;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Math tool box
@@ -36,7 +39,16 @@ public final class MyMath {
     public static final double EPSILON = 0.00000001; // 1e-8
 
     /**
-     * base is less than n?
+     * n is less than or equal to base?
+     * */
+
+    public static
+    boolean isLessEq( double base, double n ) {
+        return doubleCompare( base, n ) >= 0;
+    }
+
+    /**
+     * n is less than base?
      * */
 
     public static
@@ -45,7 +57,16 @@ public final class MyMath {
     }
 
     /**
-     * base is greater than n?
+     * n is greater than or equal to base?
+     * */
+
+    public static
+    boolean isGreaterEq( double base, double n ) {
+        return doubleCompare( base, n ) <= 0;
+    }
+
+    /**
+     * n is greater than base?
      * */
 
     public static

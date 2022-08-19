@@ -41,15 +41,6 @@ public class InternetFlow extends Graph<InternetFlowVertex> {
     // for testing
     private boolean flag = true;
 
-    // TODO: 4/25/2021 the recursion processes for forward and backward
-    //  can be combined into one method, but maybe no time to set this up
-    //  since have an AI lab assignment to work on
-    private int recursionProcess( InternetFlowVertex vertex, boolean[] ifVisited,
-                                  int bottleneck, boolean ifForward,
-                                  List<Vertex> forwardEdges, List<Vertex> backwardEdges ) {
-        return 0;
-    }
-
     /**
      * DFS find path s -> t with backwards or without backwards edges
      * */

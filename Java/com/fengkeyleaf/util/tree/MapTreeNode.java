@@ -28,7 +28,7 @@ public class MapTreeNode<K, V> extends Node {
     public K key;
     public V val;
     // including this node itself
-    public int numberOfChildren = 1;
+    int numberOfChildren = 1;
 
     public final DoublyLinkedNode<MapTreeNode<K, V>> node;
 
@@ -83,11 +83,11 @@ public class MapTreeNode<K, V> extends Node {
         return !isRoot() && ( ( MapTreeNode<K, V> ) parent ).right == this;
     }
 
-    public static <K, V>
-    void swap( MapTreeNode<K, V> node1, MapTreeNode<K, V> node2 ) {
-        MapTreeNode<K, V> temp = new MapTreeNode<>( -1, node1.key, node1.val );
-        node1.replace( node2 );
-        node2.replace( temp );
+    public static<K, V>
+    void swap( MapTreeNode<K, V> n1, MapTreeNode<K, V> n2 ) {
+        MapTreeNode<K, V> temp = new MapTreeNode<>( -1, n1.key, n1.val );
+        n1.replace( n2 );
+        n2.replace( temp );
     }
 
     /**
@@ -97,6 +97,10 @@ public class MapTreeNode<K, V> extends Node {
     public void replace( MapTreeNode<K, V> node ) {
         this.val = node.val;
         this.key = node.key;
+    }
+
+    public int getNumberOfChildren() {
+        return numberOfChildren;
     }
 
     private String normalToString() {

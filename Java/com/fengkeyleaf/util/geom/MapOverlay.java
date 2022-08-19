@@ -19,6 +19,7 @@ import com.fengkeyleaf.util.graph.Graph;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.function.Predicate;
 
 /**
  * Class to compute the intersection of two subdivisions, Map Overlay.
@@ -28,17 +29,19 @@ import java.util.TreeMap;
  * @since  1.0
  */
 
-public final class MapOverlay {
+public class MapOverlay {
 
     /**
-     * Class to handle segment intersection( vertex and half-edge ) for map overlay.
+     * Class to handle segment intersection( vertex and half-edge, edge and edge ) for map overlay.
      *
-     * This class is mainly to get rid of the intersection where a vertex kisses a half-edge,
-     * and split the half-edge into two parts.
+     * This class is mainly to get rid of the intersection where new half-edges are created.
      * In this way, we can reduce the complexity of the segment intersection for MapOverlay.
      */
 
     static class Splitter extends GeometricIntersection {
+        // Condition to see if to include an intersection for this splitter
+        // Two usages: 1) Assertion; 2) Half-plane intersection.
+        static final Predicate<EventPoint2D> sP = i -> i.I.size() == 1 || i.I.size() == 2;
         // Half-edges from the sub-subdivision with mappingID as 0.
         // we will reset the ID to -1 in order to traverse the face to get all cycles.
         final List<HalfEdge> E = new ArrayList<>();
@@ -47,13 +50,12 @@ public final class MapOverlay {
             // horizontal sweep line to compute intersection for map overlay.
             // In production environment, no need to actually report intersections.
             super( i -> false, false );
-            assert ( p = i -> i.I.size() == 1 ) != null;
+            assert ( c = new Checker() ) != null;
         }
 
         /**
          * report intersection point and split half-edges.
          *
-         * @param p intersection point.
          * @param L shapes intersecting at p with p as its left endpoint.
          * @param R shapes intersecting at p with p as its right endpoint.
          * @param I shapes intersecting at p and containing p.
@@ -61,20 +63,63 @@ public final class MapOverlay {
          */
 
         @Override
-        EventPoint2D reportIntersection( EventPoint2D p, List<EventPoint2D> L,
-                                         List<EventPoint2D> R, List<EventPoint2D> I ) {
+        EventPoint2D reportIntersection( List<EventPoint2D> L,
+                                         List<EventPoint2D> R,
+                                         List<EventPoint2D> I ) {
 
-            EventPoint2D i = super.reportIntersection( p, L, R, I );
+            EventPoint2D i = super.reportIntersection( L, R, I );
 
             // intersection with one half-edge and one vertex.
             if ( i.I.size() == 1 ) {
                 assert !i.L.isEmpty() || !i.R.isEmpty();
                 // split the half-edge.
-                ( ( Segment ) i.I.get( 0 ) ).e.split( i );
+                split( i.I.get( 0 ), i );
             }
+            // intersection with two half-edges.
+            else if ( i.I.size() == 2 )
+                handleEdges( i );
 
             assert i.I.size() < 3;
             return i;
+        }
+
+        static
+        void split( IntersectionShape s, Vector i ) {
+            Segment sg = ( Segment ) s;
+            assert sg.e.mappingID < 1;
+            sg.e.split( i );
+            selectEdge( sg );
+        }
+
+        /**
+         * split two intersecting half-edges.
+         *
+         * @param i intersection point.
+         */
+
+        static
+        void handleEdges( EventPoint2D i ) {
+            assert i.shapes.size() == 2;
+
+            // split two edges.
+            split( i.shapes.get( 0 ), i );
+            split( i.shapes.get( 1 ), i );
+        }
+
+        /**
+         * set the half-edge associated with the segment, {@code s}, to the upper one.
+         * This method must be called right after calling {@link HalfEdge#split(Vector)}
+         * with no further modification to the half-edge.
+         * Otherwise, errors may arise.
+         * */
+
+        static
+        Segment selectEdge( Segment s ) {
+            if ( Vectors.sortByY( s.e.origin, s.e.next.origin ) < 0 )
+                s.e = s.e.next;
+
+            assert Vectors.sortByY( s.e.origin, s.e.next.origin ) != 0;
+            return s;
         }
 
         /**
@@ -88,6 +133,25 @@ public final class MapOverlay {
                 if ( e.mappingID < 1 )
                     e.mappingID = -1;
             } );
+        }
+
+        //-------------------------------------------------------
+        // Class checker.
+        //-------------------------------------------------------
+
+        /**
+         * Class to check the integrity of Segment intersection algorithm for map overlay.
+         *
+         * Note that code in this class won't have any effects on the main algorithm.
+         */
+
+        static class Checker extends GeometricIntersection.Checker {
+            @Override
+            boolean check( List<Vector> intersections,
+                           List<IntersectionShape> S ) {
+                visualization( intersections, S );
+                return true;
+            }
         }
     }
 
@@ -105,9 +169,9 @@ public final class MapOverlay {
      * This information is actually useful when we build the graph
      * to compute outComponent and innerComponents for a DCEL face.
      * 3) Compute segment intersection.
-     * During the process, we will split two intersecting half-edges into four,
-     * split a half-edge into two when a vertex kisses a half-edge,
-     * and remove overlapping half-edges and so on.
+     * At this point, we only have one intersection type: vertex and vertex.
+     * So we will remove overlapping half-edges and vertices,
+     * and re-connect half-edges during the process.
      * 4) merge masters ( Label Faces ).
      * merge masters from two half-edges from different subdivision.
      *
@@ -117,6 +181,9 @@ public final class MapOverlay {
      */
 
     static class Intersector extends Splitter {
+        // Condition to see if to include an intersection for this Intersector.
+        // Two usages: 1) Assertion; 2) Half-plane intersection.
+        static final Predicate<EventPoint2D> iP = i -> !isFromSameSubdivision( i );
 
         /**
          * constructs to create an intersector
@@ -129,7 +196,7 @@ public final class MapOverlay {
         Intersector( Face s ) {
             // horizontal sweep line to compute intersection for map overlay.
             // In production environment, no need to actually report intersections.
-            assert ( p = i -> !isFromSameSubdivision( i ) ) != null;
+            assert ( p = iP ) != null;
 
             labelEdges( s );
         }
@@ -167,7 +234,6 @@ public final class MapOverlay {
         /**
          * report intersection point and split half-edges.
          *
-         * @param   p intersection point.
          * @param   L shapes intersecting at p with p as its left endpoint.
          * @param   R shapes intersecting at p with p as its right endpoint.
          * @param   I shapes intersecting at p and containing p.
@@ -175,10 +241,14 @@ public final class MapOverlay {
          */
 
         @Override
-        EventPoint2D reportIntersection( EventPoint2D p, List<EventPoint2D> L,
-                                         List<EventPoint2D> R, List<EventPoint2D> I ) {
+        EventPoint2D reportIntersection( List<EventPoint2D> L,
+                                         List<EventPoint2D> R,
+                                         List<EventPoint2D> I ) {
 
-            EventPoint2D i = super.reportIntersection( p, L, R, I );
+            // The override method in the supper class will
+            // add the intersection point into the check class.
+            // And it has no side-effects on this one.
+            EventPoint2D i = super.reportIntersection( L, R, I );
             // Find the half-edge directly left to a vertex.
             setLeft( i );
 
@@ -189,13 +259,15 @@ public final class MapOverlay {
             // intersection with two overlapping vertices.
             if ( i.I.isEmpty() )
                 handleVertices( i );
-            // intersection with two half-edges.
-            else if ( i.I.size() == 2 )
-                handleEdges( i );
 
-            assert i.I.size() < 3 && i.I.size() != 1 : i.I;
+            // no other possible intersection allowed.
+            assert i.I.isEmpty() : i.I;
             return i;
         }
+
+        /**
+         * Half-edges incident to the intersection point e, are from the two subdivisions?
+         */
 
         static
         boolean isFromSameSubdivision( EventPoint2D e ) {
@@ -226,19 +298,24 @@ public final class MapOverlay {
          * */
 
         void setLeft( EventPoint2D i ) {
-            HalfEdge left = findEdge( i );
-            if ( left == null ) return;
+            HalfEdge l = findEdge( i );
+            if ( l == null ) return;
 
-            i.l = left;
-            i.L.forEach( l -> {
-                Segment s = ( Segment ) l;
-                if ( s.e.origin.equalsXAndY( i ) )
-                    s.e.origin.l = left;
-            } );
-            i.R.forEach( l -> {
-                Segment s = ( Segment ) l;
-                if ( s.e.origin.equalsXAndY( i ) )
-                    s.e.origin.l = left;
+            i.l = l;
+            setLeft( i, i.L, l );
+            setLeft( i, i.R, l );
+        }
+
+        static
+        void setLeft( EventPoint2D e, List<IntersectionShape> I, HalfEdge l ) {
+            I.forEach( i -> {
+                Segment s = ( Segment ) i;
+                // skip removed edge.
+                if ( s.e.mappingID == 1 ) return;
+
+                assert s.e.origin != null : s;
+                if ( s.e.origin.equalsXAndY( e ) )
+                    s.e.origin.l = l;
             } );
         }
 
@@ -425,6 +502,7 @@ public final class MapOverlay {
             // merge masters.
             e1.addMasters( e1.master, e2.master );
             e1.masters = new HalfEdge[] { e1.master, e2.master };
+
             // free up space for removed half-edge which are typically overlapping ones.
             assert e2.mappingID == 0;
             // removed half-edge has 1 as its mappingID.
@@ -456,53 +534,6 @@ public final class MapOverlay {
             assert e.mappingID == e.next.twin.mappingID : e.mappingID + " | " + e.twin.mappingID;
             e.next.mappingID = e.next.twin.mappingID;
             e.twin.mappingID = e.mappingID;
-        }
-
-        /**
-         * set the half-edge associated with the segment, {@code s}, to the upper one.
-         * This method must be called right after calling {@link HalfEdge#split(Vector)}
-         * with no further modification to the half-edge.
-         * Otherwise, errors may arise.
-         * */
-
-        static
-        Segment selectEdge( Segment s ) {
-            if ( Vectors.sortByY( s.e.origin, s.e.next.origin ) < 0 )
-                s.e = s.e.next;
-
-            assert Vectors.sortByY( s.e.origin, s.e.next.origin ) != 0;
-            return s;
-        }
-
-        static
-        void handleEdges( EventPoint2D i ) {
-            assert i.shapes.size() == 2;
-            Segment l1 = ( Segment ) i.shapes.get( 0 ),
-                    l2 = ( Segment ) i.shapes.get( 1 );
-
-            // split two vertices.
-            HalfEdge e1 = l1.e;
-            Vertex v = e1.split( i );
-            setMappingIDs( e1 );
-            selectEdge( l1 );
-
-            HalfEdge e2 = l2.e;
-            e2.split( i );
-            setMappingIDs( e2 );
-            selectEdge( l2 );
-
-            assert v.l == null;
-            v.l = i.l;
-            assert v.l == null || Checker.checkIntersection( v, v.l.origin, v.l.twin.origin );
-
-            // re-connect half-edges.
-            // incident face is not set up correctly at this point.
-            List<HalfEdge> E = new ArrayList<>( 4 );
-            E.add( e1 );
-            E.add( e1.next );
-            E.add( e2 );
-            E.add( e2.next );
-            wireHalfEdges( E, v );
         }
     }
     // segment intersection handler.
@@ -688,6 +719,7 @@ public final class MapOverlay {
         edges.forEach( e -> {
             Segment s = e.getSegment();
             s.e = e;
+            assert e.origin != null;
             S.add( s );
 
             assert e.mappingID == -1;
@@ -751,6 +783,8 @@ public final class MapOverlay {
             t.mappingID = 0;
             E.add( t );
 
+            assert t.mappingID < 1 : t;
+            assert t.next != null : t;
             t = t.next;
         } while ( t != e );
 
@@ -894,11 +928,19 @@ public final class MapOverlay {
     // Class Checker
     //----------------------------------------------------------
 
+    /**
+     * Class to check the integrity of Map Overlay algorithm.
+     *
+     * Note that code in this class won't have any effects on the main algorithm.
+     */
+
     static class Checker {
         // data field for checking.
         BoundingBox b;
         int size;
+        // segment set from a subdivision.
         List<Line> I;
+        // point set from a subdivision.
         List<Vector> P;
 
         Checker( Face s1, Face s2 ) {
@@ -909,7 +951,7 @@ public final class MapOverlay {
             List<Vector> P = new ArrayList<>();
             if ( s1 != null ) getBoundingBox( s1, P );
             if ( s2 != null ) getBoundingBox( s2, P );
-            b = BoundingBox.getBoundingBox( P, BoundingBox.OFFSET );
+            b = BoundingBox.getBox( P, BoundingBox.OFFSET );
 
             if ( b != null )
                 size = Math.abs( ( int ) MyMath.findMaxMinInAbs( b.maxX, b.maxY, b.minX, b.minY )[ 1 ] ) * 2;
@@ -1057,6 +1099,10 @@ public final class MapOverlay {
 
             return true;
         }
+
+        /**
+         * free up space for the three data sets.
+         * */
 
         private boolean cleanUp() {
             b = null;

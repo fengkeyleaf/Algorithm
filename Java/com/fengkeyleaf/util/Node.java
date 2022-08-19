@@ -14,6 +14,8 @@ package com.fengkeyleaf.util;
  *     $1.1 super class for Vector and added mapping ID on 7/11/2021$
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -69,6 +71,34 @@ public class Node {
     public static<N extends Node>
     void setMappingID( List<N> nodes, int initID ) {
         for ( Node n : nodes ) n.mappingID = initID++;
+    }
+
+    /**
+     * reset parent to null.
+     */
+
+    public static<V extends Node>
+    void resetParent( List<V> nodes ) {
+        nodes.forEach( n -> n.parent = null );
+    }
+
+    /**
+     * Get the path from this node all the way to the top level one.
+     *
+     * @return path connecting this node and the top level one.
+     */
+
+    public List<Node> getPath() {
+        List<Node> p = new ArrayList<>();
+        Node n = parent;
+
+        while ( n != null ) {
+            p.add( n );
+            n = n.parent;
+        }
+
+        Collections.reverse( p );
+        return p;
     }
 
     @Override

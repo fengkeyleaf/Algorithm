@@ -524,7 +524,7 @@ public class BinarySearchTree<K, V> extends AbstractTree<K>
     }
 
     //-------------------------------------------------------
-    // Iterable
+    // Iterable & traversal
     //-------------------------------------------------------
 
     @Override
@@ -541,6 +541,52 @@ public class BinarySearchTree<K, V> extends AbstractTree<K>
         inorderTraversal( root.left, queue );
         queue.add( root );
         inorderTraversal( root.right, queue );
+    }
+
+    /**
+     * inorder traversal with O(1) space, Morris Traversal.
+     * But we could take advantage of parent pointer in {@link DoublyLinkedBST} or {@link DoublyLinkedRBT}.
+     * */
+
+    // reference resource: https://www.cnblogs.com/AnnieKim/archive/2013/06/15/morristraversal.html
+    LinkedList<MapTreeNode<K, V>> morrisInOrderTraversal() {
+        LinkedList<MapTreeNode<K, V>> L = new LinkedList<>();
+        MapTreeNode<K, V> cur = root;
+
+        // traversal process.
+        while ( cur != null ) {
+            if ( cur.left == null ) {
+                L.add( cur );
+                cur = cur.right;
+                continue;
+            }
+
+            MapTreeNode<K, V> p = max( cur.left, cur );
+            // backup the node we'll return to.
+            if ( p.right == null ) {
+                p.right = cur;
+                cur = cur.left;
+                continue;
+            }
+
+            // recover the tree structure.
+            if ( p.right == cur ) {
+                p.right = null;
+                L.add( cur );
+                cur = cur.right;
+            }
+        }
+
+        return L;
+    }
+
+    private MapTreeNode<K, V> max( MapTreeNode<K, V> left,
+                                   MapTreeNode<K, V> cur ) {
+
+        while ( left.right != null && left.right != cur )
+            left = left.right;
+
+        return left;
     }
 
     //-------------------------------------------------------

@@ -27,7 +27,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /**
- * <a href="https://dsa.cs.tsinghua.edu.cn/oj/problem.shtml?id=1645">CG2017 PA1-1 Convex Hull</a>
+ * <a href="https://dsa.cs.tsinghua.edu.cn/oj/problem.shtml?id=1645">CG2017 PA1-1 Convex Hull</a><br>
  *
  * Analysis of time complexity:
  * 1) Find LTL; -> O(n)
@@ -113,7 +113,7 @@ final class Main extends MainCG
         if ( faces == null ) return new BigInteger( "-1" );
 
         // visualized program
-        BoundingBox b = BoundingBox.getBoundingBox( points, BoundingBox.OFFSET / 2 );
+        BoundingBox b = BoundingBox.getBox( points, BoundingBox.OFFSET / 2 );
         DrawingProgram drawer = new DrawingProgram( title, b.width, b.height );
 
         drawer.drawPoints( DrawingProgram.NORMAL_POLYGON_COLOR, points );

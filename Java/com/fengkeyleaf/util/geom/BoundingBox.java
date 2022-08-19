@@ -38,12 +38,15 @@ import java.util.List;
  * @see <a href="https://fengkeyleaf.com">person website</a>
  * @since  1.0
  */
+
 public final class BoundingBox {
-    public static final double OFFSET = 10;
+    public static final int OFFSET = 10;
 
     // infinite face for this bounding box.
     public final Face outer;
 
+    // counter-clock wise order:
+    // top -> left -> bottom -> right.
     public final List<HalfEdge> edges = new ArrayList<>( 4 );
     public final HalfEdge top;
     public final HalfEdge bottom;
@@ -170,26 +173,6 @@ public final class BoundingBox {
         return splitCommon( split( boxEdge ), intersection );
     }
 
-    /**
-     * the point, p, is on this bounding box?
-     * ( including lying on its boundary. )
-     * */
-
-    // TODO: 2/11/2022 extract a method for this one. i.e. use outer face to see if a point lies inside it.
-    boolean isOnThisBox( Vector p ) {
-        HalfEdge edge = top.twin;
-
-        do {
-            if ( Triangles.toLeftRigorously( edge.origin, edge.next.origin, p ) )
-                return false;
-
-            assert edge.incidentFace == top.twin.incidentFace;
-            edge = edge.next;
-        } while ( edge != top.twin );
-
-        return true;
-    }
-
     private static
     Vertex split( HalfEdge boxEdge, LinkedList<HalfEdge> edges, Line line ) {
         Vector intersection = boxEdge.getSegment().intersect( line )[ 0 ];
@@ -231,6 +214,45 @@ public final class BoundingBox {
 
         return split;
     }
+
+    /**
+     * the point, p, is on this bounding box?
+     * ( including lying on its boundary. )
+     * */
+
+    // TODO: 2/11/2022 extract a method for this one. i.e. use outer face to see if a point lies inside it.
+    boolean isOnThisBox( Vector p ) {
+        HalfEdge edge = top.twin;
+
+        do {
+            if ( Triangles.toLeftRigorously( edge.origin, edge.next.origin, p ) )
+                return false;
+
+            assert edge.incidentFace == top.twin.incidentFace;
+            edge = edge.next;
+        } while ( edge != top.twin );
+
+        return true;
+    }
+
+    public int findVisualizationArea() {
+        return findVisualizationArea( 0 );
+    }
+
+    // TODO: 2/24/2022 16 : 9
+    public int findVisualizationArea( double OFFSET ) {
+        List<Double> coors = new ArrayList<>( 4 );
+        coors.add( maxX ); // max x
+        coors.add( maxY ); // max Y
+        coors.add( minX ); // min x
+        coors.add( minY ); // min y
+
+        return ( int ) ( Math.abs( MyMath.findMaxMinInAbs( coors )[ 1 ] ) + OFFSET * 2 ) * 2;
+    }
+
+    //-------------------------------------------------------
+    // get bounding box
+    //-------------------------------------------------------
 
     /**
      * get a box with minX, maxX, minY and maxY.
@@ -295,11 +317,12 @@ public final class BoundingBox {
      *       -------------------------------------->
      *                       bottom
      *
-     * @param offset non-negative
+     * @throws IllegalArgumentException - The offset is negative.
      * */
 
     public BoundingBox getBox( double offset ) {
-        assert !MyMath.isNegative( offset );
+        if ( MyMath.isNegative( offset ) )
+            throw new IllegalArgumentException( "Offset is negative" );
 
         // BoundingBox getBox( double minX, double maxX, double minY, double maxY, Vector offset )
         return getBox( getOutsiderBoundary( minX, offset ),
@@ -308,28 +331,22 @@ public final class BoundingBox {
                                   getOutsiderBoundary( maxY, offset ), Vector.origin );
     }
 
-    public int findVisualizationArea() {
-        return findVisualizationArea( 0 );
-    }
-
-    // TODO: 2/24/2022 16 : 9
-    public int findVisualizationArea( double OFFSET ) {
-        List<Double> coors = new ArrayList<>( 4 );
-        coors.add( maxX ); // max x
-        coors.add( maxY ); // max Y
-        coors.add( minX ); // min x
-        coors.add( minY ); // min y
-
-        return ( int ) ( Math.abs( MyMath.findMaxMinInAbs( coors )[ 1 ] ) + OFFSET * 2 ) * 2;
-    }
+    /**
+     * Get a bounding box containing all the points in the point set with <b>No</b> offset.
+     */
 
     public static
-    BoundingBox getBoundingBox( List<Vector> points ) {
-        return getBoundingBox( points, 0 );
+    BoundingBox getBox( List<Vector> points ) {
+        return getBox( points, 0 );
     }
 
+    /**
+     * Get a bounding box containing all the points in the point set,
+     * with some offset to separate points and the box.
+     */
+
     public static
-    BoundingBox getBoundingBox( List<Vector> points, double OFFSET ) {
+    BoundingBox getBox( List<Vector> points, int OFFSET ) {
         if ( points.isEmpty() ) return null;
 
         // get min and max of x and y
@@ -347,5 +364,44 @@ public final class BoundingBox {
         // determine the width( height ) the regular bounding box
         double boundary = Math.abs( MyMath.findMaxMinInAbs( minX, maxX, minY, maxY )[ 1 ] ) + OFFSET;
         return BoundingBox.getBox( boundary, new Vector( ( minX + maxX ) / 2, ( minY + maxY ) / 2 ) );
+    }
+
+    /**
+     * Get a bounding box with w as its width, h as its height and c as its center.
+     *
+     * Visualization:
+     *
+     *                        top
+     *       <--------------------------------------
+     *       |                  |                  ^
+     *       |                  |                  |
+     *       |                  | +h/2             |
+     *       |                  |                  |
+     *       |                  |                  |
+     * left  | ---------------- c                  | right
+     *       |        -w/2                         |
+     *       |                                     |
+     *       |                                     |
+     *       |                                     |
+     *       v                                     |
+     *       -------------------------------------->
+     *                       bottom
+     *
+     * @throws IllegalArgumentException - Width or height is non-positive.
+     */
+
+    public static
+    BoundingBox getBox( Vector c, int w, int h ) {
+        if ( w <= 0 && h <= 0 )
+            throw new IllegalArgumentException( "Width or height cannot be non-positive.");
+
+        w /= 2;
+        h /= 2;
+
+        Vector topLeft = new Vector( Math.ceil( c.x - w ), Math.ceil( c.y + h ) );
+        Vector topRight = new Vector( Math.ceil( c.x + w ), Math.ceil( c.y + h ) );
+        Vector bottomLeft = new Vector( Math.ceil( c.x - w ), Math.ceil( c.y - h ) );
+        Vector bottomRight = new Vector( Math.ceil( c.x + w ), Math.ceil( c.y - h ) );
+        return new BoundingBox( topRight, topLeft, bottomLeft, bottomRight );
     }
 }

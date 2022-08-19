@@ -143,24 +143,40 @@ public final class MonotonePolygons {
             return;
         }
 
-        // TODO: 2/23/2022 may have precision issue
         // regular vertex
-        Vector rightShiftedPoint = new Vector( base.x + SHIFT, base.y );
-        Vector leftShiftedPoint = new Vector( base.x - SHIFT, base.y );
+        assert Triangles.toLeftRigorously( prev, base, next );
         // left regular vertex,
         // if the interior of P lies to the right of vi
-        if ( isInsidePolygon( rightShiftedPoint, base, prev, next ) ) {
-            assert !isInsidePolygon( leftShiftedPoint, base, prev, next ) : base;
+        if ( base.isAbove( prev ) && base.isBelow( next ) ) {
             base = edge.origin;
             base.vertexType = Vertex.VertexType.REGULAR_LEFT;
         }
         // right regular vertex,
         // if the interior of P lies to the left of vi
         else {
-            assert isInsidePolygon( leftShiftedPoint, base, prev, next ) : base;
+            assert base.isAbove( next ) && base.isBelow( prev );
             base = edge.origin;
             base.vertexType = Vertex.VertexType.REGULAR_RIGHT;
         }
+
+        // TODO: 2/23/2022 may have precision issue
+        // regular vertex
+//        Vector rightShiftedPoint = new Vector( base.x + SHIFT, base.y );
+//        Vector leftShiftedPoint = new Vector( base.x - SHIFT, base.y );
+//        // left regular vertex,
+//        // if the interior of P lies to the right of vi
+//        if ( isInsidePolygon( rightShiftedPoint, base, prev, next ) ) {
+//            assert !isInsidePolygon( leftShiftedPoint, base, prev, next ) : base;
+//            base = edge.origin;
+//            base.vertexType = Vertex.VertexType.REGULAR_LEFT;
+//        }
+//        // right regular vertex,
+//        // if the interior of P lies to the left of vi
+//        else {
+//            assert isInsidePolygon( leftShiftedPoint, base, prev, next ) : leftShiftedPoint + " | " + rightShiftedPoint + " | " + prev + " | " + base + " | " +next;
+//            base = edge.origin;
+//            base.vertexType = Vertex.VertexType.REGULAR_RIGHT;
+//        }
     }
 
 

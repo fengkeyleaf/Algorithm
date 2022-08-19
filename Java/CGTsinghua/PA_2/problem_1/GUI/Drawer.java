@@ -12,13 +12,9 @@ package CGTsinghua.PA_2.problem_1.GUI;
  *     $1.0 basic operations on 11/28/2021$
  */
 
-import com.fengkeyleaf.util.geom.HalfEdge;
-import com.fengkeyleaf.util.geom.Vectors;
-import com.fengkeyleaf.util.graph.DualVertex;
 import com.fengkeyleaf.GUI.geom.DrawingProgram;
-import com.fengkeyleaf.util.geom.Vertex;
-import com.fengkeyleaf.util.geom.Vector;
-import com.fengkeyleaf.util.geom.Triangles;
+import com.fengkeyleaf.util.geom.*;
+import com.fengkeyleaf.util.graph.DualVertex;
 
 import java.awt.*;
 import java.util.ArrayList;

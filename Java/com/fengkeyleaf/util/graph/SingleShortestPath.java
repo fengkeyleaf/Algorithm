@@ -17,13 +17,12 @@ import com.fengkeyleaf.util.Node;
 import com.fengkeyleaf.util.geom.HalfEdge;
 import com.fengkeyleaf.util.geom.Triangles;
 import com.fengkeyleaf.util.geom.Vector;
-import com.fengkeyleaf.util.tree.MemorizedPriorityQueue;
+import com.fengkeyleaf.util.tree.MyPriorityQueue;
 
 import java.util.*;
 
 /**
- * Algorithms related to
- * single-resource shortest path problems
+ * Algorithms related to single-resource shortest path problems
  *
  * @author Xiaoyu Tongyang, or call me sora for short
  * @see <a href="https://fengkeyleaf.com">person website</a>
@@ -31,6 +30,11 @@ import java.util.*;
  */
 
 public final class SingleShortestPath {
+
+    //-------------------------------------------------------
+    // Funnel algorithm.
+    //-------------------------------------------------------
+
     private static final boolean LEFT_POINT = true;
     private static final boolean RIGHT_POINT = false;
 
@@ -137,7 +141,6 @@ public final class SingleShortestPath {
 
     /**
      * Funnel Algorithm
-     *
      */
 
     // Reference resource: http://digestingduck.blogspot.com/2010/03/simple-stupid-funnel-algorithm.html
@@ -232,6 +235,10 @@ public final class SingleShortestPath {
         System.out.println( visitedVertices );
         return visitedVertices;
     }
+
+    //-------------------------------------------------------
+    // BFS
+    //-------------------------------------------------------
 
     /**
      * shortest path in a dual graph
@@ -340,6 +347,10 @@ public final class SingleShortestPath {
             count = countTemp;
         }
     }
+
+    //-------------------------------------------------------
+    // Bellman Ford's
+    //-------------------------------------------------------
 
     /**
      * update shortest path
@@ -469,81 +480,91 @@ public final class SingleShortestPath {
                 ifReachable, predecessors, shortestDistances, ifUpdatedThisRound );
     }
 
-    /*
-    * methods below are irrelevant to hw_6
-    * */
+    //-------------------------------------------------------
+    // Dijkstra's
+    //-------------------------------------------------------
 
     /**
      * Dijkstra's
+     *
+     * @deprecated plase use {@link SingleShortestPath#dijkstra(Vertex, Graph)}
      */
 
+    @Deprecated
     public static
-    List<Edge> allShortestPath( ShortestVertex start, ShortestVertex destination,
-                                Graph<ShortestVertex> aGraph ) {
-        final List<Edge> allPaths = new ArrayList<>();
-        // TODO: 8/5/2021 not fix MemorizedPriorityQueue
-        final MemorizedPriorityQueue minHeap = new MemorizedPriorityQueue( null );
-        boolean[] explored = new boolean[ aGraph.size() ];
-        boolean[] ifReachable = new boolean[ aGraph.size() ];
-        ifReachable[ start.ID ] = true;
-
-        start.currentShortestDistance = 0;
-        minHeap.addAll( aGraph.vertices );
-
-        ShortestVertex current = start;
-
-        while ( !destination.equals( current ) && !minHeap.isEmpty() ) {
-            current = minHeap.delete();
-            if ( explored[ current.ID ] ) continue;
-            explored[ current.ID ] = true;
-
-            // remained vertices are unreachable
-            if ( !ifReachable[ current.ID ] ) break;
-
-            for ( int i = 0; i < current.neighbours.size(); i++ ) {
-                ShortestVertex neighbour = ( ShortestVertex ) current.neighbours.get( i );
-                ifReachable[ neighbour.ID ] = true;
-
-                long sum = current.currentShortestDistance + current.distances.get( i );
-                if ( neighbour.equals( destination ) ) {
-                    allPaths.add( new Edge( sum, current, neighbour ) );
-                }
-
-                if ( sum <  neighbour.currentShortestDistance ) {
-                    long originalDistance = neighbour.currentShortestDistance;
-                    neighbour.currentShortestDistance = sum;
-                    neighbour.parent = current;
-                    neighbour.numberOfParent = current.numberOfParent + 1;
-                    minHeap.changeKey( neighbour, new ShortestVertex( -1, originalDistance ) );
-                }
-            }
-        }
-
-        return allPaths;
+    List<Edge> allShortestPath( ShortestVertex s, ShortestVertex d,
+                                Graph<ShortestVertex> g ) {
+        System.err.println( "Wrong method, not use this" );
+        System.exit( 1 );
+        return null;
     }
 
-    public static
-    void main( String[] args ) {
-        final PriorityQueue<ShortestVertex> vertices =
-                new PriorityQueue<>(
-                        Comparator.comparingLong( aVertex -> aVertex.currentShortestDistance ) );
-        int ID = 0;
-        ShortestVertex vertex1 = new ShortestVertex( ID++, 1 );
-        ShortestVertex vertex2 = new ShortestVertex( ID++, 2 );
-        ShortestVertex vertex3 = new ShortestVertex( ID++, 3 );
-        ShortestVertex vertex4 = new ShortestVertex( ID++, 4 );
+    /**
+     * Run Dijkstra's to compute all shortest paths starting at the starting vertex s.
+     *
+     * Note that all weights in the graph g, including s, must be non-negative.
+     * For negative weighted single-resource shortest path, use BellmanFord's.
+     *
+     * To retrieve the minimum weight from s to a node in the graph g, just use {@link Vertex#shortestWeight}.
+     * To get the shortest path from s to a node in the graph g, just use {@link Node#getPath()}
+     *
+     * @param s starting vertex.
+     * @param g Graph g containing vertices to calculate
+     *          the shortest weighted path starting at the starting vertex.
+     */
 
-        vertices.add( vertex1 );
-        vertices.add( vertex2 );
-        vertices.add( vertex3 );
-        vertices.add( vertex4 );
+    public static<V extends Vertex>
+    void dijkstra( V s, Graph<V> g ) {
+        if ( !g.vertices.contains( s ) )
+            throw new IllegalArgumentException( "Starting vertex is not in the graph." );
 
-        while ( !vertices.isEmpty() ) {
-            ShortestVertex vertex = vertices.poll();
-            System.out.print( vertex );
-            System.out.print( " | " + vertex.currentShortestDistance );
-            System.out.println();
+        // 1. Let H = V – {s};
+        final Comparator<V> c = ( v1, v2 ) -> -Long.compare( v1.shortestWeight, v2.shortestWeight );
+
+        // 2. For every vertex v do
+        g.forEach( v -> {
+            // 3. dist[v] = ∞, parent[v] = null
+            v.shortestWeight = Long.MAX_VALUE;
+            v.parent = null;
+        } );
+        // 4. dist[s] = 0, parent[s] = none
+        s.shortestWeight = 0;
+        // 5. Update (s)
+
+        MyPriorityQueue<V> Q = new MyPriorityQueue<>( c );
+        g.forEach( Q::add );
+        // 6. For i = 1 to n - 1 do
+        while ( !Q.isEmpty() ) {
+            // 7. u = extract vertex from H of smallest weight
+            V v = Q.poll();
+
+            // 8. Update(u)
+            update( v );
+
+            // rearrange elements in the queue after updating.
+            MyPriorityQueue<V> q = new MyPriorityQueue<>( c );
+            Q.forEach( q::add );
+            Q = q;
         }
 
+        // 9. Return dist[]
+        // This information is stored in each vertex.
+    }
+
+    private static<V extends Vertex>
+    void update( V v ) {
+        // 1. For every neighbor n of v (such that n in H)
+        for ( int i = 0; i < v.neighbours.size(); i++ ) {
+            Vertex n = v.neighbours.get( i );
+
+            assert v.weights.get( i ) >= 0;
+            // 2. If dist[n] > dist[v] + w(n,v) then
+            if ( n.shortestWeight > v.shortestWeight + v.weights.get( i ) ) {
+                // 3. dist[n] = dist[v] + w(n,v)
+                n.shortestWeight = v.shortestWeight + v.weights.get( i );
+                // 4. parent[n] = v
+                n.parent = v;
+            }
+        }
     }
 }

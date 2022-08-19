@@ -148,7 +148,7 @@ public final class PointLocation {
         // 1. Determine a bounding box R that contains all segments of S,
         // and initialize the trapezoidal map structure T and search structure D for it.
         // get the bounding box R and compute the map.
-        BoundingBox b = BoundingBox.getBoundingBox( points, BoundingBox.OFFSET );
+        BoundingBox b = BoundingBox.getBox( points, BoundingBox.OFFSET );
 
         // 2. Compute a random permutation s1, s2, . . . , sn of the elements of S.
         MyCollections.randomPermutation( S );

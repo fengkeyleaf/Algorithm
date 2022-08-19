@@ -13,7 +13,7 @@ package com.fengkeyleaf.util.geom;
  */
 
 /**
- * interface to define intersect method for shape.
+ * Interface to define intersect method for shape.
  *
  * @author Xiaoyu Tongyang, or call me sora for short
  * @see <a href="https://fengkeyleaf.com">person website</a>
@@ -21,5 +21,13 @@ package com.fengkeyleaf.util.geom;
  */
 
 public interface Intersection {
+
+    /**
+     * Get intersection points with two shapes.
+     *
+     * @param s other shape to get the intersections.
+     * @return [ intersection points ], [] if no intersections.
+     */
+
     Vector[] intersect( Intersection s );
 }

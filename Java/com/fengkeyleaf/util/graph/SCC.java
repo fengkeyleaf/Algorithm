@@ -49,6 +49,7 @@ public class SCC extends Graph<UnionFindVertex> {
      *                  false, on the reversed one
      * */
 
+    // FIXME: 7/28/2022 use mappingID
     public void findSCCs( boolean goForward ) {
         explored = new boolean[ vertices.size() + 1 ];
         if ( !goForward ) changeIteratedVertices();
@@ -89,7 +90,7 @@ public class SCC extends Graph<UnionFindVertex> {
         // and also every vertex is merged only once,
         // so the total cost for this union operation is O(n)
         // which is different from the union operation for MST
-        UnionFind.doUnion( leader.group, aVertex.group );
+        leader.group.doUnion( aVertex.group );
     }
 
     /**
@@ -158,7 +159,7 @@ public class SCC extends Graph<UnionFindVertex> {
             for ( Vertex member : vertex1.group.vertices ) {
                 for ( Vertex neighbour : member.neighbours ) {
                     // use Union-find to see if two vertex belongs to two different SCCs
-                    if ( !UnionFind.isSameUnion( vertex1, neighbour ) ) {
+                    if ( !vertex1.isSameUnion( neighbour ) ) {
                         isolated = false;
                         buildingGraph( newIDs[ vertex1.ID ],
                                 newIDs[ neighbour.leader.ID ], vertices);

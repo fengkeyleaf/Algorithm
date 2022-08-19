@@ -26,7 +26,19 @@ package com.fengkeyleaf.util.graph;
  * @since  1.0
  */
 
+// TODO: 7/30/2022 use LinkedList;
 public class UnionFind extends Graph<Vertex> {
+
+    /**
+     * Constructs to create a union find.
+     *
+     * This constructor hss the following two properties:
+     * 1) leader of this union find will be the vertex v.
+     * 2) leader of the vertex will be itself.
+     *
+     * @param v vertex assigned as the leader for this union find.
+     */
+
     public UnionFind( Vertex v ) {
         add( v );
         v.leader = v;
@@ -37,22 +49,21 @@ public class UnionFind extends Graph<Vertex> {
      * add all vertices of a UnionFind(aUnionFind2) into the other(aUnionFind1)
      * */
 
-    static
-    void doUnion( UnionFind u1, UnionFind u2 ) {
-        assert !u1.isEmpty();
-        assert u1.size() >= u2.size();
+    void doUnion( UnionFind u ) {
+        assert !isEmpty();
+        assert size() >= u.size();
 
-        if ( u1 == u2 ) return;
+        if ( this == u ) return;
 
-        final Vertex leader = u1.vertices.get( 0 ).leader;
+        final Vertex leader = vertices.get( 0 ).leader;
         // reset the leader and the group
-        u2.vertices.forEach( v -> {
+        u.vertices.forEach( v -> {
             v.leader = leader;
-            v.group = u1;
+            v.group = this;
         } );
 
         // merge. Less efficient for this operation with ArrayList
-        u1.vertices.addAll( u2.vertices );
+        vertices.addAll( u.vertices );
     }
 
     /**
@@ -60,27 +71,34 @@ public class UnionFind extends Graph<Vertex> {
      * we will merge the smaller one
      * */
 
-    static
-    UnionFind union( UnionFind u1, UnionFind u2 ) {
-        if ( u1.size() < u2.size() ) {
-            doUnion( u2, u1 );
-            return u2;
+    UnionFind union( UnionFind u ) {
+        if ( size() < u.size() ) {
+            u.doUnion( this );
+            return u;
         }
 
-        doUnion( u1, u2 );
-        return u1;
+        doUnion( u );
+        return this;
     }
 
     /**
      * overlord with Vertex:
      * public static UnionFind union
+     *
+     * @deprecated move into {@link Vertex#union(Vertex)}
      * */
 
+    @Deprecated
     public static
     UnionFind union( Vertex v1, Vertex v2 ) {
-        return union( v1.group, v2.group );
+        return v1.group.union( v2.group );
     }
 
+    /**
+     * @deprecated move into {@link Edge#union(Edge)} )}
+     * */
+
+    @Deprecated
     public static
     UnionFind union( Edge edge ) {
         return union( edge.startVertex, edge.endVertex );
@@ -88,8 +106,11 @@ public class UnionFind extends Graph<Vertex> {
 
     /**
      * return the union leader if merge the give edge
+     *
+     * @deprecated move into {@link Edge#getLeader()}
      * */
 
+    @Deprecated
     public static
     Vertex getLeader( Edge edge ) {
         Vertex leaderStart = edge.startVertex.leader;
@@ -103,8 +124,11 @@ public class UnionFind extends Graph<Vertex> {
 
     /**
      * determine whether two vertex are in the same group
+     *
+     * @deprecated move into {@link Vertex#isSameUnion(Vertex)}
      * */
 
+    @Deprecated
     public static
     boolean isSameUnion( Vertex v1, Vertex v2 ) {
         assert ( v1.leader != null && v2.leader != null );

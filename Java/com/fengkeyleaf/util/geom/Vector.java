@@ -12,6 +12,7 @@ package com.fengkeyleaf.util.geom;
  * JDK: 15
  */
 
+import com.fengkeyleaf.lang.LinearTwoUnknowns;
 import com.fengkeyleaf.lang.MyMath;
 import com.fengkeyleaf.util.Node;
 
@@ -206,14 +207,25 @@ public class Vector extends Node {
         return equalsXAndY( vector.x, vector.y );
     }
 
+    /**
+     * The two vectors ( this -> p1 and this -> p2 ) are the same direction?
+     */
+
     boolean isSameDirection( Vector p1, Vector p2 ) {
-        if ( !MyMath.isEqualZero( Triangles.areaTwo( this, p1, p2 ) ) )
+        // vector this -> p1 and this -> p2
+        // is different direction
+        // if p1 is not equal to p2,
+        // and they three are not on the same line.
+        if ( !p1.equals( p2 ) &&
+                !MyMath.isEqualZero( Triangles.areaTwo( this, p1, p2 ) ) )
             return false;
 
+        // sort p1 and p2 in angular order with this as the center.
         List<Vector> P = new ArrayList<>( 2 );
         P.add( p1 );
         P.add( p2 );
 
+        // are the same direction if p1 and p2 are in the angular set.
         List<List<Vector>> V = Vectors.sortByAngle( this, P );
         for ( List<Vector> L : V )
             if ( L.size() == 2 )
@@ -221,6 +233,42 @@ public class Vector extends Node {
 
         return false;
     }
+
+    //-------------------------------------------------------
+    // Duality
+    //-------------------------------------------------------
+    // Reference resource: http://www.cs.uu.nl/geobook/
+
+    /**
+     * Transform this point in the primary plane into the dual plane, point to line.
+     *
+     * p  := ( px, py )
+     * p∗ := ( y = px * x − py )
+     *
+     * @return a line representing this point in the dual plane.
+     */
+
+    public Line toDuality() {
+        return new Line( new LinearTwoUnknowns( -x, 1, -y ) );
+    }
+
+    /**
+     * Transform this point in the dual plane into the primary plane, point to line.
+     *
+     * l  :  y = mx + b
+     * l* := ( m, −b )
+     *
+     * @return a line representing this point in the dual plane.
+     */
+
+    public Line fromDuality() {
+        assert !new Line( new LinearTwoUnknowns( -x, 1, -y ) ).isVertical;
+        return new Line( new LinearTwoUnknowns( -x, 1, -y ) );
+    }
+
+    //-------------------------------------------------------
+    // equals & toString.
+    //-------------------------------------------------------
 
     @Override
     public boolean equals( Object o ) {
@@ -243,6 +291,6 @@ public class Vector extends Node {
 
     @Override
     public String toString() {
-        return toStringNormal();
+        return toStringNormalWithoutID();
     }
 }

@@ -10,6 +10,8 @@ package com.fengkeyleaf.util.graph;
  *     $0.0$
  */
 
+import java.util.List;
+
 /**
  * Data structure of an Edge
  *
@@ -19,25 +21,57 @@ package com.fengkeyleaf.util.graph;
  */
 
 public class Edge implements Comparable<Edge> {
+    public int mappingID = -1;
     // distance/weight between
-    public final long distance;
     // the starting vertex and the ending vertex
-    public final Vertex startVertex;
-    public final Vertex endVertex;
+    long distance;
+    final Vertex startVertex;
+    final Vertex endVertex;
 
     /**
      * constructs to create an instance of Edge
      * */
 
-    public Edge( long distance,
-                 Vertex startVertex, Vertex endVertex ) {
-        this.distance = distance;
-        this.startVertex = startVertex;
-        this.endVertex = endVertex;
+    Edge( long d, Vertex s, Vertex e ) {
+        this.distance = d;
+        this.startVertex = s;
+        this.endVertex = e;
     }
 
-    public boolean formCycle() {
-        return UnionFind.isSameUnion( startVertex, endVertex );
+    Edge( Vertex s, Vertex e ) {
+        this.startVertex = s;
+        this.endVertex = e;
+    }
+
+    public static<E extends Edge>
+    void resetMappingID( List<E> E ) {
+        E.forEach( e -> e.mappingID = -1 );
+    }
+
+    //-------------------------------------------------------
+    // union find operations
+    //-------------------------------------------------------
+
+    boolean formCycle() {
+        return startVertex.isSameUnion( endVertex );
+    }
+
+    /**
+     * return the union leader if merge the give edge
+     * */
+
+    Vertex getLeader() {
+        Vertex leaderStart = startVertex.leader;
+        Vertex leaderEnd = endVertex.leader;
+        if ( leaderStart.group.size() <
+                leaderEnd.group.size() )
+            return leaderEnd;
+
+        return leaderStart;
+    }
+
+    UnionFind union( Edge edge ) {
+        return edge.startVertex.union( edge.endVertex );
     }
 
     /**
@@ -52,8 +86,8 @@ public class Edge implements Comparable<Edge> {
     @Override
     public String toString() {
         return  distance +
-                ": [ " + startVertex.ID +
-                ", " + endVertex.ID +
+                ": [ " + startVertex +
+                ", " + endVertex +
                 " ]";
     }
 }

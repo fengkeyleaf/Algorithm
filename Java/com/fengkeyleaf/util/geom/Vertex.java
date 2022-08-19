@@ -48,6 +48,10 @@ public class Vertex extends Vector {
         this( point.x, point.y );
     }
 
+    /**
+     * Copy constructor.
+     */
+
     Vertex( Vertex v ) {
         super( v.x, v.y );
 
@@ -55,24 +59,6 @@ public class Vertex extends Vector {
         master = v;
 
         incidentEdge = v.incidentEdge.servant == null ? new HalfEdge( v.incidentEdge ) : v.incidentEdge.servant;
-    }
-
-    /**
-     * get twin edges with this vertex and v as their origins.
-     *
-     * this ----------------------------->
-     *                   ^
-     *                   |
-     *                   v
-     *      <---------------------------- v
-     *
-     * @return half-edge with this vertex as origin.
-     * */
-
-    public HalfEdge getEdges( Vertex v ) {
-        HalfEdge e = new HalfEdge( this );
-        e.setTwins( new HalfEdge( v ) );
-        return e;
     }
 
     /**
@@ -93,6 +79,28 @@ public class Vertex extends Vector {
         }
 
         return false;
+    }
+
+    //----------------------------------------------------------
+    // Get edges.
+    //----------------------------------------------------------
+
+    /**
+     * Get twin edges with this vertex and v as their origins.
+     *
+     * this ----------------------------->
+     *                   ^
+     *                   |
+     *                   v
+     *      <---------------------------- v
+     *
+     * @return half-edge with this vertex as origin.
+     * */
+
+    public HalfEdge getEdges( Vertex v ) {
+        HalfEdge e = new HalfEdge( this );
+        e.setTwins( new HalfEdge( v ) );
+        return e;
     }
 
     List<HalfEdge> allIncidentEdges( boolean isOutgoing, boolean isIncoming ) {
@@ -191,6 +199,9 @@ public class Vertex extends Vector {
         return null;
     }
 
+    //----------------------------------------------------------
+    // Connection.
+    //----------------------------------------------------------
 
     /**
      * find the first ClockWise Edge
@@ -297,9 +308,12 @@ public class Vertex extends Vector {
      * re-connect half-edges incident to this vertex.
      *
      * @param E half-edges in clock-wise order.
+     *          A pair of half-edges only need to be included one of them, not both.
      */
 
     void connect( List<HalfEdge> E ) {
+        assert check( E );
+
         for ( int i = 0; i < E.size(); i++ ) {
             int prev = i == 0 ? E.size() - 1 : i - 1;
             int next = i == E.size() - 1 ? 0 : i + 1;
@@ -310,6 +324,18 @@ public class Vertex extends Vector {
         HalfEdge e = E.get( 0 );
         incidentEdge = e.origin == this || e.origin.equalsXAndY( this ) ? e : e.twin;
         assert incidentEdge.origin.equalsXAndY( this );
+    }
+
+    private static
+    boolean check( List<HalfEdge> E ) {
+        // Cannot include e's twin in the edge set E.
+        for ( HalfEdge e : E ) {
+            for ( HalfEdge t : E ) {
+                assert e.twin != t;
+            }
+        }
+
+        return true;
     }
 
     private void connect( HalfEdge prev, HalfEdge cur,
@@ -331,6 +357,10 @@ public class Vertex extends Vector {
         assert !cur.origin.equalsXAndY( this ) : this + " | " + cur.twin;
         ( next.origin.equalsXAndY( this ) ? next : next.twin ).connect( cur );
     }
+
+    //----------------------------------------------------------
+    // Reset
+    //----------------------------------------------------------
 
     /**
      * reset the origin of each incident outgoing half-edges to this vertex.

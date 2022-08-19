@@ -24,16 +24,17 @@ package com.fengkeyleaf.util;
 public final class Bitmask {
 
     /**
-     * add a mask to a status
+     * Add a mask to a status
+     *
      * for example:
      * a status: 0011
      * add mask: 1000
      * the status after adding: 1011
-     * <p>
-     * 0011
+     *
+     *   0011
      * | 1000
      * ------
-     * 1011
+     *   1011
      */
 
     public static
@@ -42,16 +43,17 @@ public final class Bitmask {
     }
 
     /**
-     * remove a mask from a status
+     * Remove a mask from a status
+     *
      * for example:
      * a status: 0011
      * add city: 0001
      * the status after removing: 0001
-     * <p>
-     * 0011
+     *
+     *   0011
      * & 0001
      * ------
-     * 0001
+     *   0001
      */
 
     public static
@@ -60,57 +62,58 @@ public final class Bitmask {
     }
 
     /**
-     * check if a status contains a mask
+     * Check if a status contains a mask
+     *
      * for example:
      * a set: 0101, maks: 0100
-     * <p>
-     * 0101
+     *
+     *   0101
      * & 0100
      * ------
-     * 0100 > 0
-     * <p>
+     *   0100 > 0
+     *
      * -> true
-     * <p>
+     *
      * a set: 0101, maks: 0010
-     * <p>
-     * 0101
+     *
+     *   0101
      * & 0010
      * ------
-     * 0000 == 0
-     * <p>
+     *   0000 == 0
+     *
      * -> false
      */
 
     public static
-    boolean contain( int status, int mask ) {
+    boolean contains( int status, int mask ) {
         return ( status & mask ) != 0;
     }
 
     /**
-     * determine whether a status is equal to another
+     * Determine whether a status is equal to another
+     *
      * for example:
      * status 1: 0011, status 2: 0011
-     * <p>
-     * 0011
+     *
+     *   0011
      * ^ 0011
      * ------
-     * 0000 == 0
-     * <p>
+     *   0000 == 0
+     *
      * -> true
-     * <p>
-     * <p>
+     *
      * status 1: 0010, status 2: 0011
-     * <p>
-     * 0010
+     *
+     *   0010
      * ^ 0011
      * ------
-     * 0001 > 0
-     * <p>
+     *   0001 > 0
+     *
      * -> false
      */
 
     public static
-    boolean containAll( int status1, int status2 ) {
-        return ( status1 ^ status2 ) == 0;
+    boolean containsAll( int s1, int s2 ) {
+        return ( s1 ^ s2 ) == 0;
     }
 }

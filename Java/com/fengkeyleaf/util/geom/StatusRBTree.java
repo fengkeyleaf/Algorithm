@@ -80,7 +80,7 @@ class StatusRBTree
 
     /**
      * store shapes with the same point into the node,
-     * they are usually overlapping segmnts.
+     * they are usually overlapping segments.
      * */
 
     private void updateSameKey( RBTreeNode<Vector, Event> root, Event val ) {

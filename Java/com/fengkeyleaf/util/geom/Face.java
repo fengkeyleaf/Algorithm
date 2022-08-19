@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Data structure of Face of DCEL
+ * Data structure of DCEL Face
  *
  * @author Xiaoyu Tongyang, or call me sora for short
  * @see <a href="https://fengkeyleaf.com">person website</a>
@@ -148,7 +148,7 @@ public class Face {
      *
      * Time Complexity: O( n ), where n is the number of convex hull vertex.
      *
-     * @param  p point to be tested to see if it's inside the convex hull, {@code c}.
+     * @param  p point to be tested to see if it's inside the convex hull c.
      * @return true, p is inside c; false, not inside.
      */
 
@@ -175,7 +175,7 @@ public class Face {
      *
      * Time Complexity: O( n ), where n is the number of convex hull vertex.
      *
-     * @param  p point to be tested to see if it's on the convex hull, {@code c}.
+     * @param  p point to be tested to see if it's on the convex hull c.
      * @return true, p lies on c; false, not on c.
      */
 
@@ -200,11 +200,16 @@ public class Face {
      * This method will triangulate this polygon first and then test to see
      * if the point p is inside one of the triangles.
      *
+     * Note that only simple polygon is supported due to the restrictions from
+     * the {@link MonotonePolygons#makeMonotone(Face)} and {@link Triangulation#triangulate(List)}
+     *
      * Time Complexity: O( nlogn ), where n is the number of convex hull vertex.
      * */
 
     public boolean isInsidePolygon( Vector p ) {
-        List<List<Face>> T = Triangulation.triangulate( MonotonePolygons.makeMonotone( copy() ) );
+        List<List<Face>> T = Triangulation.triangulate( MonotonePolygons.makeMonotone(
+                copy().innerComponents.get( 0 ).twin.incidentFace )
+        );
         for ( List<Face> F : T )
             for ( Face f : F )
                 if ( !f.isInsideConvexHull( p ) )
@@ -218,10 +223,15 @@ public class Face {
      *
      * This method will triangulate this polygon first and then test to see
      * if the point p is inside one of the triangles.
+     *
+     * Note that only simple polygon is supported due to the restrictions from
+     * the {@link MonotonePolygons#makeMonotone(Face)} and {@link Triangulation#triangulate(List)}
      * */
 
     public boolean isOnPolygon( Vector p ) {
-        List<List<Face>> T = Triangulation.triangulate( MonotonePolygons.makeMonotone( copy() ) );
+        List<List<Face>> T = Triangulation.triangulate( MonotonePolygons.makeMonotone(
+                copy().innerComponents.get( 0 ).twin.incidentFace )
+        );
         for ( List<Face> F : T )
             for ( Face f : F )
                 if ( !f.isOnConvexHull( p ) )
@@ -231,10 +241,10 @@ public class Face {
     }
 
     /**
-     * copy this face, but this only copies the outer boundary cycle,
+     * Copy this face, but this only copies the outer boundary cycle,
      * also incident to the infinite face. No masters generated.
      *
-     * @return copy of this face.
+     * @return the copy of this face, but infinite face returned.
      */
 
     Face copy() {
@@ -242,7 +252,7 @@ public class Face {
         List<Vertex> V = new ArrayList<>( P.size() );
         P.forEach( v -> V.add( new Vertex( ( Vector ) v ) ) );
 
-        return Polygons.getDCEL( V )[ 1 ];
+        return Polygons.getDCEL( V )[ 0 ];
     }
 
     @Override

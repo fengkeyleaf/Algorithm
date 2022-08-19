@@ -573,7 +573,7 @@ public class KdTree extends AbstractTree<Vector> {
     }
 
     private void visualization() {
-        BoundingBox b = BoundingBox.getBoundingBox( P, BoundingBox.OFFSET );
+        BoundingBox b = BoundingBox.getBox( P, BoundingBox.OFFSET );
 
         // drawing data for the kd-tree.
         List<Line> L = new ArrayList<>( P.size() );

@@ -3,13 +3,14 @@ package com.fengkeyleaf.util;
 /*
  * MyArrays.java
  *
+ * JDK: 16
+ *
  * Version:
  *     $1.0$
  *
  * Revisions:
  *     $1.0$
  *
- * JDK: 16
  */
 
 

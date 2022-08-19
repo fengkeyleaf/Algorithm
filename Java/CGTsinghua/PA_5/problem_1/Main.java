@@ -21,7 +21,7 @@ import com.fengkeyleaf.util.geom.Vector;
 import java.util.Scanner;
 
 /**
- * <a href="https://dsa.cs.tsinghua.edu.cn/oj/problem.shtml?id=1924">CG2017 PA5-1 Dynamic Convex Hull</a>
+ * <a href="https://dsa.cs.tsinghua.edu.cn/oj/problem.shtml?id=1924">CG2017 PA5-1 Dynamic Convex Hull</a><br>
  *
  * Convex hull algorithm: Graham Scan.
  * BBST: Red black tree.
@@ -30,7 +30,7 @@ import java.util.Scanner;
  * @see <a href="https://fengkeyleaf.com">person website</a>
  */
 
-class Main extends MainCG
+final class Main extends MainCG
         implements ProcessingFile {
 
     private final ConvexHull c = new ConvexHull();

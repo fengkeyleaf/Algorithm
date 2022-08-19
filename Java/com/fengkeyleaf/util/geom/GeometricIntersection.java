@@ -13,7 +13,9 @@ package com.fengkeyleaf.util.geom;
  *     $1.0 parabola and parabola on 12/31/2021$
  */
 
+import com.fengkeyleaf.GUI.geom.DrawingProgram;
 import com.fengkeyleaf.lang.MyMath;
+import com.fengkeyleaf.util.MyCollections;
 
 import java.beans.ConstructorProperties;
 import java.util.*;
@@ -44,10 +46,11 @@ public class GeometricIntersection {
                 if ( i == j ) continue;
 
                 Vector[] intersections = S.get( i ).intersect( S.get( j ) );
-                if ( intersections == null ) continue;
+//                if ( intersections == null ) continue;
 
                 for ( Vector p : intersections ) {
-                    if ( p != null ) I.add( p );
+                    assert p != null;
+                    I.add( p );
                 }
             }
         }
@@ -312,6 +315,11 @@ public class GeometricIntersection {
     Predicate<EventPoint2D> p = EventPoint2D::isRightIntersection;
     // vertically or horizontally sweeping.
     boolean isVerticalSweepLine = true;
+    Checker c;
+
+    {
+        assert ( c = new Checker() ) != null;
+    }
 
     @ConstructorProperties( { "Conditions", "isVerticalSweepLine" } )
     public GeometricIntersection( Predicate<EventPoint2D> p,
@@ -394,7 +402,8 @@ public class GeometricIntersection {
      */
 
     EventPoint2D reportIntersection( List<EventPoint2D> L,
-                                     List<EventPoint2D> R, List<EventPoint2D> I ) {
+                                     List<EventPoint2D> R,
+                                     List<EventPoint2D> I ) {
 
         EventPoint2D i = new EventPoint2D( e.x, e.y,
                 null, false );
@@ -451,8 +460,10 @@ public class GeometricIntersection {
             statusRBTree.put( status );
         }
 
-        // if statues only have one vertical line,
-        // should return maxY = y of left endpoint of this vertical line
+        // if statues only have special segments, vertical or horizontal,
+        // should return the x or y-coor just after the current event point, e.
+        // This guarantees that all special segemnts come after other normal segments,
+        // and will not trace back to the point before the current event point e.
         if ( !specicals.isEmpty() && isOnlySpecial ) {
             maxCoor = Math.max( maxCoor, isVerticalSweepLine ? e.y : e.x );
         }
@@ -602,7 +613,7 @@ public class GeometricIntersection {
                 // and let C(p) denote the subset of segments found
                 // that contain p in their interior.
                 else {
-                    assert s.ifOnThisShape( e ) : point + " " + e;
+                    assert s.ifOnThisShape( e ) : point + " || " + e;
                     interiors.add( new EventPoint2D( point, s, false ) );
                 }
             }
@@ -644,6 +655,75 @@ public class GeometricIntersection {
             handleEventPoint();
         }
 
+        assert c.check( intersections, S );
         return intersections;
+    }
+
+    //-------------------------------------------------------
+    // Class checker.
+    //-------------------------------------------------------
+
+    /**
+     * Class to check the integrity of Segment intersection algorithm.
+     *
+     * Note that code in this class won't have any effects on the main algorithm.
+     */
+
+    static class Checker {
+        private static final String title = "Visualization debugger for geometric intersection";
+
+        boolean check( List<Vector> intersections, List<IntersectionShape> S ) {
+            visualization( intersections, S );
+            verifyByBruteForce( intersections, S );
+
+            return true;
+        }
+
+        static
+        void visualization( List<Vector> intersections,
+                            List<IntersectionShape> S ) {
+
+            List<Vector> P = new ArrayList<>( intersections );
+            List<Line> L = new ArrayList<>();
+            List<Circle> C = new ArrayList<>();
+            // collect drawing data.
+            S.forEach( s -> {
+                if ( s instanceof Line ) {
+                    L.add( ( Line ) s );
+                    P.add( ( ( Line ) s ).startPoint );
+                    P.add( ( ( Line ) s ).endPoint );
+                    return;
+                }
+
+                assert s instanceof Circle;
+                C.add( ( Circle ) s );
+                P.addAll( Arrays.asList( ( ( Circle ) s ).extremes ) );
+            } );
+
+            BoundingBox b = BoundingBox.getBox( P, BoundingBox.OFFSET / 2 );
+            if ( b == null ) return;
+
+            // drawing.
+            DrawingProgram program = new DrawingProgram( title, b.width, b.height );
+            program.drawSegments( DrawingProgram.NORMAL_POLYGON_COLOR, L );
+            program.drawCircles( DrawingProgram.NORMAL_POLYGON_COLOR, C );
+            program.drawPoints( DrawingProgram.INTERSECTION_COLOR, intersections );
+
+            program.initialize();
+        }
+
+        void verifyByBruteForce( List<Vector> intersections,
+                                 List<IntersectionShape> S ) {
+
+            List<Vector> I = bruteForce( S );
+            List<Vector> C = new ArrayList<>( intersections );
+
+            List<Vector> differences = MyCollections.compare( I, C, Vectors::sortByX );
+
+            if ( !differences.isEmpty() )
+                System.out.println( "Diff: " + differences );
+
+            assert intersections.size() == I.size() : intersections.size() + " | " + I.size();
+        }
     }
 }

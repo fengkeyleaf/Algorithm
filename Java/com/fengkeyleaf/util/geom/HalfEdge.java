@@ -89,6 +89,10 @@ public class HalfEdge {
         twin = e.twin.servant == null ? new HalfEdge( e.twin ) : e.twin.servant;
     }
 
+    protected HalfEdge() {
+        this.ID = IDStatic++;
+    }
+
     Ray getRay( Vector rayPoint ) {
         return new Ray( origin, rayPoint );
     }
@@ -238,6 +242,7 @@ public class HalfEdge {
      * */
 
     public Vertex split( Vertex split ) {
+        assert next != null : this;
         assert next.origin == twin.origin : this + " | " + next + " | " + twin;
 
         if ( split.equals( origin ) ||
@@ -245,7 +250,7 @@ public class HalfEdge {
         if ( split.equals( next.origin ) ||
                 split.isAlreadyConnected( next.origin ) ) return next.origin;
 
-        assert getSegment().isOnThisSegment( split ) : origin;
+        assert getSegment().isOnThisSegment( split ) : this + " | " + split;
 
         // cannot remove this line,
         // since this.twin will not be the origin one at the very beginning.

@@ -43,7 +43,7 @@ public final class MST {
 
         // merge the first edge and get the leader
         // not actually do the merging process
-        Vertex unionLeader = UnionFind.getLeader( edge1 );
+        Vertex unionLeader = edge1.getLeader();
         edge1.startVertex.leader = unionLeader;
         edge1.endVertex.leader = unionLeader;
 

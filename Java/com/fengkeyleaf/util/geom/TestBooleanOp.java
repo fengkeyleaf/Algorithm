@@ -144,7 +144,7 @@ final class TestBooleanOp {
         Face[] faces = TestMapOverlay.testMapOverlay9();
 
         int idx1 = 1, idx2 = 0;
-//        idx1 = 0; idx2 = 1;
+        idx1 = 0; idx2 = 1;
         switch ( t ) {
             case INTERSECTION -> BooleanOperations.intersection( faces[ idx1 ], faces[ idx2 ] );
             case UNION -> BooleanOperations.union( faces[ idx1 ], faces[ idx2 ] );
@@ -280,6 +280,34 @@ final class TestBooleanOp {
     }
 
     static
+    void testBoolean19( Type t ) {
+        Face[] faces = TestMapOverlay.testMapOverlay19();
+
+        int idx1 = 1, idx2 = 0;
+        idx1 = 0; idx2 = 1;
+        switch ( t ) {
+            case INTERSECTION -> BooleanOperations.intersection( faces[ idx1 ], faces[ idx2 ] );
+            case UNION -> BooleanOperations.union( faces[ idx1 ], faces[ idx2 ] );
+            case DIFFERENCE -> BooleanOperations.difference( faces[ idx1 ], faces[ idx2 ] );
+            default -> { assert false; }
+        }
+    }
+
+    static
+    void testBoolean20( Type t ) {
+        Face[] faces = TestMapOverlay.testMapOverlay20();
+
+        int idx1 = 1, idx2 = 0;
+        idx1 = 0; idx2 = 1;
+        switch ( t ) {
+            case INTERSECTION -> BooleanOperations.intersection( faces[ idx1 ], faces[ idx2 ] );
+            case UNION -> BooleanOperations.union( faces[ idx1 ], faces[ idx2 ] );
+            case DIFFERENCE -> BooleanOperations.difference( faces[ idx1 ], faces[ idx2 ] );
+            default -> { assert false; }
+        }
+    }
+
+    static
     void test1() {
 //        testBoolean1( Type.INTERSECTION );
         testBoolean1( Type.UNION );
@@ -337,9 +365,9 @@ final class TestBooleanOp {
 
     static
     void test9() {
-//        testBoolean9( Type.INTERSECTION );
+        testBoolean9( Type.INTERSECTION );
 //        testBoolean9( Type.UNION );
-        testBoolean9( Type.DIFFERENCE );
+//        testBoolean9( Type.DIFFERENCE );
     }
 
     static
@@ -405,6 +433,20 @@ final class TestBooleanOp {
 //        testBoolean18( Type.DIFFERENCE );
     }
 
+    static
+    void test19() {
+//        testBoolean19( Type.INTERSECTION );
+//        testBoolean19( Type.UNION );
+        testBoolean19( Type.DIFFERENCE );
+    }
+
+    static
+    void test20() {
+        testBoolean20( Type.INTERSECTION );
+//        testBoolean20( Type.UNION );
+//        testBoolean20( Type.DIFFERENCE );
+    }
+
     public static
     void main( String[] args ) {
 //        test1();
@@ -424,6 +466,8 @@ final class TestBooleanOp {
 //        test15();
 //        test16();
 //        test17();
-        test18();
+//        test18();
+//        test19();
+        test20();
     }
 }

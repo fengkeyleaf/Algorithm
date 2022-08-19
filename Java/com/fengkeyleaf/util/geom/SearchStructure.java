@@ -41,6 +41,8 @@ public class SearchStructure extends DAG<SearchVertex> {
     private final List<SearchVertex> leaves = new ArrayList<>();
 
     SearchStructure( SearchVertex R ) {
+        super();
+
         root = R;
 
         try {

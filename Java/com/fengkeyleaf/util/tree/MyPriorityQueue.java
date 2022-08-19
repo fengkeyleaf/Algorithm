@@ -14,10 +14,12 @@ package com.fengkeyleaf.util.tree;
  */
 
 import com.fengkeyleaf.util.CompareElement;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 
 /**
  * Data structure of a heap with generics,
@@ -28,7 +30,10 @@ import java.util.Comparator;
  * @since  1.0
  */
 
-public class MyPriorityQueue<E> extends PerfectBinaryTree<E> {
+// https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/PriorityQueue.html
+public class MyPriorityQueue<E>
+        extends PerfectBinaryTree<E> implements Iterable<E> {
+
     // comparator to compare element, E
     protected final Comparator<E> comparator;
 
@@ -120,6 +125,14 @@ public class MyPriorityQueue<E> extends PerfectBinaryTree<E> {
     }
 
     /**
+     * Inserts the specified element into this priority queue.
+     */
+
+    public boolean add( E data ) {
+        return insert( data );
+    }
+
+    /**
      * bubble down when a parent is less than its children with extracting Max，
      * or when a parent is greater than its children with extracting Min
      * */
@@ -167,7 +180,9 @@ public class MyPriorityQueue<E> extends PerfectBinaryTree<E> {
     }
 
     /**
-     * delete an element from this heap
+     * delete an element with the highest priority from this heap.
+     *
+     * @return the head of this queue, or null if this queue is empty
      * */
 
     public E delete() {
@@ -180,80 +195,24 @@ public class MyPriorityQueue<E> extends PerfectBinaryTree<E> {
         return removedData;
     }
 
+    /**
+     * Retrieves and removes the head of this queue, or returns null if this queue is empty.
+     *
+     * @return the head of this queue, or null if this queue is empty
+     */
+
+    public E poll() {
+        return delete();
+    }
+
     public void addAll( Collection<E> list ) {
         for ( E element : list )
             insert( element );
     }
 
-    /**
-     * delete all elements in a heap, for testing purpose
-     * */
-
-    public static<T extends Comparable<T>>
-    void deleteNodes( MyPriorityQueue<T> aHeap ) {
-        System.out.print("Deleting order: ");
-        while ( !aHeap.isEmpty() ) {
-            System.out.printf( "%s -> ", aHeap.delete() );
-//            System.out.println( aHeap );
-        }
-        System.out.println();
-    }
-
-    /**
-     * test MyPriorityQueue Class
-     * */
-
-    public static
-    void main(String[] args) {
-        int[] arr = { 1, 2 ,5, 10 };
-
-        System.out.println( "Extract Max------------>" );
-        MyPriorityQueue<Integer> aHeapMax = new MyPriorityQueue<>();
-        for ( int num : arr )
-            aHeapMax.insert( num );
-
-        System.out.println( aHeapMax );
-        deleteNodes( aHeapMax );
-        aHeapMax.delete();
-        System.out.println( aHeapMax );
-
-        int[] arr1 = { 3, 7, 11 };
-//        int[] arr1 = { 3, 7, 11, 15, 17, 20, 9, 15, 8, 16 };
-//        int[] arr1 = { 3, 7, 11, 15, 17, 20, 9, 15, 8, 16, 3, 3 };
-//        int[] arr1 = { 1, 2, 3, 4 };
-        for ( int num : arr )
-            aHeapMax.insert( num );
-        for ( int num : arr1 )
-            aHeapMax.insert( num );
-
-        System.out.println( aHeapMax );
-        deleteNodes( aHeapMax );
-        aHeapMax.delete();
-        System.out.println( aHeapMax );
-
-        System.out.println("\nExtract Min------------>");
-        MyPriorityQueue<Integer> aHeapMin = new MyPriorityQueue<>( ( num1, num2 ) -> -Integer.compare( num1, num2 ) );
-        for ( int num : arr )
-            aHeapMin.insert( num );
-        for ( int num : arr1 )
-            aHeapMin.insert( num );
-
-        System.out.println( aHeapMin );
-        deleteNodes( aHeapMin );
-        aHeapMax.delete();
-        System.out.println( aHeapMin );
-
-        int[] arr2 = { 0, -2, -100, 200, };
-        for ( int num : arr )
-            aHeapMin.insert( num );
-        for ( int num : arr1 )
-            aHeapMin.insert( num );
-        for ( int num : arr2 )
-            aHeapMin.insert( num );
-
-        System.out.println( aHeapMin );
-        deleteNodes( aHeapMin );
-        aHeapMax.delete();
-        System.out.println( aHeapMin );
+    @NotNull
+    @Override
+    public Iterator<E> iterator() {
+        return tree.iterator();
     }
 }

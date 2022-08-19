@@ -149,7 +149,7 @@ final class TestMapOverlay {
 
 //        drawer.initialize();
 
-//        MapOverlay.compute( f1, f2 );
+        MapOverlay.compute( f1, f2 );
 //        MapOverlay.compute( f1, null );
 //        MapOverlay.compute( null, f2 );
 //        MapOverlay.compute( null, null );
@@ -447,8 +447,8 @@ final class TestMapOverlay {
 
         int size = 34;
         DrawingProgram drawer = new DrawingProgram( title, size, size );
-        drawer.drawPoly( DrawingProgram.NORMAL_POLYGON_COLOR, f1 );
-        drawer.drawPoly( DrawingProgram.NORMAL_POLYGON_COLOR, f2 );
+        drawer.drawPolyAll( DrawingProgram.NORMAL_POLYGON_COLOR, f1 );
+        drawer.drawPolyAll( DrawingProgram.NORMAL_POLYGON_COLOR, f2 );
 
         drawer.initialize();
 //        testMapOverlay( f1, f2 );
@@ -481,11 +481,11 @@ final class TestMapOverlay {
 
         int size = 34;
         DrawingProgram drawer = new DrawingProgram( title, size, size );
-        drawer.drawPoly( DrawingProgram.NORMAL_POLYGON_COLOR, f1 );
-        drawer.drawPoly( DrawingProgram.NORMAL_POLYGON_COLOR, f2 );
+        drawer.drawPolyAll( DrawingProgram.NORMAL_POLYGON_COLOR, f1 );
+        drawer.drawPolyAll( DrawingProgram.NORMAL_POLYGON_COLOR, f2 );
 
 //        drawer.initialize();
-        testMapOverlay( f1, f2 );
+//        testMapOverlay( f1, f2 );
 //        testMapOverlay( f2, f1 );
 
         return new Face[] { f1, f2 };
@@ -849,6 +849,128 @@ final class TestMapOverlay {
     }
 
     static
+    Face[] testMapOverlay19() {
+        List<Vertex> vertices = new ArrayList<>();
+        Vertex v1 = new Vertex( -5, 0 );
+        Vertex v2 = new Vertex( 5, 0 );
+        Vertex v3 = new Vertex( 5, 5 );
+
+        vertices.add( v1 );
+        vertices.add( v2 );
+        vertices.add( v3 );
+        Face f1 = Polygons.getDCEL( vertices )[ 0 ];
+
+        vertices.clear();
+        Vertex v4 = new Vertex( -5, 5 );
+
+        vertices.add( v1 );
+        vertices.add( v2 );
+        vertices.add( v4 );
+        Face f2 = Polygons.getDCEL( vertices )[ 0 ];
+
+        int size = 40;
+        DrawingProgram drawer = new DrawingProgram( title, size, size );
+        drawer.drawPolyAll( DrawingProgram.NORMAL_POLYGON_COLOR, f1 );
+        drawer.drawPolyAll( DrawingProgram.NORMAL_POLYGON_COLOR, f2 );
+
+//        drawer.initialize();
+//        MapOverlay.compute( f1, f2 );
+
+        return new Face[] { f1, f2 };
+    }
+
+    // https://www.geogebra.org/calculator/bkpbcy6u
+    static
+    Face[] testMapOverlay20() {
+        List<Vertex> vertices = new ArrayList<>();
+        Vertex v1 = new Vertex( -5, 4 );
+        v1 = new Vertex( -20, 18 );
+        Vertex v2 = new Vertex( -5, -4 );
+        v2 = new Vertex( -20, -20 );
+        Vertex v3 = new Vertex( 3, -4 );
+        v3 = new Vertex( 20 ,-20 );
+        Vertex v4 = new Vertex( 3, 1 );
+        v4 = new Vertex( 20, -2 );
+
+        vertices.add( v1 );
+        vertices.add( v2 );
+        vertices.add( v3 );
+        vertices.add( v4 );
+        Face f1 = Polygons.getDCEL( vertices )[ 0 ];
+
+        vertices.clear();
+        Vertex v5 = new Vertex( -5, 2 );
+        v5 = new Vertex( -20, 9 );
+        Vertex v6 = new Vertex( 3, 3 );
+        v6 = new Vertex( 20, 2 );
+
+        vertices.add( v5 );
+        vertices.add( v2 );
+        vertices.add( v3 );
+        vertices.add( v6 );
+        Face f2 = Polygons.getDCEL( vertices )[ 0 ];
+
+        int size = 60;
+        DrawingProgram drawer = new DrawingProgram( title, size, size );
+        drawer.drawPolyAll( DrawingProgram.NORMAL_POLYGON_COLOR, f1 );
+        drawer.drawPolyAll( DrawingProgram.NORMAL_POLYGON_COLOR, f2 );
+
+//        drawer.initialize();
+//        MapOverlay.compute( f1, f2 );
+
+        return new Face[] { f1, f2 };
+    }
+
+    static
+    Face[] testMapOverlay21() {
+        // [5000000.0|5000000.0, 416666.8333333333|5000000.0, -416666.5|-5000000.0, 5000000.0|-5000000.0]
+        // [ 5000000,5000000 | 416667,5000000 | 416667,-5000000 | 5000000,-5000000 ]
+        // [5000000.0|5000000.0, -2500002.0|5000000.0, 2499998.0|-5000000.0, 5000000.0|-5000000.0]
+        // [ 5000000,5000000, -2500002,5000000, 2499998,-5000000 | 5000000,-5000000 ]
+
+        List<Vertex> vertices = new ArrayList<>();
+        Vertex v1 = new Vertex( 5000000,5000000 );
+//        v1 = new Vertex( 5, 5 );
+        Vertex v2 = new Vertex( 416667,5000000 );
+        v2 = new Vertex( 416666.8333333333, 5000000.0 );
+//        v2 = new Vertex( -3, 5 );
+        Vertex v3 = new Vertex( 416666,-5000000 );
+        v3 = new Vertex( -416666.5,-5000000.0 );
+//        v3 = new Vertex( -2, -5 );
+        Vertex v4 = new Vertex( 5000000,-5000000 );
+//        v4 = new Vertex( 5, -5 );
+
+        vertices.add( v1 );
+        vertices.add( v2 );
+        vertices.add( v3 );
+        vertices.add( v4 );
+        Face f1 = Polygons.getDCEL( vertices )[ 0 ];
+
+        vertices.clear();
+        Vertex v5 = new Vertex( -2500002,5000000 );
+//        v5 = new Vertex( -5, 5 );
+        Vertex v6 = new Vertex( 2499998,-5000000 );
+//        v6 = new Vertex( 0, -5 );
+
+        vertices.add( v1 );
+        vertices.add( v5 );
+        vertices.add( v6 );
+        vertices.add( v4 );
+        Face f2 = Polygons.getDCEL( vertices )[ 0 ];
+
+        int size = 20000000;
+//        size = 20;
+        DrawingProgram drawer = new DrawingProgram( title, size, size );
+        drawer.drawPolyAll( DrawingProgram.NORMAL_POLYGON_COLOR, f1 );
+        drawer.drawPolyAll( DrawingProgram.NORMAL_POLYGON_COLOR, f2 );
+
+//        drawer.initialize();
+        MapOverlay.compute( f1, f2 );
+
+        return new Face[] { f1, f2 };
+    }
+
+    static
     void testCopy() {
         testCopy1();
 //        testCopy2();
@@ -876,7 +998,14 @@ final class TestMapOverlay {
         // complex test cases
 //         testMapOverlay16();
 //         testMapOverlay17();
-         testMapOverlay18(); // including degenerate case from test 14.
+//         testMapOverlay18(); // including degenerate case from test 14.
+
+        // test cases from Half-plane intersection.
+//        testMapOverlay19();
+//        testMapOverlay20();
+
+        // test cases from fruit ninja
+        testMapOverlay21();
     }
 
     public static

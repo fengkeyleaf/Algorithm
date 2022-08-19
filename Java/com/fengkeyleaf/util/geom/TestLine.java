@@ -74,7 +74,18 @@ final class TestLine {
 
 //        System.out.println( new Line( -3, -1, 3, 2 ).isOnThisSegment( new Vector( -1, 0 ) ) );
 
-        System.out.println( new Line( -9, -5, 5, 7 ).isOnThisSegment( new Vector( -4.84375, -1.4375 ) ) );
+//        System.out.println( new Line( -9, -5, 5, 7 ).isOnThisSegment( new Vector( -4.84375, -1.4375 ) ) );
+
+//        System.out.println( Arrays.toString( new Line( -1, -1, 1, 1 ).intersect( new Line( 1, 1, 2, 2 ) ) ) );
+//        System.out.println( Arrays.toString( new Segment( -1, -1, 1, 1 ).intersect( new Segment( 1, 1, 2, 2 ) ) ) );
+//        System.out.println( Arrays.toString( new Segment( -1, -1, 1, 1 ).intersect( new Segment( 0, 0, 2, 2 ) ) ) );
+//        System.out.println( Arrays.toString( new Segment( -1, -1, 1, 1 ).intersect( new Segment( -1, -1, 1, 1 ) ) ) );
+
+//        System.out.println( new Line( 416667.0, -5000000.0, 416668.0, 5000000.0 ).isOnThisLine( new Vector( 416667.4166661166, -833338.8333322331 ) ) );
+//        System.out.println( new Line( 416667.0, -5000000.0, 416668.0, 5000000.0 ).updateY( 416667.4166661166 ) );
+//        System.out.println( Arrays.toString( new Line( 416667.0, -5000000.0, 416668.0, 5000000.0 ).intersect( new Line( -2500002, 5000000, 2499998, -5000000 ) ) ) );
+
+        System.out.println( Arrays.toString( new Line( 416666.8333333333, 5000000.0, -416666.5,-5000000.0 ).intersect( new Line( -2500002,5000000, 2499998,-5000000 ) ) ) );
     }
 
     static

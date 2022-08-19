@@ -91,8 +91,21 @@ final class TestLinkedBST {
         System.out.println( linkedBST.successor( linkedBST.getNode( "z" ) ) ); // NULL
     }
 
+    static
+    void testMorris() {
+        BinarySearchTree<Integer, Integer> T = new BinarySearchTree<>();
+        T.put( 3, 3 );
+        T.put( 1, 1 );
+        T.put( 4, 4 );
+        T.put( 2, 2 );
+
+        System.out.println( T );
+        System.out.println( T.morrisInOrderTraversal() );
+    }
+
     public static
     void main( String[] args ) {
-        testRegular();
+//        testRegular();
+        testMorris();
     }
 }

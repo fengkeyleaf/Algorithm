@@ -22,6 +22,7 @@ import java.util.List;
  * @since  1.0
  */
 
+@Deprecated
 public class ShortestVertex extends Vertex
         implements Comparable<ShortestVertex> {
     // distances

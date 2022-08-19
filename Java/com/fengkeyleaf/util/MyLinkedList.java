@@ -12,9 +12,7 @@ package com.fengkeyleaf.util;
  *     $1.0 addBefore(), addAfter() and remove( node ) on 1/26/2022$
  */
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * data structure of doubly linked list
@@ -24,7 +22,6 @@ import java.util.NoSuchElementException;
  * @since  1.0
  */
 
-// TODO: 5/21/2022 implement ListIterator.
 // https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/LinkedList.html
 // https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html
 // https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Iterator.html
@@ -33,6 +30,7 @@ public class MyLinkedList<E> implements Iterable<E> {
     DoublyLinkedNode<E> front;
     DoublyLinkedNode<E> end;
     int size = 0;
+    Checker c = new Checker( this );
 
     /**
      * constructs to create an instance of MyLinkedList
@@ -41,8 +39,31 @@ public class MyLinkedList<E> implements Iterable<E> {
     public MyLinkedList() {}
 
     public MyLinkedList( E e ) {
+        if ( e == null )
+            throw new NullPointerException();
+
         initAdd( new DoublyLinkedNode<>( e ) );
         size++;
+    }
+
+    MyLinkedList( DoublyLinkedNode<E> n ) {
+        if ( n != null && n.data == null )
+            throw new NullPointerException();
+
+        initAdd( n );
+        if ( n != null ) updateSize();
+    }
+
+    private void updateSize() {
+        int size = 0;
+        DoublyLinkedNode<E> n = front;
+        while ( n != null ) {
+            size++;
+            if ( n.next == null ) end = n;
+            n = n.next;
+        }
+
+        this.size = size;
     }
 
     private void initAdd( DoublyLinkedNode<E> n ) {
@@ -50,11 +71,18 @@ public class MyLinkedList<E> implements Iterable<E> {
         end = front;
     }
 
+    //-------------------------------------------------------
+    // Insert Operations.
+    //-------------------------------------------------------
+
     /**
      * insert the element after the before node.
      * */
 
     public void addAfter( DoublyLinkedNode<E> before, E e ) {
+        if ( e == null )
+            throw new NullPointerException();
+
         addAfter( before, new DoublyLinkedNode<>( e ) );
     }
 
@@ -74,7 +102,7 @@ public class MyLinkedList<E> implements Iterable<E> {
         if ( n.next != null ) n.next.prev = n;
 
         if ( before == end ) end = n;
-        assert check();
+        assert c.check();
     }
 
     /**
@@ -82,6 +110,9 @@ public class MyLinkedList<E> implements Iterable<E> {
      * */
 
     public void addBefore( DoublyLinkedNode<E> after, E e ) {
+        if ( e == null )
+            throw new NullPointerException();
+
         addBefore( after, new DoublyLinkedNode<>( e ) );
     }
 
@@ -100,32 +131,50 @@ public class MyLinkedList<E> implements Iterable<E> {
         if ( n.prev != null ) n.prev.next = n;
 
         if ( after == front ) front = n;
-        assert check();
+        assert c.check();
     }
 
     /**
-     * remove the given node in this linked list and return its value.
-     * return null if this list is empty.
-     * Do nothing if the node is not in this list.
+     * Appends the specified element to the end of this list.
+     */
+
+    public boolean add( E e ) {
+        return addLast( e );
+    }
+
+    /**
+     * Inserts the specified element at the specified position in this list.
      * */
 
-    public E remove( DoublyLinkedNode<E> n ) {
-        if ( n == null ) return null;
-        assert contains( n );
+    public void add( int i, E e ) {
+        if ( MyArrays.isOutOfIndex( i, size ) )
+            throw new IndexOutOfBoundsException();
 
-        if ( n.prev != null ) n.prev.next = n.next;
-        if ( n.next != null ) n.next.prev = n.prev;
-
-        if ( front == n ) front = n.next;
-        if ( end == n ) end = n.prev;
-
-        n.prev = null;
-        n.next = null;
-
-        size--;
-        assert check();
-        return n.data;
+        DoublyLinkedNode<E> n = getNode( i );
+        addBefore( n, e );
     }
+
+    /**
+     * Appends the specified element to the end of this list.
+     */
+
+    public boolean addLast( E e ) {
+        addAfter( end, e );
+        return true;
+    }
+
+    /**
+     * Inserts the specified element at the beginning of this list.
+     * */
+
+    public boolean addFirst( E e ) {
+        addBefore( front, e );
+        return true;
+    }
+
+    //-------------------------------------------------------
+    // Query Operations.
+    //-------------------------------------------------------
 
     /**
      * does this linked list contain this node?
@@ -153,18 +202,6 @@ public class MyLinkedList<E> implements Iterable<E> {
         return false;
     }
 
-    /**
-     * Retrieves and removes the head (first element) of this list.
-     * the head of this list, or null if this list is empty.
-     * */
-
-    public E poll() {
-        return remove( front );
-    }
-
-    public E pollLast() {
-        return remove( end );
-    }
 
     /**
      * get the node containing the element in this linked list
@@ -180,48 +217,239 @@ public class MyLinkedList<E> implements Iterable<E> {
         return null;
     }
 
+    DoublyLinkedNode<E> getNode( int i ) {
+        if ( MyArrays.isOutOfIndex( i, size ) )
+            throw new IndexOutOfBoundsException();
+
+        DoublyLinkedNode<E> n = front;
+        int idx = 0;
+        while ( idx++ < i )
+            n = n.next;
+
+        return n;
+    }
+
+    /**
+     * Returns the first element in this list.
+     *
+     * @throws NoSuchElementException - if this list is empty
+     */
+
+    public E getFirst() {
+        if ( isEmpty() ) throw new NoSuchElementException( "Query in an empty list" );
+
+        return front.data;
+    }
+
+    /**
+     * Returns the first node in this list.
+     *
+     * @throws NoSuchElementException - if this list is empty
+     */
+
+    public DoublyLinkedNode<E> getFirstNode() {
+        if ( isEmpty() ) throw new NoSuchElementException( "Query in an empty list" );
+
+        return front;
+    }
+
+    /**
+     * Returns the last element in this list.
+     *
+     * @throws NoSuchElementException - if this list is empty
+     */
+
+    public E getLast() {
+        if ( isEmpty() ) throw new NoSuchElementException( "Query in an empty list" );
+
+        return isEmpty() ? null : end.data;
+    }
+
+    /**
+     * Returns the last node in this list.
+     *
+     * @throws NoSuchElementException - if this list is empty
+     */
+
+    public DoublyLinkedNode<E> getLastNode() {
+        if ( isEmpty() ) throw new NoSuchElementException( "Query in an empty list" );
+
+        return isEmpty() ? null : end;
+    }
+
+    /**
+     * Returns the element at the specified position in this list.
+     *
+     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+     * */
+
+    public E get( int i ) {
+        if ( MyArrays.isOutOfIndex( i, size ) )
+            throw new IndexOutOfBoundsException();
+
+        return listIterator( i ).next();
+    }
+
+    //-------------------------------------------------------
+    // Remove Operations.
+    //-------------------------------------------------------
+
+
+    /**
+     * remove the given node in this linked list and return its value.
+     * return null if this list is empty.
+     * Do nothing if the node is not in this list.
+     * */
+
+    public E remove( DoublyLinkedNode<E> n ) {
+        if ( n == null ) return null;
+        assert contains( n );
+
+        if ( n.prev != null ) n.prev.next = n.next;
+        if ( n.next != null ) n.next.prev = n.prev;
+
+        if ( front == n ) front = n.next;
+        if ( end == n ) end = n.prev;
+
+        n.prev = null;
+        n.next = null;
+
+        size--;
+        assert c.check();
+        return n.data;
+    }
+
+
+    /**
+     * Retrieves and removes the head (first element) of this list.
+     * the head of this list, or null if this list is empty.
+     * */
+
+    public E poll() {
+        return remove( front );
+    }
+
+    public E pollLast() {
+        return remove( end );
+    }
+
+    /**
+     * Removes the element at the specified position in this list.
+     * Shifts any subsequent elements to the left (subtracts one from their indices).
+     * Returns the element that was removed from the list.
+     *
+     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+     * */
+
+    public E remove( int i ) {
+        if ( MyArrays.isOutOfIndex( i, size ) )
+            throw new IndexOutOfBoundsException();
+
+        return remove( getNode( i ) );
+    }
+
     //-------------------------------------------------------
     // Iterable
     //-------------------------------------------------------
 
-    @Override
-    public Iterator<E> iterator() {
-        return new IterList( front );
+    /**
+     * Returns a list-iterator of the elements
+     * in this list (in proper sequence), starting at the specified position in the list.
+     * @param i index of the first element to be returned from the list-iterator (by a call to next)
+     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index > size())
+     */
+
+    public ListIterator<E> listIterator( int i ) {
+        if ( MyArrays.isOutOfIndex( i, size ) )
+            throw new IndexOutOfBoundsException( i + "is out of index range" );
+
+        return new ListItr( i );
     }
 
     /**
-     * class to implement Iterator.
-     * */
+     * Adapter to provide list iterator.
+     * Reference resource: {@link LinkedList}
+     */
 
-    private class IterList implements Iterator<E> {
-        DoublyLinkedNode<E> front;
+    class ListItr implements ListIterator<E> {
 
-        IterList( DoublyLinkedNode<E> front ) {
-            this.front = front;
+        DoublyLinkedNode<E> lastReturn;
+        DoublyLinkedNode<E> next;
+
+        ListItr( int i ) {
+            next = front;
+            int idx = 0;
+            while ( idx++ < i ) {
+                lastReturn = next;
+                next = next == null ? null : next.next;
+            }
         }
-
-        /**
-         * Returns true if the iteration has more elements.
-         * */
 
         @Override
         public boolean hasNext() {
-            return front != null;
+            return next != null;
         }
-
-        /**
-         * Returns the next element in the iteration.
-         * */
 
         @Override
         public E next() {
             if ( !hasNext() )
                 throw new NoSuchElementException();
 
-            DoublyLinkedNode<E> lastReturn = front;
-            front = front.next;
+            lastReturn = next;
+            next = next.next;
             return lastReturn.data;
         }
+
+        @Override
+        public boolean hasPrevious() {
+            return next == null ? end != null : next.prev != null;
+        }
+
+        @Override
+        public E previous() {
+            if ( !hasPrevious() )
+                throw new NoSuchElementException();
+
+            lastReturn = next = next == null ? end : next.prev;
+            return lastReturn.data;
+        }
+
+        @Override
+        public int nextIndex() {
+            System.err.println( "Not available now: nextIndex" );
+            System.exit( 1 );
+            return -1;
+        }
+
+        @Override
+        public int previousIndex() {
+            System.err.println( "Not available now: previousIndex" );
+            System.exit( 1 );
+            return -1;
+        }
+
+        @Override
+        public void remove() {
+            System.err.println( "Not available now: remove" );
+            System.exit( 1 );
+        }
+
+        @Override
+        public void set( E e ) {
+            System.err.println( "Not available now: set" );
+            System.exit( 1 );
+        }
+
+        @Override
+        public void add( E e ) {
+            System.err.println( "Not available now: add" );
+            System.exit( 1 );
+        }
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return new ListItr( 0 );
     }
 
     /**
@@ -232,24 +460,25 @@ public class MyLinkedList<E> implements Iterable<E> {
      * */
 
     public Iterator<E> descendingIterator() {
-        return new DescendingIterator( end );
+        return new DescendingIterator();
     }
 
     /**
      * Adapter to provide descending iterators via ListItr.previous
      */
-    private class DescendingIterator extends IterList {
 
-        DescendingIterator( DoublyLinkedNode<E> front ) {
-            super( front );
+    private class DescendingIterator implements Iterator<E> {
+
+        final ListItr iter = new ListItr( size );
+
+        @Override
+        public boolean hasNext() {
+            return iter.hasPrevious();
         }
-        public E next() {
-            if ( !hasNext() )
-                throw new NoSuchElementException();
 
-            DoublyLinkedNode<E> lastReturn = front;
-            front = front.prev;
-            return lastReturn.data;
+        @Override
+        public E next() {
+            return iter.previous();
         }
     }
 
@@ -260,6 +489,47 @@ public class MyLinkedList<E> implements Iterable<E> {
     public boolean isEmpty() {
         boolean res = size == 0;
         assert ( !res && front != null ) || ( res && front == null );
+        return res;
+    }
+
+    /**
+     * Split this list two parts, splitting at the given index.
+     *
+     * [ 1,2,3,4 ], s = 2
+     * =>
+     * [ [ 1,2,3 ], [ 4 ] ]
+     *
+     * @param s position to be split, indexing at 0;
+     *          We'll split the list right after s.
+     *          e.g s = 2, we will split the list after 2 but before 3;
+     * @return [ list containing elements prior to s( including s ), list containing elements after s ]
+     */
+
+    public List<MyLinkedList<E>> split( int s ) {
+        if ( MyArrays.isOutOfIndex( s, size ) )
+            throw new IndexOutOfBoundsException();
+
+        if ( isEmpty() ) return null;
+
+        DoublyLinkedNode<E> n = front;
+        int idx = 0;
+        while ( idx++ < s )
+            n = n.next;
+
+        List<MyLinkedList<E>> res = new ArrayList<>( 2 );
+
+        DoublyLinkedNode<E> other = n.next;
+        n.next = null;
+        if ( other != null ) other.prev = null;
+
+        res.add( this );
+        res.add( new MyLinkedList<>( other ) );
+
+        size -= res.get( 1 ).size;
+        end = n;
+
+        assert c.check();
+        assert res.get( 1 ).c.check();
         return res;
     }
 
@@ -278,86 +548,65 @@ public class MyLinkedList<E> implements Iterable<E> {
     // Check integrity of Linked list data structure.
     //-------------------------------------------------------
 
-    private boolean check() {
-        boolean isDoublyLinked = isDoublyLinked();
-        boolean isSize = isRightSize();
-        boolean isRightFront = isRightFront();
-        boolean isRightEnd = isRightEnd();
+    class Checker {
+        final MyLinkedList<E> l;
 
-        if ( !isDoublyLinked ) System.err.println( "Not doubly linked" );
-        if ( !isSize ) System.err.println( "Size is inconsistent with nodes" );
-        if ( !isRightFront ) System.err.println( "Front is not right" );
-        if ( !isRightEnd ) System.err.println( "End is not right" );
-
-        return isDoublyLinked && isSize && isRightEnd && isRightFront;
-    }
-
-    private boolean isDoublyLinked() {
-        DoublyLinkedNode<E> front = this.front;
-        while ( front != null ) {
-            assert front.prev == null || front.prev.next == front;
-            assert front.next == null || front.next.prev == front : front + " " + front.next;
-            front = front.next;
+        Checker( MyLinkedList<E> l ) {
+            this.l = l;
         }
 
-        return true;
-    }
+        private boolean check() {
+            boolean isDoublyLinked = isDoublyLinked();
+            boolean isSize = isRightSize();
+            boolean isRightFront = isRightFront();
+            boolean isRightEnd = isRightEnd();
 
-    private boolean isRightSize() {
-        int count = 0;
-        DoublyLinkedNode<E> front = this.front;
-        while ( front != null ) {
-            count++;
-            front = front.next;
+            if ( !isDoublyLinked ) System.err.println( "Not doubly linked" );
+            if ( !isSize ) System.err.println( "Size is inconsistent with nodes" );
+            if ( !isRightFront ) System.err.println( "Front is not right" );
+            if ( !isRightEnd ) System.err.println( "End is not right" );
+
+            return isDoublyLinked && isSize && isRightEnd && isRightFront;
         }
 
-        return count == size;
-    }
+        private boolean isDoublyLinked() {
+            DoublyLinkedNode<E> front = l.front;
+            while ( front != null ) {
+                assert front.prev == null || front.prev.next == front;
+                assert front.next == null || front.next.prev == front : front + " " + front.next;
+                front = front.next;
+            }
 
-    private boolean isRightFront() {
-        DoublyLinkedNode<E> end = this.end;
-        while ( end != null && end.prev != null ) {
-            end = end.prev;
+            return true;
         }
 
-        return front == end;
-    }
+        private boolean isRightSize() {
+            int count = 0;
+            DoublyLinkedNode<E> front = l.front;
+            while ( front != null ) {
+                count++;
+                front = front.next;
+            }
 
-    private boolean isRightEnd() {
-        DoublyLinkedNode<E> front = this.front;
-        while ( front != null && front.next != null ) {
-            front = front.next;
+            return count == size;
         }
 
-        return front == end;
-    }
+        private boolean isRightFront() {
+            DoublyLinkedNode<E> end = l.end;
+            while ( end != null && end.prev != null ) {
+                end = end.prev;
+            }
 
-    //-------------------------------------------------------
-    // Test.
-    //-------------------------------------------------------
+            return front == end;
+        }
 
-    public static
-    void main( String[] args ) {
-        MyLinkedList<Integer> list = new MyLinkedList<>();
-        list.addBefore( null, 0 );
-        list.addBefore( list.getNode( 0 ), 1 );
-        list.addAfter( list.getNode( 0 ), 2 );
-        list.addBefore( list.getNode( 1 ), 3 ); // 3, 1, 0, 2
-        System.out.println( list );
+        private boolean isRightEnd() {
+            DoublyLinkedNode<E> front = l.front;
+            while ( front != null && front.next != null ) {
+                front = front.next;
+            }
 
-        list.remove( list.getNode( 1 ) );
-        System.out.println( list );
-        list.remove( list.getNode( 2 ) );
-        System.out.println( list );
-        list.remove( list.getNode( 3 ) );
-        System.out.println( list );
-        list.remove( list.getNode( 0 ) );
-        System.out.println( list );
-
-        list.remove( list.getNode( 6 ) );
-        System.out.println( list );
-
-        list.addAfter( list.getNode( 0 ), 2 );
-        System.out.println( list );
+            return front == end;
+        }
     }
 }

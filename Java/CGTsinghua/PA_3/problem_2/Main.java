@@ -25,7 +25,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /**
- * <a href="https://dsa.cs.tsinghua.edu.cn/oj/problem.shtml?id=1650">CG2017 PA3-2 Which wall are you looking at</a>
+ * <a href="https://dsa.cs.tsinghua.edu.cn/oj/problem.shtml?id=1650">CG2017 PA3-2 Which wall are you looking at</a><br>
  *
  * @author Xiaoyu Tongyang, or call me sora for short
  * @see <a href="https://fengkeyleaf.com">person website</a>

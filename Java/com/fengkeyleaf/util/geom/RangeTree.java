@@ -719,7 +719,7 @@ public class RangeTree extends AbstractTree<Vector> {
      * */
 
     private boolean visualization( QueryVector[] RStr, List<Vector> res ) {
-        BoundingBox b = BoundingBox.getBoundingBox( P, BoundingBox.OFFSET );
+        BoundingBox b = BoundingBox.getBox( P, BoundingBox.OFFSET );
 
         List<Vector> R = new ArrayList<>( 2 );
         R.add( RStr[ 0 ].getVector( b, false ) );

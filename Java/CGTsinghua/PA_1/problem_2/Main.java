@@ -18,13 +18,15 @@ import com.fengkeyleaf.io.ProcessingFile;
 import com.fengkeyleaf.io.ReadFromStdOrFile;
 import com.fengkeyleaf.util.MyCollections;
 import com.fengkeyleaf.util.geom.*;
-import com.fengkeyleaf.util.geom.Vector;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /**
- * <a href="https://dsa.cs.tsinghua.edu.cn/oj/problem.shtml?id=1646">CG2017 PA1-2 Crossroad</a>
+ * <a href="https://dsa.cs.tsinghua.edu.cn/oj/problem.shtml?id=1646">CG2017 PA1-2 Crossroad</a><br>
  *
  * hints: Segment, line and ray roads can be processed similarly.
  * Circle roads can be broken into a number of arcs.
@@ -126,57 +128,6 @@ final class Main extends MainCG
 //         System.out.println( segments );
     }
 
-    private void checker( List<Vector> intersections, List<Line> I ) {
-
-        // brute force checking.
-        List<Intersection> S = new ArrayList<>( I.size() + circles.size() + 1 );
-        S.addAll( I );
-        S.addAll( circles );
-        List<Vector> intersectionsBruteForce = GeometricIntersection.bruteForce( S );
-
-        // find visualization area.
-        List<Vector> P = new ArrayList<>( intersections.size() + segmentsLineNumber + raysLineNumber + lineNumber + circles.size() + 1 );
-        P.addAll( intersections );
-        segments.forEach( s -> {
-            P.add( s.startPoint );
-            P.add( s.endPoint );
-        } );
-        rays.forEach( r -> {
-            P.add( r.startPoint );
-            P.add( r.endPoint );
-        } );
-        lines.forEach( l -> {
-            P.add( l.startPoint );
-            P.add( l.endPoint );
-        } );
-        circles.forEach( c -> {
-            P.addAll( Arrays.asList( c.extremes ) );
-        } );
-        BoundingBox b = BoundingBox.getBoundingBox( P, BoundingBox.OFFSET / 2 );
-        if ( b == null ) return;
-
-        // drawing.
-        DrawingProgram program = new DrawingProgram( title, b.width, b.height );
-
-        program.drawPoints( DrawingProgram.INTERSECTION_COLOR, intersections );
-
-        program.drawLines( DrawingProgram.NORMAL_POLYGON_COLOR, I );
-        program.drawCircles( DrawingProgram.NORMAL_POLYGON_COLOR, circles );
-
-        program.initialize();
-
-        // compare result from the algorithm and from brute force.
-        List<Vector> res = new ArrayList<>( intersections.size() + 1 );
-        res.addAll( intersections );
-
-        List<Vector> differences = MyCollections.compare( intersectionsBruteForce, res, Vectors::sortByX );
-
-        if ( !differences.isEmpty() )
-            System.out.println( "Diff: " + differences );
-
-        assert intersections.size() == intersectionsBruteForce.size() : intersections.size() + " | " + intersectionsBruteForce.size();
-    }
-
     static int boundary = Integer.MAX_VALUE / 1000;
 
     int doTheAlgorithm() {
@@ -209,7 +160,7 @@ final class Main extends MainCG
         GeometricIntersection intersector = new GeometricIntersection( false );
         List<Vector> intersections = intersector.findIntersection( shapes );
         // verify with brute force.
-        checker( intersections, I );
+//        checker( intersections, I );
         return intersections.size();
     }
 
@@ -238,12 +189,14 @@ final class Main extends MainCG
 //        new Main( 20, prefix ); // 20 - 1
 //        new Main( 21, prefix ); // 21 - 1
 //        new Main( 22, prefix ); // 22 - 2
-        new Main( 23, prefix ); // 23 - 1
-        new Main( 24, prefix ); // 24 - 3
-        new Main( 25, prefix ); // 25 - 0
-        new Main( 26, prefix ); // 1
-        new Main( 31, prefix ); // 3
-        new Main( 36, prefix ); // 4
+//        new Main( 23, prefix ); // 23 - 1
+//        new Main( 24, prefix ); // 24 - 3
+//        new Main( 25, prefix ); // 25 - 0
+//        new Main( 26, prefix ); // 1
+//        new Main( 31, prefix ); // 3
+//        new Main( 36, prefix ); // 4
+        new Main( 37, prefix ); // 0, very special one.
+
     }
 
     static
@@ -325,10 +278,10 @@ final class Main extends MainCG
 
     public static
     void main( String[] args ) {
-//        testOnlyLines(); // 26
+        testOnlyLines(); // 26
 //        testLinesCycles(); // 15
 //        testLinesCyclesComplex(); // 30
-        testAllTypes(); // 9
+//        testAllTypes(); // 9
 //        testBoundingBox();
 
         // read from std

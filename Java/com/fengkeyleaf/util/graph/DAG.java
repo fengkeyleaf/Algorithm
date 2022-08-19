@@ -12,7 +12,10 @@ package com.fengkeyleaf.util.graph;
  *     $1.0$
  */
 
+import com.fengkeyleaf.util.Node;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,6 +29,12 @@ import java.util.List;
 
 public class DAG<E extends Vertex> extends Graph<E> {
 
+    public DAG() {}
+
+    public DAG( Collection<E> c ) {
+        super( c );
+    }
+
     /**
      * get Topological Ordering of this graph.
      * time complexity: O(n + m)
@@ -37,18 +46,18 @@ public class DAG<E extends Vertex> extends Graph<E> {
      * */
 
     public List<Vertex> getTopologicalOrdering() {
-        explored = new boolean[ vertices.size() + 1 ];
-
+        // check every sub-graph in this DAG.
         for ( int i = vertices.size() - 1; i >= 0; i-- ) {
-            E aVertex = vertices.get( i );
+            E v = vertices.get( i );
 
-            if ( !explored[ aVertex.ID ] ) {
-                sortVertexByFinishTime( aVertex );
-            }
+            if ( v.mappingID < 0 )
+                sortVertexByFinishTime( v );
         }
 
+        Node.resetMappingID( vertices );
+
         Collections.reverse( finishes );
-        return checkProcessing() ? finishes : new ArrayList<>();
+        return isDAG() ? finishes : new ArrayList<>();
     }
 
     /**
@@ -58,20 +67,24 @@ public class DAG<E extends Vertex> extends Graph<E> {
      * time complexity: O(n + m)
      * */
 
-    public boolean checkProcessing() {
+    boolean isDAG() {
+        Node.setMappingID( vertices, 0 );
+
         // map each vertex to a new index, with decreasing finishing time
-        int[] finishingOrder = new int[ finishes.size() + 1 ];
+        int[] finishingOrder = new int[ finishes.size() ];
         for ( int i = 0; i < finishes.size(); i++ )
-            finishingOrder[ finishes.get( i ).ID ] = i;
+            finishingOrder[ finishes.get( i ).mappingID ] = i;
 
         // i-th vertex can only reach the latter ones,
         // (i + 1)th, (i + 2)th, and so on
-        for ( Vertex vertex : finishes )
-            for ( Vertex neighbour : vertex.neighbours )
+        for ( Vertex v : finishes )
+            for ( Vertex n : v.neighbours )
                 // be careful with the case where a vertex connecting to itself,
                 // which is illegal.
-                if ( finishingOrder[ neighbour.ID ] <= finishingOrder[ vertex.ID ] )
+                if ( finishingOrder[ n.mappingID ] <= finishingOrder[ v.mappingID ] )
                     return false;
+
+        Node.resetMappingID( vertices );
 
         // handle an empty graph
         // return isEmpty() ? false : true;
@@ -91,8 +104,8 @@ public class DAG<E extends Vertex> extends Graph<E> {
      * time complexity: O(n + m)
      * */
 
-    public boolean OneEdgeProperty() {
-        assert checkProcessing() || isEmpty();
+    public boolean oneEdgeProperty() {
+        assert isDAG() || isEmpty();
 
         for ( int i = 0; i < finishes.size() - 1; i++ ) {
             Vertex next = finishes.get( i + 1 );

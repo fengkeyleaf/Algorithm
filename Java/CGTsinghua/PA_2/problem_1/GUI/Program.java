@@ -12,16 +12,11 @@ package CGTsinghua.PA_2.problem_1.GUI;
  *     $1.0 basic but bad visualization on 7/21/2021 $
  */
 
-import com.fengkeyleaf.util.geom.Face;
-import com.fengkeyleaf.util.geom.Lines;
-import com.fengkeyleaf.util.geom.Vector;
-import com.fengkeyleaf.util.geom.Vectors;
+import com.fengkeyleaf.GUI.geom.DrawingProgram;
+import com.fengkeyleaf.util.geom.*;
 import com.fengkeyleaf.util.graph.DualVertex;
 import com.fengkeyleaf.util.graph.Graph;
 import com.fengkeyleaf.util.graph.Graphs;
-import com.fengkeyleaf.GUI.geom.DrawingProgram;
-import com.fengkeyleaf.util.geom.Vertex;
-import com.fengkeyleaf.util.geom.Polygons;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

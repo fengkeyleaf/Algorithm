@@ -12,14 +12,7 @@ package com.fengkeyleaf.GUI.geom;
  *     $1.0$
  */
 
-import com.fengkeyleaf.util.geom.Circles;
-import com.fengkeyleaf.util.geom.Face;
-import com.fengkeyleaf.util.geom.Lines;
-import com.fengkeyleaf.util.geom.Polygons;
-import com.fengkeyleaf.util.geom.Vectors;
-import com.fengkeyleaf.util.geom.Circle;
-import com.fengkeyleaf.util.geom.Line;
-import com.fengkeyleaf.util.geom.Vector;
+import com.fengkeyleaf.util.geom.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -133,7 +126,7 @@ public class DrawingProgram {
     /**
      * add drawing data for the polygon.
      *
-     * @param f face with outerComponent.
+     * @param f face with non-nullable outerComponent.
      * */
 
     public void drawPoly( Color c, Face f ) {
@@ -155,7 +148,7 @@ public class DrawingProgram {
     /**
      * add filling drawing data for the polygon.
      *
-     * @param f face with outerComponent.
+     * @param f face with non-nullable outerComponent.
      * */
 
     public void fillPoly( Color c, Face f ) {
@@ -173,10 +166,10 @@ public class DrawingProgram {
     }
 
     /**
-     * add drawing data for lines as well as their endpoints.
+     * add drawing data for segments as well as their endpoints.
      * */
 
-    public void drawLinesWithPoints( Color c, List<Line> lines ) {
+    public void drawSegments( Color c, List<Line> lines ) {
         drawLines( c, lines );
 
         List<Vector> P = new ArrayList<>( lines.size() * 2 );
@@ -209,14 +202,14 @@ public class DrawingProgram {
         colorsLine.clear();
     }
 
-    /**
-     * draw shapes stored in this drawing program.
-     * */
-
     public void resetCanvas() {
         graphics.setColor( Color.WHITE );
         graphics.fillRect( 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT );
     }
+
+    /**
+     * draw shapes stored in this drawing program.
+     * */
 
     public void draw() {
         Polygons.drawPolygons( graphics, polygonPoints, polyDrawingTypes, colorsPoly );

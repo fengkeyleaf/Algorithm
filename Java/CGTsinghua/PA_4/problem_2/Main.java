@@ -16,20 +16,22 @@ import CGTsinghua.MainCG;
 import com.fengkeyleaf.io.ProcessingFile;
 import com.fengkeyleaf.io.ReadFromStdOrFile;
 import com.fengkeyleaf.util.geom.*;
-import com.fengkeyleaf.util.geom.Vector;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /**
- * <a href="https://dsa.cs.tsinghua.edu.cn/oj/problem.shtml?id=1652">CG2017 PA4-2 Orthogonal Windowing Query</a>
+ * <a href="https://dsa.cs.tsinghua.edu.cn/oj/problem.shtml?id=1652">CG2017 PA4-2 Orthogonal Windowing Query</a><br>
  *
  * Three ways to solve it:
  * 1) interval tree.
  * 2) priority search tree.
  * 3) segment tree.
  * Time complexity: O((logn)^2+k),
- * where where n is # of points and k is # of reported ones.
+ * where n is # of points and k is # of reported ones.
  *
  * By the way, segment tree is overqualified for this problem,
  * since input intervals are all axis-parallel.

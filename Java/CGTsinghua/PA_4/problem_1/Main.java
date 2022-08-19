@@ -15,8 +15,8 @@ package CGTsinghua.PA_4.problem_1;
 import CGTsinghua.MainCG;
 import com.fengkeyleaf.io.ProcessingFile;
 import com.fengkeyleaf.io.ReadFromStdOrFile;
-import com.fengkeyleaf.util.geom.LayeredRangeTree;
 import com.fengkeyleaf.util.geom.KdTree;
+import com.fengkeyleaf.util.geom.LayeredRangeTree;
 import com.fengkeyleaf.util.geom.Vector;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /**
- * <a href="https://dsa.cs.tsinghua.edu.cn/oj/problem.shtml?id=1651">CG2017 PA4-1 Planar Range Query</a>
+ * <a href="https://dsa.cs.tsinghua.edu.cn/oj/problem.shtml?id=1651">CG2017 PA4-1 Planar Range Query</a><br>
  *
  * Three ways to solve it:
  * 1) Kd-tree -> O(√n +k）;

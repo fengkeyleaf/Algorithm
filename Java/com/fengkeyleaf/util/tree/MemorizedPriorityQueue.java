@@ -31,6 +31,7 @@ import java.util.Comparator;
  */
 
 // TODO: 8/6/2021 not fix
+@Deprecated
 public class MemorizedPriorityQueue extends MyPriorityQueue<ShortestVertex> {
     public MemorizedPriorityQueue( Comparator<ShortestVertex> comparator ) {
         super( comparator );

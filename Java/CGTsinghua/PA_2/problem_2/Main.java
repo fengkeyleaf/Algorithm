@@ -26,7 +26,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /**
- * <a href="https://dsa.cs.tsinghua.edu.cn/oj/problem.shtml?id=1648">CG2017 PA2-2 Find Dancing Partners</a>
+ * <a href="https://dsa.cs.tsinghua.edu.cn/oj/problem.shtml?id=1648">CG2017 PA2-2 Find Dancing Partners</a><br>
  *
  * hints:
  * One way is to create Voronoi diagram based on the positions of the boys.
@@ -131,7 +131,7 @@ final class Main extends MainCG
         // containing all sites, Voronoi vertices and query points.
         List<Vector> sites = new ArrayList<>( girls.size() + boys.size() + 1 );
         sites.addAll( siteFaces );
-        BoundingBox visualBox = BoundingBox.getBoundingBox( sites, 10 );
+        BoundingBox visualBox = BoundingBox.getBox( sites, 10 );
         boundary = visualBox == null ? 0 : visualBox.findVisualizationArea();
         // initialize visualization program for Voronoi.
         DrawingProgram program = initDrawer( box, boundary );

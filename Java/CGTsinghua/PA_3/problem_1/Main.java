@@ -16,17 +16,14 @@ import CGTsinghua.MainCG;
 import com.fengkeyleaf.GUI.geom.DrawingProgram;
 import com.fengkeyleaf.io.ProcessingFile;
 import com.fengkeyleaf.io.ReadFromStdOrFile;
-import com.fengkeyleaf.util.geom.BoundingBox;
-import com.fengkeyleaf.util.geom.HalfEdge;
-import com.fengkeyleaf.util.geom.Vertex;
-import com.fengkeyleaf.util.geom.Delaunay;
 import com.fengkeyleaf.util.geom.Vector;
+import com.fengkeyleaf.util.geom.*;
 
 import java.util.*;
 import java.util.regex.Pattern;
 
 /**
- * <a href="https://dsa.cs.tsinghua.edu.cn/oj/problem.shtml?id=1649">CG2017 PA3-1 Delaunay Triangulation</a>
+ * <a href="https://dsa.cs.tsinghua.edu.cn/oj/problem.shtml?id=1649">CG2017 PA3-1 Delaunay Triangulation</a><br>
  *
  * @author Xiaoyu Tongyang, or call me sora for short
  * @see <a href="https://fengkeyleaf.com">person website</a>
@@ -90,22 +87,26 @@ final class Main extends MainCG
     }
 
     int doTheAlgorithm() {
-        List<Vector> points = new ArrayList<>( vertices.size() + 1 );
-        points.addAll( vertices );
-        BoundingBox b = BoundingBox.getBoundingBox( points, 10 );
-        // visualize when # of points less than 3.
-        if ( b == null ) return -1;
+        Face f = Delaunay.triangulate( vertices );
 
-        DrawingProgram drawer = new DrawingProgram( "CG2017 PA3-1 Delaunay Triangulation", b.width, b.height );
+        if ( f != null ) {
+            List<Vector> points = new ArrayList<>( vertices.size() + 1 );
+            points.addAll( vertices );
+            BoundingBox b = BoundingBox.getBox( points, 10 );
+            // visualize when # of points less than 3.
 
-        drawer.drawPoints( DrawingProgram.NORMAL_POLYGON_COLOR, points );
-        drawer.drawPolyAll( DrawingProgram.NORMAL_POLYGON_COLOR, Delaunay.delaunayTriangulation( vertices ) );
+            DrawingProgram drawer = new DrawingProgram( "CG2017 PA3-1 Delaunay Triangulation", b.width, b.height );
+            drawer.drawPoints( DrawingProgram.NORMAL_POLYGON_COLOR, points );
+            drawer.drawPolyAll( DrawingProgram.NORMAL_POLYGON_COLOR, f );
 
-        drawer.initialize();
+            drawer.initialize();
+        }
 
-        return vertices.size() < 3 ? -1 : computeResult();
+        return f == null ? -1 : computeResult();
     }
 
+    // TODO: 7/10/2022 result may be different due to running multiple threads to compute Delaunay Triangulation.
+    //  That is, ID is not always starting at 0.
     int computeResult() {
         int sum = 0;
         int count = 0;
@@ -134,7 +135,7 @@ final class Main extends MainCG
     void normalTest() {
 //        System.out.println( ( Math.pow( 10, 5 ) ) * ( Math.pow( 10, 5 ) ) );
 
-        new Main( 1 ); // -1
+//        new Main( 1 ); // -1
 //        new Main( 2 ); // -1
 //        new Main( 3 ); // -1
 //        new Main( 4 ); // 0
@@ -147,8 +148,9 @@ final class Main extends MainCG
 //        new Main( 11 ); // 0
 //        new Main( 12 ); // duplicate sites
 //        new Main( 13 ); // ZeldaBreath
-//        new Main( 14 ); //
-//        new Main( 15 ); //
+//        new Main( 14 ); // 5
+        new Main( 15 ); // 132
+//        new Main( 16 ); // -1
     }
 
     static
@@ -171,23 +173,23 @@ final class Main extends MainCG
 //        new Main( 14, prefix1 ); // 6
 //        new Main( 15, prefix1 ); // 15
 //        new Main( 16, prefix1 ); //
-        new Main( 17, prefix1 ); // ZeldaBreath
+//        new Main( 17, prefix1 ); // ZeldaBreath
 //        new Main( 18, prefix1 ); //
 //        new Main( 19, prefix1 ); //
 //        new Main( 20, prefix1 ); //
 //        new Main( 21, prefix1 ); //
 //        new Main( 22, prefix1 ); //
 //        new Main( 23, prefix1 ); //
-//        new Main( 24, prefix1 ); // duplicate sites
-//        new Main( 25, prefix1 ); //
-//        new Main( 26, prefix1 ); //
-//        new Main( 27, prefix1 ); // ZeldaBreath, only towers
-//        new Main( 28, prefix1 ); //
+        new Main( 24, prefix1 ); // duplicate sites
+        new Main( 25, prefix1 ); //
+        new Main( 26, prefix1 ); //
+        new Main( 27, prefix1 ); // ZeldaBreath, only towers
+        new Main( 28, prefix1 ); //
     }
 
     public static
     void main( String[] args ) {
-//        normalTest();
-        VorTest();
+        normalTest();
+//        VorTest();
     }
 }

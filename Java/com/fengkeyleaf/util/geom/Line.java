@@ -176,6 +176,21 @@ public class Line
     }
 
     /**
+     * this line is parallel to the given line, {@code l}?
+     * */
+
+    public boolean isParallel( Line l ) {
+        // one of lines without slope.
+        return isVertical && l.isVertical ||
+                // both have slope.
+                Lines.compareBySlope( this, l ) == 0;
+    }
+
+    //-------------------------------------------------------
+    // line to segment.
+    //-------------------------------------------------------
+
+    /**
      * regard ray and line as segment
      * */
 
@@ -249,6 +264,10 @@ public class Line
         return new Line( new Vector( minX, updateY( minX ) ), new Vector( maxX, updateY( maxX ) ) ).getSegment( box, c );
     }
 
+    //-------------------------------------------------------
+    // update
+    //-------------------------------------------------------
+
     public double updateY( double x ) {
         assert equation.b != 0 : this;
         assert !isVertical;
@@ -260,6 +279,10 @@ public class Line
         assert !isHorizontal;
         return ( equation.c - y * equation.b ) / equation.a;
     }
+
+    //-------------------------------------------------------
+    // on this line or this segment.
+    //-------------------------------------------------------
 
     /**
      * is the give point on this line?
@@ -311,25 +334,55 @@ public class Line
         return isOnThisLine( vector );
     }
 
-    /**
-     * this line is parallel to the given line, {@code l}?
-     * */
-
-    public boolean isParallel( Line l ) {
-        // one of lines without slope.
-        return isVertical && l.isVertical ||
-                // both have slope.
-                Lines.compareBySlope( this, l ) == 0;
-    }
+    //-------------------------------------------------------
+    // intersection.
+    //-------------------------------------------------------
 
     @Override
     public Vector[] intersect( Intersection s ) {
-        if ( s instanceof Line )
-            return new Vector[] { GeometricIntersection.lines( this, ( Line ) s ) };
+        if ( s instanceof Segment ) {
+            Vector i = GeometricIntersection.lineSegment( this, ( Segment ) s );
+            return i == null ? new Vector[] {} : new Vector[] { i };
+        }
+        else if ( s instanceof Line ){
+            Vector i = GeometricIntersection.lines( this, ( Line ) s );
+            return i == null ? new Vector[] {} : new Vector[] { i };
+        }
 
         assert s instanceof Circle;
         return GeometricIntersection.lineCircle( this, ( Circle ) s );
     }
+
+    //-------------------------------------------------------
+    // Duality
+    //-------------------------------------------------------
+    // Reference resource: http://www.cs.uu.nl/geobook/
+
+    /**
+     * Transform this line in the primary plane into the dual plane, line to point.
+     *
+     * l  :  y = mx + b
+     * l* := ( m, −b )
+     *
+     * @return a point representing this line in the dual plane.
+     * @throws IllegalArgumentException - Try getting a vertical line in the primary plane.
+     */
+
+    public Vector toDuality() {
+        if ( isVertical )
+            throw new IllegalArgumentException( "No vertical line transformation " +
+                    "in the primary plane to the dual plane." );
+
+        // note that the formula for line:
+        // B * y + A * x = C,
+        // so, m = -A / B, b = C / B
+        assert MyMath.isEqualZero( equation.b );
+        return new Vector( -equation.a / equation.b, -equation.c / equation.b );
+    }
+
+    //-------------------------------------------------------
+    // equals & toString.
+    //-------------------------------------------------------
 
     String toString( boolean showEqu ) {
         if ( isVertical )

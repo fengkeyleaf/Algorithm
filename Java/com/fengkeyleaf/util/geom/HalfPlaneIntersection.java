@@ -270,6 +270,7 @@ public class HalfPlaneIntersection {
         private static
         IntersectionShape addSegment( Segment s, int mappingID ) {
             assert s.e == null;
+            // distinguish the two segments.
             s.e = new HalfEdge();
             s.e.mappingID = mappingID;
             return s;
@@ -306,19 +307,22 @@ public class HalfPlaneIntersection {
         private static
         ConvexRegion handleSegFace( Face f, Segment s ) {
             List<IntersectionShape> S = new ArrayList<>();
+            // distinguish between face segments and the segment.
+            // face segments' mappingID: -1.
+            // the segment's mappingID: 0.
             MapOverlay.getSegments( f, S );
             S.add( addSegment( s, 0 ) );
 
             ConvexRegion r = handleSegments( S );
-            // no intersection area.
-            if ( r == null ) return null;
+            Face c = f.innerComponents.get( 0 ).twin.incidentFace;
+            // no intersection points.
+            if ( r == null ) return contains( c, s );
             // intersection area is already a segment.
             if ( r.s != null ) return r;
 
             // only one intersection point found.
             // but we need to test to see if the two endpoints are in inside the convex region.
             assert r.v != null && r.f == null;
-            Face c = f.innerComponents.get( 0 ).twin.incidentFace;
             // Yes, one of the endpoints is inside.
             // The intersection area should be a segment, not a point.
             if ( c.isInsideConvexHull( s.startPoint ) )
@@ -329,6 +333,13 @@ public class HalfPlaneIntersection {
             // No, none of them is inside.
             // The intersection area is a point.
             return r;
+        }
+
+        private static
+        ConvexRegion contains( Face f, Segment s ) {
+            // the intersection area is a segment iff the segment s is fully contained by the convex region.
+            return f.isInsideConvexHull( s.startPoint ) && f.isInsideConvexHull( s.endPoint ) ?
+                    new ConvexRegion( s ) : null;
         }
 
         //-------------------------------------------------------
@@ -349,8 +360,6 @@ public class HalfPlaneIntersection {
         }
     }
 
-    // bounding box default range: [ -10^8, 10^8 ] x [ -10^8, 10^8 ]
-    static final int DEFAULT_SIZE = 100000000;
     // bounding box for the whole intersection area.
     // With this, we can deduce half-plane, unbounded convex region
     // ( all of them are infinite area )
@@ -386,16 +395,6 @@ public class HalfPlaneIntersection {
     }
     // Checker.
     Checker c;
-
-    /**
-     * Create to construct an instance of HalfPlaneIntersection
-     * with the default computing area [ -10^8, 10^8 ] x [ -10^8, 10^8 ],
-     * centered at the origin.
-     */
-
-    public HalfPlaneIntersection() {
-        this( DEFAULT_SIZE, DEFAULT_SIZE, Vector.origin );
-    }
 
     /**
      * Create to construct an instance of HalfPlaneIntersection
@@ -485,6 +484,10 @@ public class HalfPlaneIntersection {
 
     static final String ERROR_MESSAGE = "No result available or no intersection area available at this point.";
 
+    /**
+     * Get the point result for the current half-plane intersection.
+     */
+
     public Vector getPoint() {
         if ( t == null || r == null )
             throw new RuntimeException( ERROR_MESSAGE );
@@ -493,6 +496,10 @@ public class HalfPlaneIntersection {
         return r.v;
     }
 
+    /**
+     * Get the segment result for the current half-plane intersection.
+     */
+
     public Segment getSeg() {
         if ( t == null || r == null )
             throw new RuntimeException( ERROR_MESSAGE );
@@ -500,6 +507,10 @@ public class HalfPlaneIntersection {
         assert r.s != null;
         return r.s;
     }
+
+    /**
+     * Get the convex region result for the current half-plane intersection.
+     */
 
     public Face getFace() {
         if ( t == null || r == null )

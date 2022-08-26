@@ -141,11 +141,11 @@ public final class OrthogonalWindowingQuery {
                 bottom == null || R == null )
             return null;
 
-        List<Line> res = new ArrayList<>();
+        // List<Line> res = new ArrayList<>();
         // query horizontal intervals crossing R.
-//        List<Line> res = left.query( R );
+        List<Line> res = left.query( R );
         // query vertical intervals crossing R.
-//        res.addAll( bottom.query( R ) );
+        res.addAll( bottom.query( R ) );
         // query intervals with at least one endpoint lying inside R.
         layeredRangeTree.query( R ).forEach( v -> res.add( ( ( LineNode ) v ).l ) );
 

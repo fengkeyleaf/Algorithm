@@ -9,15 +9,12 @@
 
 ### 0.2 updating plans:
 
+1.  IPv4 packet analysis.
+1.  RIP, Routing Information Protocol.
+1.  TCP, Transmission Control Protocol
+1.  Ping and traceroute program.
 1.  Linear programming, including visualization.
-1.  ~~Ten programming assignments~~ from [Tsinghua Computational Geometry at edX](https://www.edx.org/course/computational-geometry)
-1.  ~~Half-plane Intersections, Duality including visualization.~~
-1.  ~~Delaunay Triangulation, a dual graph of Voronoi Diagrams, including visualization.~~
-1.  ~~Orthogonal range searching with kd-tree, range tree, layered range tree ( fractional cascading ), including visualization.~~
-1.  ~~Orthogonal windowing query with interval tree, interval tree enhanced with range tree, priority search tree and segment tree, including visualization.~~
-1.  ~~Map Overlay, Boolean Operations, including visualization.~~
-1.  ~~Voronoi Diagrams enhanced with Point location, including visualization. i.e. query a point in Voronoi Diagrams efficiently~~.
-1.  ~~Point Location with the ability to handle all degenerate cases, including visualization~~.
+1.  ~~Ten programming assignmentsfrom [Tsinghua Computational Geometry at edX](https://www.edx.org/course/computational-geometry)~~
 
 ## 1. Algorithm
 

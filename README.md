@@ -9,15 +9,12 @@
 
 ### 0.2 updating plans:
 
-1.  Ten programming assignments from [Tsinghua Computational Geometry at edX](https://www.edx.org/course/computational-geometry), except for the last one, PA5-2 Fruit Ninja.
-1.  Half-plane Intersections, including visualization.
-1.  Duality and linear programming, including visualization.
-1.  ~~Delaunay Triangulation, a dual graph of Voronoi Diagrams, including visualization.~~
-1.  ~~Orthogonal range searching with kd-tree, range tree, layered range tree ( fractional cascading ), including visualization.~~
-1.  ~~Orthogonal windowing query with interval tree, interval tree enhanced with range tree, priority search tree and segment tree, including visualization.~~
-1.  ~~Map Overlay, Boolean Operations, including visualization.~~
-1.  ~~Voronoi Diagrams enhanced with Point location, including visualization. i.e. query a point in Voronoi Diagrams efficiently~~.
-1.  ~~Point Location with the ability to handle all degenerate cases, including visualization~~.
+1.  IPv4 packet analysis.
+1.  RIP, Routing Information Protocol.
+1.  TCP, Transmission Control Protocol
+1.  Ping and traceroute program.
+1.  Linear programming, including visualization.
+1.  ~~Ten programming assignmentsfrom [Tsinghua Computational Geometry at edX](https://www.edx.org/course/computational-geometry)~~
 
 ## 1. Algorithm
 
@@ -70,7 +67,7 @@ Only support 2-dimensional scenario.
 | Build Voronoi Diagrams                                       | [BoundingBox voronoiDiagrams( List<Vector\> P )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/VoronoiDiagrams.java#L228) |
 | Find on which cell ( Voronoi Face ) the query point is.      | [List<Face\> findCell( SearchVertex v, Vector p )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/VoronoiDiagrams.java#L63) |
 | Generate segments from Voronoi edges to compute the trapezoidal Map of the Voronoi Diagrams. | [List<Line\> getSegments( BoundingBox b )]()                 |
-| Program ( including visualization )                          | [CG2017 PA2-2 Find Dancing Partners](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/PA_2/problem_2/Main.java) |
+| Program ( including visualization )                          | [CG2017 PA2-2 Find Dancing Partners](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CGTsinghua/PA_2/problem_2/Main.java) |
 
 #### 1.1.6 Delaunay Triangualtion
 
@@ -117,7 +114,7 @@ Only support 2-dimensional scenario.
 | Windowing query in Segment Range Tree            | [List<Line\> query( List<Vector\> R )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/SegmentRangeTree.java#L237) |
 | Program ( including visualization )              | [CG2017 PA4-2 Orthogonal Windowing Query](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CGTsinghua/PA_4/problem_2/Main.java) |
 
-#### 1.1.10 MapOverlay & Boolean Operations & Half-plane Intersection
+#### 1.1.10 MapOverlay & Boolean Operations
 
 | Description                                            | Entry method\File                                            |
 | :----------------------------------------------------- | ------------------------------------------------------------ |
@@ -125,7 +122,22 @@ Only support 2-dimensional scenario.
 | Compute the intersection of two subdivisions, P1 ∩ P2. | [List<Face\> intersection( Face s1, Face s2 )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/BooleanOperations.java#L62) |
 | Compute the union of two subdivisions, P1 ∪ P2,        | [List<Face\> union( Face s1, Face s2 )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/BooleanOperations.java#L95) |
 | Compute the difference of two subdivisions, P1 \ P2.   | [List<Face\> difference( Face s1, Face s2 )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/BooleanOperations.java#L117) |
-| Program ( including visualization )                    | CG2017 PA5-2 FruitNinja                                      |
+
+#### 1.1.11 Half-plane Intersection
+
+| Description                         | Entry method\File                                            |
+| :---------------------------------- | ------------------------------------------------------------ |
+| Compute half-plane intersection.    | [void intersect( List<HalfPlane\> H )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/HalfPlaneIntersection.java#L420) |
+| Get current result type.            | [Type getResultType()](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/HalfPlaneIntersection.java#L478) |
+| Program ( including visualization ) | [CG2017 PA5-2 FruitNinja](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CGTsinghua/PA_5/problem_2/Main.java) |
+
+#### 1.1.12 Duality
+
+| Description                                                  | Entry method\File                                            |
+| :----------------------------------------------------------- | ------------------------------------------------------------ |
+| Transform this point in the primary plane into the dual plane, point to line. | [Line toDuality()](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/Vector.java#L251) |
+| Transform this point in the dual plane into the primary plane, point to line. | [Line fromDuality()](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/Vector.java#L264) |
+| Transform this line in the primary plane into the dual plane, line to point. | [Vector toDuality()](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/Line.java#L371) |
 
 ### 1.2 POJ
 
@@ -278,6 +290,7 @@ Only support 2-dimensional scenario.
 | Ray                                           | [Ray.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/Ray.java) |
 | Segment                                       | [Segment.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/Segment.java) |
 | Parabola                                      | [Parabola.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/Parabola.java) |
+| HalfPlane                                     | [HalfPlane.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/HalfPlane.java) |
 
 #### 2.3.3 Space Trees
 
@@ -305,5 +318,3 @@ Only support 2-dimensional scenario.
 | :-------------------------------- | :----------------------------------------------------------- |
 | Trapezoidal Map                   | [public class Trapezoid](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/TrapezoidalMap.java) |
 | Search Structure( Tree-like DAG ) | [public class SearchStructure](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/SearchStructure.java) |
-
-#### 

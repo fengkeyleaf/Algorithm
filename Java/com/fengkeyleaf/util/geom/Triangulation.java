@@ -54,7 +54,7 @@ public final class Triangulation {
         stack.push( sortedEdges.get( len - 1 ) );
         stack.push( sortedEdges.get( len - 2 ) );
 
-        // for j<-3 to n−1
+        // for j<-3 to n-1
         HalfEdge edge = null;
         for ( int i = len - 3; i > 0; i-- ) {
             edge = sortedEdges.get( i );
@@ -69,7 +69,7 @@ public final class Triangulation {
                 }
                 stack.pop();
 
-                // Push uj−1 and uj onto S.
+                // Push uj-1 and uj onto S.
                 stack.push( prev );
                 stack.push( edge );
             } else {

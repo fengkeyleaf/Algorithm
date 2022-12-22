@@ -274,7 +274,9 @@ public final class BoundingBox {
      * */
 
     static
-    BoundingBox getBox( double minX, double maxX, double minY, double maxY, Vector offset ) {
+    BoundingBox getBox( double minX, double maxX,
+                        double minY, double maxY, Vector offset ) {
+
         offset = new Vector( Math.ceil( offset.x ), Math.ceil( offset.y ) );
         Vector[] points = getFourPoints( minX, maxX, minY, maxY );
         return new BoundingBox( points[ 0 ].add( offset ), points[ 1 ].add( offset ),

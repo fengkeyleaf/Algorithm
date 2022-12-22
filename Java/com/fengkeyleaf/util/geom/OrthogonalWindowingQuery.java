@@ -145,9 +145,9 @@ public final class OrthogonalWindowingQuery {
         // query horizontal intervals crossing R.
 //        List<Line> res = left.query( R );
         // query vertical intervals crossing R.
-//        res.addAll( bottom.query( R ) );
+        res.addAll( bottom.query( R ) );
         // query intervals with at least one endpoint lying inside R.
-        layeredRangeTree.query( R ).forEach( v -> res.add( ( ( LineNode ) v ).l ) );
+//        layeredRangeTree.query( R ).forEach( v -> res.add( ( ( LineNode ) v ).l ) );
 
         return check( R, res );
     }

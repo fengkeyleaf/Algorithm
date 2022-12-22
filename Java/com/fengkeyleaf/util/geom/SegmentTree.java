@@ -458,6 +458,7 @@ public class SegmentTree extends WindowingQueryTree
     //-------------------------------------------------------
 
     boolean check() {
+        checkSeg();
         isContained( root );
         isRightSeg( root );
 

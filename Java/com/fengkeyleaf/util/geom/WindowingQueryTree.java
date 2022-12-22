@@ -250,6 +250,7 @@ class WindowingQueryTree extends AbstractTree<Line> {
         List<Vector> bruteForce( List<Vector> P, QueryVector[] R ) {
             List<Vector> res = new ArrayList<>();
             List<Vector> more = new ArrayList<>();
+
             for ( Vector p : P ) {
                 LineNode n = ( LineNode ) p;
 
@@ -257,19 +258,26 @@ class WindowingQueryTree extends AbstractTree<Line> {
                 n.L.forEach( v -> {
                     // line added by the algorithm,
                     // we need to check it should be added to the result set.
-                    if ( !v.isNotAdded() && new RangeNode( v ).isContained( R ) &&
+                    if ( !v.isNotAdded() && // Added by the algorithm.
+                            // Should be included in the R.
+                            new RangeNode( v ).isContained( R ) &&
+                            // Ignore this point when only reporting
+                            // segments crossing the R.
                             isReportCrossing( v, ROrigin ) ) {
                         // report intervals inside R.
                         // cannot use List::contains,
-                        // because it will regard two vectors with the same x-coor and y-coor as the same vector.
+                        // because it will regard two vectors
+                        // with the same x-coor and y-coor as the same vector.
                         // but in this case, we wanna to compare pointer only.
                         if ( resP == null &&
-                                !contains( res, v ) && !contains( res, v.twin ) )
+                                !contains( res, v ) &&
+                                !contains( res, v.twin ) )
                             res.add( v );
                         // report intervals crossing R.
                         // notice that in this case, we will query twice, -INF and +INF.
                         else if ( resP != null &&
-                                !contains( resP, v ) && !contains( resP, v.twin ) )
+                                !contains( resP, v ) &&
+                                !contains( resP, v.twin ) )
                             res.add( v );
                     }
 
@@ -291,10 +299,12 @@ class WindowingQueryTree extends AbstractTree<Line> {
             return res;
         }
 
-        static<E>
+        static<E extends Vector>
         boolean contains( List<E> L, E e ) {
             for ( E ele : L )
-                if ( ele == e ) return true;
+                // check to see if we've added the segment before.
+                if ( ( ( LineNode ) ele ).l == ( ( LineNode ) e ).l )
+                    return true;
 
             return false;
         }
@@ -371,10 +381,9 @@ class WindowingQueryTree extends AbstractTree<Line> {
      * */
 
     boolean isReportCrossing( Line l, QueryVector[] R ) {
-        if ( isOnlyReportingCrossing ) {
-            return R[ 0 ].compare( l.startPoint, c, isX ) > 0 &&
-                    R[ 1 ].compare( l.endPoint, c, isX ) < 0;
-        }
+        if ( isOnlyReportingCrossing )
+            return !new RangeTree.RangeNode( l.startPoint ).isContained( R ) &&
+                    !new RangeTree.RangeNode( l.endPoint ).isContained( R );
 
         return true;
     }
@@ -400,8 +409,16 @@ class WindowingQueryTree extends AbstractTree<Line> {
     // Checking methods.
     //-------------------------------------------------------
 
-    // ------------------------------------------------------>
+    void checkSeg() {
+        I.forEach( i -> {
+           assert ( isX && Vectors.sortByX( i.startPoint, i.endPoint ) > 0 ) ||
+                   ( !isX && Vectors.sortByY( i.startPoint, i.endPoint ) > 0 );
+        } );
+    }
+
+    // ------------------------------------------------------
     // stabbing query ---------------------------------------
+    //-------------------------------------------------------
 
     List<Line> check( Vector q, List<Line> res, String title ) {
         if ( I == null ) return res;
@@ -514,6 +531,7 @@ class WindowingQueryTree extends AbstractTree<Line> {
 
     // ------------------------------------------------------>
     // windowing query ---------------------------------------
+    //-------------------------------------------------------
 
     List<Line> check( List<Vector> R, List<Line> res, String title ) {
         assert visualization( I, R, res, title );
@@ -533,18 +551,21 @@ class WindowingQueryTree extends AbstractTree<Line> {
         return true;
     }
 
-
     private List<Line> bruteForce( List<Line> I, List<Vector> R ) {
         List<Line> res = new ArrayList<>();
         if ( I == null ) return res;
 
-        Line l = new Line( R.get( 0 ), new Vector( R.get( 0 ).x, R.get( 1 ).y ) );
-        Line b = new Line( R.get( 0 ), new Vector( R.get( 1 ).x, R.get( 0 ).y ) );
+        // left vertical segment from the R.
+        Segment l = new Segment( R.get( 0 ), new Vector( R.get( 0 ).x, R.get( 1 ).y ) );
+        // bottom horizontal segment from the R.
+        Segment b = new Segment( R.get( 0 ), new Vector( R.get( 1 ).x, R.get( 0 ).y ) );
         I.forEach( i -> {
-            if ( isX && l.intersect( i )[ 0 ] != null && isReportCrossing( i, RangeTree.getQueryR( R ) ) )
+            if ( isX && l.intersect( i ).length != 0 &&
+                    isReportCrossing( i, RangeTree.getQueryR( R ) ) )
                 res.add( i );
 
-            if ( !isX && b.intersect( i )[ 0 ] != null && isReportCrossing( i, RangeTree.getQueryR( R ) ) )
+            if ( !isX && b.intersect( i ).length != 0 &&
+                    isReportCrossing( i, RangeTree.getQueryR( R ) ) )
                 res.add( i );
         } );
 

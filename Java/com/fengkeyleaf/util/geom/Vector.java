@@ -243,7 +243,7 @@ public class Vector extends Node {
      * Transform this point in the primary plane into the dual plane, point to line.
      *
      * p  := ( px, py )
-     * p∗ := ( y = px * x − py )
+     * p* := ( y = px * x - py )
      *
      * @return a line representing this point in the dual plane.
      */

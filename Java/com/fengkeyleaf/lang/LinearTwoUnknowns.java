@@ -16,7 +16,7 @@ import com.fengkeyleaf.util.geom.Vector;
 
 /**
  * linear equation with two unknowns,
- * ax + by + c = 0 ( a | b ≠ 0 ) or ax + by = c ( a | b ≠ 0 )
+ * ax + by + c = 0 ( a | b != 0 ) or ax + by = c ( a | b != 0 )
  * We use the second form here to be consistent with line.
  *
  * @author Xiaoyu Tongyang, or call me sora for short
@@ -31,7 +31,7 @@ public class LinearTwoUnknowns {
 
     /**
      * Constructs to create an instance of LinearTwoUnknowns,
-     * ax + by = c ( a | b ≠ 0 )
+     * ax + by = c ( a | b != 0 )
      * */
 
     public LinearTwoUnknowns( double a, double b, double c ) {

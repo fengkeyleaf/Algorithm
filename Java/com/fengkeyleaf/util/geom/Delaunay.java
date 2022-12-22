@@ -490,6 +490,12 @@ public final class Delaunay {
     // Class Checker
     //----------------------------------------------------------
 
+    /**
+     * Class to check the integrity of Delaunay triangulation algorithm.
+     *
+     * Note that code in this class won't have any effects on the main algorithm.
+     */
+
     static class Checker {
         static
         boolean check( DelaunaySearch D ) {

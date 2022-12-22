@@ -9,8 +9,7 @@ package com.fengkeyleaf.util;
  *     $1.1$
  *
  * Revisions:
- *     $1.0 basic structure:
- *      super class for tree node and vertex on 4/3/2021$
+ *     $1.0 basic structure: super class for tree node and vertex on 4/3/2021$
  *     $1.1 super class for Vector and added mapping ID on 7/11/2021$
  */
 

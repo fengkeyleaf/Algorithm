@@ -294,6 +294,10 @@ public class Vertex extends Node {
         return !E.isEmpty() || !s.isEmpty();
     }
 
+    //-------------------------------------------------------
+    // equals and toString.
+    //-------------------------------------------------------
+
     @Override
     public boolean equals( Object obj ) {
         if ( this == obj ) return true;

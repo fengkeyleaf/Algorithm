@@ -17,7 +17,8 @@ import java.util.List;
 
 /**
  * Segment tree combined with range tree
- * to have the ability to do orthogonal windowing query with arbitrary oriented segments.
+ * to have the ability to do orthogonal windowing query
+ * with arbitrary oriented segments.
  *
  * Corollary 10.14
  * Let S be a set of n segments in the plane with disjoint interiors.
@@ -115,11 +116,11 @@ public class SegmentRangeTree extends SegmentTree
             }
 
             LineNode n = new LineNode( new Vector( x, y ), p.l );
-            // LineNodes with the same line with the same twin node containing the line.
+            // LineNodes with the same line all have the same twin node containing the line.
             // in this way, avoid repeatedly reporting the segment.
             // and we call p as "The Leader" to inform
             // if we should add the line of it or not.
-            n.setTwin( p );
+            n.twin = p;
             P.add( n );
         }
     }

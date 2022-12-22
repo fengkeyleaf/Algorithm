@@ -64,13 +64,14 @@ class LineNode extends Vector {
     }
 
     /**
-     * add all LineNode to this node. They have the same point signature,
+     * add all LineNodes to this node. They have the same point signature,
      * either endpoint or intersection point.
      */
 
     Vector addAll( List<LineNode> L ) {
         assert !L.isEmpty();
         this.L = L;
+
         return this;
     }
 

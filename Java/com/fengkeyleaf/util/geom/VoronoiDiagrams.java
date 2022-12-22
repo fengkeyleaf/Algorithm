@@ -23,18 +23,19 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class consists exclusively of static methods
- * that related to Voronoi Diagrams
+ * <p>This class consists exclusively of static methods
+ * that related to Voronoi Diagrams</p>
  *
- * The definition of the degenerate case
- * where the sweep line is at the very beginning of the algorithm.
+ * <p>The definition of the degenerate case
+ * where the sweep line is at the very beginning of the algorithm.</p>
  *
+ * <p>
  * -----s1----------s2---------- <= sweep line  |
  *                                              |
  *   s3                   s4                    | moving direction
  *                                              |
  *                                              |
- *                                              v
+ *                                              v</p>
  *
  *
  * @author       Xiaoyu Tongyang, or call me sora for short

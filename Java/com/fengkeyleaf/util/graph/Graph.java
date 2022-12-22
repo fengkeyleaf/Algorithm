@@ -259,7 +259,7 @@ public class Graph<V extends Vertex> implements Iterable<V> {
                 // childCount := childCount + 1
                 c++;
                 assert c > 0 : "Integer overflow";
-                // if low[ni] ≥ depth[i] then
+                // if low[ni] >= depth[i] then
                 if ( low[ ni ] >= dfn[ i ] )
                     // isArticulation := true
                     isArticulation = true;
@@ -268,13 +268,13 @@ public class Graph<V extends Vertex> implements Iterable<V> {
                 continue;
             }
 
-            // else if ni ≠ parent[i] then
+            // else if ni != parent[i] then
             if ( n != v.parent )
                 // low[i] := Min (low[i], depth[ni])
                 low[ i ] = Math.min( low[ i ], dfn[ ni ] );
         }
 
-        // if ( parent[i] ≠ null and isArticulation ) or
+        // if ( parent[i] != null and isArticulation ) or
         // ( parent[i] = null and childCount > 1 ) then
         if ( v.parent != null && isArticulation ||
                 v.parent == null && c > 1 )
@@ -283,7 +283,7 @@ public class Graph<V extends Vertex> implements Iterable<V> {
 
         // find bridges with one end as i(v).
         v.neighbours.forEach( n -> {
-            // if low[ni] ≥ depth[i] then
+            // if low[ni] >= depth[i] then
             if ( low[ n.mappingID ] > dfn[ i ] ) {
                 // Output edge i -> ni as a bridge.
                 List<Vertex> L = new ArrayList<>( 2 );
@@ -303,6 +303,75 @@ public class Graph<V extends Vertex> implements Iterable<V> {
     public List<Vertex> getArticulations() {
         return A;
     }
+
+    //-------------------------------------------------------
+    // Contains cycle.
+    //-------------------------------------------------------
+
+    /**
+     * Does this graph contain a cycle?
+     */
+
+    public boolean containsCycle() {
+        boolean r = false;
+        List<Vertex> V = new ArrayList<>();
+
+        // go through every vertex in this graph.
+        for ( V v : vertices ) {
+            // visited before, skip it.
+            if ( v.mappingID > -1 ) continue;
+
+            // found a cycle starting at v.
+            if ( containsCycle( null, v, V ) ) {
+                r = true;
+                break;
+            }
+        }
+
+        // reset vertex status.
+        Node.resetMappingID( V );
+        return r;
+    }
+
+    /**
+     * @param p previous vertex that we were going from it to this vertex v.
+     * @param v current vertex.
+     * @param V array to store visited vertex.
+     * */
+
+    private static
+    boolean containsCycle( Vertex p, Vertex v, List<Vertex> V ) {
+        // no neighbours, no cycle of course.
+        if ( v.neighbours.isEmpty() ) return false;
+
+        // mark v as visited.
+        v.mappingID = 0;
+        V.add( v );
+        // go through its neighbours.
+        for ( Vertex n : v.neighbours ) {
+            // a visited neighbour.
+            if ( n.mappingID > -1 ) {
+                // n is not the node we were just going along with,
+                // identified a cycle.
+                if ( n != p )
+                    return true;
+
+                // no cycle at this point.
+                 continue;
+            }
+
+            // check the neighbour n.
+            if ( containsCycle( v, n, V ) )
+                return true;
+        }
+
+        // no neighbour starting at v.
+        return false;
+    }
+
+    //-------------------------------------------------------
+    // Iterable and toString.
+    //-------------------------------------------------------
 
     @Override
     public Iterator<V> iterator() {

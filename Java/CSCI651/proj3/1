@@ -1,0 +1,3 @@
+Theorem 7.10
+The Voronoi diagram of a set of n point sites in the plane can be computed
+with a sweep line algorithm in O(nlogn) time using O(n) storage.

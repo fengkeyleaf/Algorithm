@@ -137,7 +137,7 @@ public final class MyCollections {
 
         // 3. if (k < L.size) return SELECT-RAND(L, k)
         if ( k < L.size() ) return kSelect( L, k, c );
-        // 4. if (k ≥ L.size and k < L.size + E.size) return x
+        // 4. if (k >= L.size and k < L.size + E.size) return x
         else if ( k < L.size() + E.size() ) return x;
         // 5. else return SELECT-RAND(G, k-L.size-E.size)
         return kSelect( G, k - L.size() - E.size(), c );

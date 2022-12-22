@@ -20,6 +20,7 @@ package com.fengkeyleaf.util.geom;
  * @since  1.0
  */
 
+@FunctionalInterface
 public interface Intersection {
 
     /**

@@ -133,6 +133,12 @@ public final class BooleanOperations {
     // Class Checker
     //----------------------------------------------------------
 
+    /**
+     * Class to check the integrity of Boolean Operations algorithm.
+     *
+     * Note that code in this class won't have any effects on the main algorithm.
+     */
+
     static class Checker {
         static
         List<Face> check( Face s1, Face s2,

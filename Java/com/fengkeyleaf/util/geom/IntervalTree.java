@@ -400,8 +400,18 @@ public class IntervalTree extends WindowingQueryTree
     }
 
     //-------------------------------------------------------
-    // Check integrity of interval tree data structure.
+    // Class checker.
     //-------------------------------------------------------
+
+    /**
+     * Class to check the integrity of interval tree data structure.
+     *
+     * Note that code in this class won't have any effects on the main algorithm.
+     */
+
+    class Checker {
+
+    }
 
     boolean check( IntervalNode n ) {
         if ( n == null ) return true;
@@ -412,5 +422,4 @@ public class IntervalTree extends WindowingQueryTree
 
         return check( n.left ) && check( n.right );
     }
-
 }

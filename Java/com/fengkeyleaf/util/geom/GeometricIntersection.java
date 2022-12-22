@@ -493,7 +493,7 @@ public class GeometricIntersection {
         final double updatedCoor = ( isVerticalSweepLine ? e.x : e.y ) + OFFSET;
         final List<EventPoint2D> specials = new ArrayList<>();
 
-        // Insert the segments in L(p) ∪ C(p) into T.
+        // Insert the segments in L(p) union C(p) into T.
         // The order of the segments in T should correspond
         // the order in which they are intersected
         // by a sweep line just right to p.
@@ -538,7 +538,7 @@ public class GeometricIntersection {
         leftsAndInteriors.addAll( L );
         leftsAndInteriors.addAll( I );
 
-        // if L(p) ∪ C(p) = null
+        // if L(p) union C(p) = null
         // then Let sl and sr be the left and right neighbors of p in T.
         if ( leftsAndInteriors.isEmpty() ) {
             // FINDNEWEVENT(sl, sr, p)
@@ -549,12 +549,12 @@ public class GeometricIntersection {
         // TODO: 6/18/2021 need the following one?
         //  maybe it could be done in O(n) or O(1)
         leftsAndInteriors.sort( isVerticalSweepLine ? Vectors::sortByY : Vectors::sortByX );
-        // else Let s' be the lowest segment of U(p) ∪ C(p) in T.
+        // else Let s' be the lowest segment of U(p) union C(p) in T.
         // Let sl be the lower neighbor of s' in T.
         // FINDNEWEVENT(sl, s', p)
         EventPoint2D lowest = leftsAndInteriors.get( 0 );
         findNewEvent( statusRBTree.lowerVal( lowest ), lowest );
-        // Let s'' be the highest segment of U(p) ∪ C(p) in T.
+        // Let s'' be the highest segment of U(p) union C(p) in T.
         // Let sr be the higher neighbor of s'' in T.
         // FINDNEWEVENT(s'', sr, p)
         EventPoint2D highest = leftsAndInteriors.get( leftsAndInteriors.size() - 1 );
@@ -581,7 +581,7 @@ public class GeometricIntersection {
         List<EventPoint2D> I = new ArrayList<>();
         findRightsAndInteriors( R, I );
 
-        // if L(p) ∪ R(p) ∪ C(p) contains more than one segment
+        // if L(p) union R(p) union C(p) contains more than one segment
         // then Report p as an intersection, together with L(p), R(p), and C(p).
         if ( L.size() + R.size() + I.size() > 1 )
             reportIntersection( L, R, I );
@@ -602,7 +602,7 @@ public class GeometricIntersection {
                                          List<EventPoint2D> interiors ) {
 
         EventPoint2D point = null;
-        // Delete the segments in L(p) ∪ C(p) from T.
+        // Delete the segments in L(p) union C(p) from T.
         while ( ( point = ( EventPoint2D ) statusRBTree.deleteAndGetVal( e ) ) != null ) {
 
             for ( IntersectionShape s : point.shapes ) {

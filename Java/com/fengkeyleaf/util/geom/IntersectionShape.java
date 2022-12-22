@@ -12,14 +12,16 @@ package com.fengkeyleaf.util.geom;
  *     $1.0$
  */
 
+import java.util.List;
+
 /**
- * Interface to calculate intersection point.
+ * <p>Interface to calculate intersection point.
  * This interface must be implemented by intersection shape class
- * if one wants to feed shapes with {@link GeometricIntersection} algorithm, ( Bentley Ottmann ),
+ * if one wants to feed shapes with {@link GeometricIntersection#findIntersection(List)} algorithm, ( Bentley Ottmann ),</p>
  *
- * Generally speaking, the intersection shape must be monotone relative to x-axis,
+ * <p>Generally speaking, the intersection shape must be monotone relative to x-axis,
  * and have the ability to compute intersection with other shape,
- * also with other abilities defined in the interface.
+ * also with other abilities defined in the interface.</p>
  *
  * @author Xiaoyu Tongyang, or call me sora for short
  * @see <a href="https://fengkeyleaf.com">person website</a>

@@ -130,7 +130,14 @@ public class DrawingProgram {
      * */
 
     public void drawPoly( Color c, Face f ) {
-        polygonPoints.add( Polygons.getDrawingPoints( f, originWidth, originHeight, CANVAS_WIDTH, CANVAS_HEIGHT ) );
+        polygonPoints.add(
+                Polygons.getDrawingPoints(
+                        f,
+                        originWidth,
+                        originHeight,
+                        CANVAS_WIDTH,
+                        CANVAS_HEIGHT )
+        );
         colorsPoly.add( c );
         polyDrawingTypes.add( drawPoly );
     }
@@ -161,7 +168,14 @@ public class DrawingProgram {
      * */
 
     public void drawLines( Color c , List<Line> lines ) {
-        linesPoints.add( Lines.getDrawingPoints( lines, originWidth, originHeight, CANVAS_WIDTH, CANVAS_HEIGHT ) );
+        linesPoints.add(
+                Lines.getDrawingPoints(
+                        lines,
+                        originWidth,
+                        originHeight,
+                        CANVAS_WIDTH,
+                        CANVAS_HEIGHT )
+        );
         colorsLine.add( c );
     }
 
@@ -185,7 +199,13 @@ public class DrawingProgram {
      * */
 
     public void drawCircles( Color c, List<Circle> circles ) {
-        circlePoints.add( Circles.getDrawingPoints( circles, originWidth, originHeight, CANVAS_WIDTH, CANVAS_HEIGHT ) );
+        circlePoints.add(
+                Circles.getDrawingPoints(
+                        circles,
+                        originWidth, originHeight,
+                        CANVAS_WIDTH, CANVAS_HEIGHT
+                )
+        );
         colorsCircle.add( c );
     }
 
@@ -212,10 +232,17 @@ public class DrawingProgram {
      * */
 
     public void draw() {
-        Polygons.drawPolygons( graphics, polygonPoints, polyDrawingTypes, colorsPoly );
+        Polygons.drawPolygons(
+                graphics, polygonPoints,
+                polyDrawingTypes, colorsPoly
+        );
         Lines.drawLines( graphics, linesPoints, colorsLine );
         Circles.draw( graphics, circlePoints, colorsCircle );
-        Vectors.drawPoints( graphics, points, originWidth, originHeight, CANVAS_WIDTH, CANVAS_HEIGHT, colorsPoint );
+        Vectors.drawPoints(
+                graphics, points,
+                originWidth, originHeight,
+                CANVAS_WIDTH, CANVAS_HEIGHT, colorsPoint
+        );
     }
 
     public void initialize() {

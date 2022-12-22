@@ -10,11 +10,12 @@ package com.fengkeyleaf.util;
  *
  * Revisions:
  *     $1.0$
- *
  */
 
-
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Provide methods related to the Arrays Class
@@ -25,6 +26,55 @@ import java.util.Arrays;
  */
 
 public final class MyArrays {
+
+    /**
+     * Concatenate arrays to one array.
+     *
+     * @param A arrays to be concatenated.
+     * @return Concatenated array.
+     */
+
+    // TODO: 11/13/2022 Implement generic
+    // Reference resource: https://www.cjavapy.com/article/290/
+    public static
+    byte[] concatAll( byte[]... A ) {
+        // Compute the total length of all arrays.
+        int t = 0;
+        for ( byte[] a : A )
+            t += a.length;
+
+        // Copy the first array into R.
+        byte[] R = Arrays.copyOf( A[ 0 ], t );
+        int offset = A[ 0 ].length;
+        // Concatenate others.
+        for ( int i = 1; i < A.length; i++ ) {
+            byte[] a = A[ i ];
+            System.arraycopy( a, 0, R, offset, a.length );
+            offset += a.length;
+        }
+
+        return R;
+    }
+
+    /**
+     * Reverse a byte array.
+     *
+     * @return new copied reversed byte array.
+     */
+
+    public static
+    byte[] reverse( byte[] a ) {
+        List<Byte> L = new ArrayList<>( a.length );
+        for ( byte b : a )
+            L.add( b );
+        Collections.reverse( L );
+
+        for ( int i = 0; i < L.size(); i++ ) {
+            a[ i ] = L.get( i );
+        }
+
+        return a;
+    }
 
     /**
      * given indices are out of boundary?

@@ -655,7 +655,7 @@ public class RangeTree extends AbstractTree<Vector> {
 
         if ( !diff.isEmpty() ) {
             System.out.println( KdTree.compare( res, diff ) );
-            assert false : bruteForce( P, R ) + " | " + Arrays.toString( R ) + " | " +  res;
+            assert false : bruteForce( P, R ) + " | " + res + " || " + Arrays.toString( R ) + " | " + P;
         }
 
         return true;

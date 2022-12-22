@@ -292,15 +292,15 @@ public final class MonotonePolygons {
     void handleEndVertex( Vertex vertex, StatusRBTree statusRBTree,
                           List<Face> faces ) {
 
-        // Delete ei−1 from T.
+        // Delete ei-1 from T.
         // vertex must be on the line of ei-1, as the lower endpoint
         EventEdge prevEvent = ( EventEdge ) statusRBTree.deleteAndGetVal( vertex );
-        // if helper(ei−1) is a merge vertex
+        // if helper(ei-1) is a merge vertex
         // prevEvent != null && // orthogonal vertex may have null as prevEvent
         assert prevEvent != null : vertex;
         if ( prevEvent.vertex.vertexType == Vertex.VertexType.MERGE ) {
             assert prevEvent.vertex.incidentEdge.incidentFace == vertex.incidentEdge.incidentFace : prevEvent.vertex + " " + vertex;
-            // 	then Insert the diagonal connecting vi to helper(ei−1) in D.
+            // 	then Insert the diagonal connecting vi to helper(ei-1) in D.
             faces.add( prevEvent.vertex.connect( vertex ) );
         }
     }

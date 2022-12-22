@@ -232,17 +232,17 @@ final class Main extends MainCG
 
     static
     void testIntervalRangeOrthogonal() {
-        new Main( 1 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL );
-        new Main( 2 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL );
-        new Main( 3 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL );
-        new Main( 4 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL ); // degenerate case
-        new Main( 5 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL ); // degenerate case
-        new Main( 6 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL ); // provided case
+//        new Main( 1 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL );
+//        new Main( 2 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL );
+//        new Main( 3 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL );
+//        new Main( 4 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL ); // degenerate case
+//        new Main( 5 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL ); // degenerate case
+//        new Main( 6 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL ); // provided case
         new Main( 7 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL ); // real circuits.
-        new Main( 11 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL ); // regular quad
-        new Main( 12 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL ); // regular quad
-        new Main( 13 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL ); // all verticals on the same line, and so as horizontals, with intersecting intervals.
-        new Main( 14 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL ); // all verticals on the same line, and so as horizontals, without intersecting intervals.
+//        new Main( 11 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL ); // regular quad
+//        new Main( 12 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL ); // regular quad
+//        new Main( 13 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL ); // all verticals on the same line, and so as horizontals, with intersecting intervals.
+//        new Main( 14 ).doTheAlgorithm( Type.INTERVAL_RANGE_TREE_ORTHOGONAL ); // all verticals on the same line, and so as horizontals, without intersecting intervals.
     }
 
     static
@@ -251,7 +251,7 @@ final class Main extends MainCG
 //        new Main( 2 ).doTheAlgorithm( Type.PRIORITY_SEARCH_TREE );
 //        new Main( 3 ).doTheAlgorithm( Type.PRIORITY_SEARCH_TREE );
 //        new Main( 4 ).doTheAlgorithm( Type.PRIORITY_SEARCH_TREE ); // degenerate case
-//        new Main( 5 ).doTheAlgorithm( Type.PRIORITY_SEARCH_TREE ); // degenerate case
+        new Main( 5 ).doTheAlgorithm( Type.PRIORITY_SEARCH_TREE ); // degenerate case
 //        new Main( 6 ).doTheAlgorithm( Type.PRIORITY_SEARCH_TREE ); // provided case
         new Main( 7 ).doTheAlgorithm( Type.PRIORITY_SEARCH_TREE ); // real circuits.
 //        new Main( 11 ).doTheAlgorithm( Type.PRIORITY_SEARCH_TREE ); // regular quad
@@ -270,9 +270,9 @@ final class Main extends MainCG
 //        new Main( 3, false ).doTheAlgorithm( Type.SEGMENT_TREE ); //
 //        new Main( 4, true ).doTheAlgorithm( Type.SEGMENT_TREE ); // degenerate case
 //        new Main( 4, false ).doTheAlgorithm( Type.SEGMENT_TREE ); // degenerate case
-//        new Main( 5, true ).doTheAlgorithm( Type.SEGMENT_TREE ); // degenerate case
-//        new Main( 5, false ).doTheAlgorithm( Type.SEGMENT_TREE ); // degenerate case
-//        new Main( 6, true ).doTheAlgorithm( Type.SEGMENT_TREE ); // provided case
+        new Main( 5, true ).doTheAlgorithm( Type.SEGMENT_TREE ); // degenerate case
+        new Main( 5, false ).doTheAlgorithm( Type.SEGMENT_TREE ); // degenerate case
+        new Main( 6, true ).doTheAlgorithm( Type.SEGMENT_TREE ); // provided case
 //        new Main( 6, false ).doTheAlgorithm( Type.SEGMENT_TREE ); // provided case
 //        new Main( 7, true ).doTheAlgorithm( Type.SEGMENT_TREE ); // real circuits.
 //        new Main( 7, false ).doTheAlgorithm( Type.SEGMENT_TREE ); // real circuits.
@@ -302,21 +302,24 @@ final class Main extends MainCG
 //        new Main( 4 ).doTheAlgorithm( Type.SEGMENT_ORTHOGONAL ); // degenerate case
 //        new Main( 5 ).doTheAlgorithm( Type.SEGMENT_ORTHOGONAL ); // degenerate ca/se
 //        new Main( 6 ).doTheAlgorithm( Type.SEGMENT_ORTHOGONAL ); // provided case
-        new Main( 7 ).doTheAlgorithm( Type.SEGMENT_ORTHOGONAL ); // real circuits.
+//        new Main( 7 ).doTheAlgorithm( Type.SEGMENT_ORTHOGONAL ); // real circuits.
 //        new Main( 8 ).doTheAlgorithm( Type.SEGMENT_ORTHOGONAL ); // arbitrary oriented segments
-//        new Main( 9 ).doTheAlgorithm( Type.SEGMENT_ORTHOGONAL ); // arbitrary oriented segments
+        new Main( 9 ).doTheAlgorithm( Type.SEGMENT_ORTHOGONAL ); // arbitrary oriented segments
 //        new Main( 10 ).doTheAlgorithm( Type.SEGMENT_ORTHOGONAL ); // regular octagon
 //        new Main( 11 ).doTheAlgorithm( Type.SEGMENT_ORTHOGONAL ); // regular quad
 //        new Main( 12 ).doTheAlgorithm( Type.SEGMENT_ORTHOGONAL ); // regular quad
 //        new Main( 14 ).doTheAlgorithm( Type.SEGMENT_ORTHOGONAL ); // all verticals on the same line, and so as horizontals, without intersecting intervals.
     }
 
+    // TODO: 8/29/2022 Shear transformation to determine a crossing segment.
+    // TODO: 8/29/2022 Segments by sortByX when querying vertically, sortyByY when querying horizontally.
     public static
     void main( String[] args ) {
 //        testInterval();
 //        testIntervalRange();
 //        testIntervalRangeOrthogonal();
 //        testPriority();
+
 //        testSegment();
         testSegmentOrthogonal();
     }

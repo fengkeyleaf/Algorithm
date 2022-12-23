@@ -7,13 +7,12 @@
 1. Dictionaries/HashMaps/HashSets may not be the solution we're looking for, so I haven't used Hash Table in the current implementation. We're always exploring an alternative solution that does not rely on the expected O(1) performance of operations involving a hash table. Well, the reason behind this is simply that this is an algorithm-based repository, not project-based one. We're eager for finding a cleverer and more amazing algorithm and data structure to solve the problem.
 2. For computational geometry. Java is not that good at visualizing 3D scenario, so I thinking of not using Java when digging into 3D or higher-dimensions scenario. ( but there is indeed a 3D Java library )
 
-### 0.2 updating plans:
+### 0.2 updating plans
 
-1.  IPv4 packet analysis.
-1.  RIP, Routing Information Protocol.
-1.  TCP, Transmission Control Protocol
-1.  Ping and traceroute program.
-1.  Linear programming, including visualization.
+1.  ~~IPv4 packet analysis.~~
+1.  ~~RIP, Routing Information Protocol.~~
+1.  ~~TCP, Transmission Control Protocol~~
+1.  ~~Ping and traceroute program.~~
 1.  ~~Ten programming assignmentsfrom [Tsinghua Computational Geometry at edX](https://www.edx.org/course/computational-geometry)~~
 
 ## 1. Algorithm
@@ -209,6 +208,45 @@ Only support 2-dimensional scenario.
 | Animation Program - Static wall and gravity applied | [SaticWall.html](https://github.com/fengkeyleaf/Algorithm/blob/main/web/animation/assignmentFour/SaticWall.html) |
 | Example Video                                       | [Bilibili](https://www.bilibili.com/video/BV1gR4y1x7SQ/)     |
 
+### 1.6 Networking
+
+#### 1.6.1 Packet Analysis
+
+| Description                                  | Entry File/Link                                              |
+| :------------------------------------------- | ------------------------------------------------------------ |
+| Wireshark-like program(IPV4 packet analysis) | [Pktsniffer.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CSCI651/proj1/Pktsniffer.java) |
+| Documentation                                | [Instructions for Project 1](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CSCI651/proj1/documentation/Instructions%20for%20Project%201.md) |
+
+#### 1.6.2 RIP
+
+| Description                       | Entry File/Link                                              |
+| :-------------------------------- | ------------------------------------------------------------ |
+| RIP, Routing Information Protocol | [RIP.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/net/RIP.java) |
+| Documentation                     | [Instructions for Project 2](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CSCI651/proj2/documentation/Instructions%20for%20Project%202.md) |
+
+#### 1.6.3 TCP
+
+| Description                                                  | Entry File/Link                                              |
+| :----------------------------------------------------------- | ------------------------------------------------------------ |
+| File Transfer Protocol (FTP) using self-implemented TCP.     | [MyFTP.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/io/MyFTP.java) |
+| TCP Socket                                                   | [MySocket.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/net/MySocket.java) |
+| Send data in byte to the receiver.                           | [boolean send( byte[] t, ...... )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/net/MySocket.java#L510) |
+| Try to connect to the other side. / Close this socket and notify the other side to close. | [connect()](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/net/MySocket.java#L912) / [close()](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/net/MySocket.java#L928) |
+| Documentation( including My FTP instructions )               | [Instructions for Project 3](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CSCI651/proj3/documentation/Instructions%20for%20Project%203.md) |
+| Implementing TCP with UDP                                    | [Implementing TCP with UDP](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CSCI651/proj3/documentation/Implementing%20TCP%20with%20UDP.md) |
+
+### 1.7 Boolean Operation
+
+| Description                                                  | Entry File/Link                                              |
+| :----------------------------------------------------------- | ------------------------------------------------------------ |
+| Boolean Operation( Not perfect )                             | [BExp.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/function/BExp.java) |
+| Get a boolean expression containing evaluating expression and target to be evaluated. | [BExp<T\> getBool( T t, Predicate<T\> p )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/function/BExp.java#L59) |
+| Get an AND expression, a And b.                              | [BExp<T\> getAnd( BExp<T\> a, BExp<T\> b )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/function/BExp.java#L73) |
+| Get a OR expression, a Or b.                                 | [BExp<T\> getOr( BExp<T\> a, BExp<T\> b )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/function/BExp.java#L82) |
+| Get a NOT expression, Not a.                                 | [BExp<T\> getNot( BExp<T\> a )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/function/BExp.java#L91) |
+| Evaluate this boolean expression.                            | [boolean evaluate()](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/function/BExp.java#L124) |
+| Assemble target objects into this boolean expression.        | [assemble( T... T )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/function/BExp.java#L103) |
+
 ## 2. Data Structure
 
 ### 2.1 Basics
@@ -318,3 +356,15 @@ Only support 2-dimensional scenario.
 | :-------------------------------- | :----------------------------------------------------------- |
 | Trapezoidal Map                   | [public class Trapezoid](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/TrapezoidalMap.java) |
 | Search Structure( Tree-like DAG ) | [public class SearchStructure](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/myLibraries/util/geometry/SearchStructure.java) |
+
+### 2.4 Networking
+
+| Description                       | Entry File/Package                                           |
+| :-------------------------------- | :----------------------------------------------------------- |
+| Pacp file                         | [Pacp.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/io/pkts/Pacp.java) |
+| Packet                            | [Packet.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/io/pkts/Packet.java) |
+| Internet Protocol version 4       | [IPv4.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/io/pkts/IPv4.java) |
+| User Datagram Protocol            | [UDP.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/io/pkts/UDP.java) |
+| Transmission Control Protocol     | [TCP.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/io/pkts/TCP.java) |
+| Internet Control Message Protocol | [ICMP.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/io/pkts/ICMP.java) |
+| Logging System                    | [MyLogger.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/logging/MyLogger.java) |

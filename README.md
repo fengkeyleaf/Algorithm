@@ -235,6 +235,14 @@ Only support 2-dimensional scenario.
 | Documentation( including My FTP instructions )               | [Instructions for Project 3](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CSCI651/proj3/documentation/Instructions%20for%20Project%203.md) |
 | Implementing TCP with UDP                                    | [Implementing TCP with UDP](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CSCI651/proj3/documentation/Implementing%20TCP%20with%20UDP.md) |
 
+#### 1.6.4 Ping & Traceroute
+
+| Description                       | Entry File/Link                                              |
+| :-------------------------------- | ------------------------------------------------------------ |
+| Build your own ping program       | [Xt1643Ping.py](https://github.com/fengkeyleaf/Algorithm/blob/main/python/Xt1643Ping.py) |
+| Build your own traceroute program | [Xt1643Traceroute.py](https://github.com/fengkeyleaf/Algorithm/blob/main/python/Xt1643Traceroute.py) |
+| Documentation                     | [Instructions for Lab3](https://github.com/fengkeyleaf/Algorithm/blob/main/python/Instructions%20for%20Lab3.md) |
+
 ### 1.7 Boolean Operation
 
 | Description                                                  | Entry File/Link                                              |

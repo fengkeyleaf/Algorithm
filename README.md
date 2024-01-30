@@ -9,9 +9,9 @@
 
 ### 0.2 updating plans
 
+1.  Bitonic sort in parallel.
 1.  ~~In-switch anomaly detection using programmable switch.~~
 1.  ~~TCP, Transmission Control Protocol~~
-1.  ~~Ping and traceroute program.~~
 1.  ~~Ten programming assignments from [Tsinghua Computational Geometry at edX](https://www.edx.org/course/computational-geometry)~~
 
 ## 1. Algorithm

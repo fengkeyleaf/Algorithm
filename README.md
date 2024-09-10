@@ -35,6 +35,11 @@ Only support 2-dimensional scenario.
 | Brute force                         | [List\<Vector> slowConvexHull( List\<Vector> points )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/ConvexHull.java#L57) |
 | Program ( including visualization ) | [CG2017 PA1-1 Convex Hull](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CGTsinghua/PA_1/problem_1/Main.java) / [CG2017 PA5-2 Dynamic Convex Hull](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CGTsinghua/PA_5/problem_1/Main.java) |
 
+Related articles:
+
+- [CG2017 PA1-1 Convex Hull (凸包)](https://fengkeyleaf.com/blog/0/article/3)
+- [CG2017 PA5-1 Dynamic Convex Hull（动态凸包）](https://fengkeyleaf.com/blog/0/article/4)
+
 #### 1.1.3 Geometric Intersection
 
 | Description                                                  | Entry method\File                                            |
@@ -47,6 +52,12 @@ Only support 2-dimensional scenario.
 | Bentley Ottmann's algrithom( Intersection Of segment, ray, line and Circle ) | [List\<EventPoint2D> findIntersection( List\<IntersectionShape> S )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/GeometricIntersection.java#L601) |
 | Program ( including visualization )                          | [CG2017 PA1-2 Crossroad](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CGTsinghua/PA_1/problem_2/Main.java) |
 
+Related articles:
+
+- [几何求交（一）：直线和直线的交点](https://fengkeyleaf.com/blog/0/article/20)
+- [几何求交（二）：直线和圆的交点](https://fengkeyleaf.com/blog/0/article/21)
+- [CG2017 PA1-2 Crossroad(十字路口)](https://fengkeyleaf.com/blog/0/article/5)
+
 #### 1.1.4 Triangulation
 
 | Description                         | Entry method\File                                            |
@@ -58,6 +69,12 @@ Only support 2-dimensional scenario.
 | Program ( including visualization ) | [CG2017 PA2-1 Shortest Path in The Room](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CGTsinghua/PA_2/problem_1/Main.java) |
 | Pedagogical Aid Webpage             | [Pedagogical Aid of Triangulation](https://fengkeyleaf.github.io/finalProject/index.html) |
 
+Related articles:
+
+- [红黑树（一）：基本概念和数据结构](https://fengkeyleaf.com/blog/0/article/41)
+- [计算几何课堂：几何寻路之旅（含代码）](https://blog.csdn.net/fengkeyleaf/article/details/119207436)
+- [几何寻路：漏斗算法（Funnel Algorithm）](https://fengkeyleaf.com/blog/0/article/30)
+
 #### 1.1.5 Voronoi Diagrams
 
 | Description                                                  | Entry method\File                                            |
@@ -67,13 +84,24 @@ Only support 2-dimensional scenario.
 | Generate segments from Voronoi edges to compute the trapezoidal Map of the Voronoi Diagrams. | [List<Line\> getSegments( BoundingBox b )]()                 |
 | Program ( including visualization )                          | [CG2017 PA2-2 Find Dancing Partners](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CGTsinghua/PA_2/problem_2/Main.java) |
 
-#### 1.1.6 Delaunay Triangualtion
+Related articles:
+
+- [计算几何：In Circle Test](https://fengkeyleaf.com/blog/0/article/28)
+- [双向链接的二叉查找树（一）：基本概念](https://fengkeyleaf.com/blog/0/article/51)
+- [Voronoi图（一）：塞尔达背后的计算几何](https://fengkeyleaf.com/blog/0/article/1)
+- [CG2017 PA2-2 Find Dancing Partners (寻找舞伴) · 上 | Voronoi Diagrams 构造实现讲解](https://fengkeyleaf.com/blog/0/article/10)
+
+#### 1.1.6 Delaunay Triangulation
 
 | Description                               | Entry method\File                                            |
 | :---------------------------------------- | ------------------------------------------------------------ |
 | Build Delaunay Triangulation              | [Face delaunayTriangulation( List<Vertex\> P )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/Delaunay.java#L53) |
 | Find a triangle piPjPk ∈ T containing pr. | [DelaunayVertex get( Vector pr )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/DelaunaySearch.java#L44) |
 | Program ( including visualization )       | [CG2017 PA3-1 Delaunay Triangulation](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CGTsinghua/PA_3/problem_1/Main.java) |
+
+Related articles:
+
+- [CG2017 PA3-1 Delaunay Triangulation （Delaunay三角剖分）](https://fengkeyleaf.com/blog/0/article/6)
 
 #### 1.1.7 Point Location
 
@@ -82,6 +110,11 @@ Only support 2-dimensional scenario.
 | Build trapezoidal Map and search structure | [BoundingBox trapezoidalMap( List<Line\> S, , List<Vector\> Q )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/PointLocation.java#L136) |
 | Point Locatoin                             | [SearchVertex get( Vector p )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/SearchStructure.java#L163) |
 | Program ( including visualization )        | [CG2017 PA3-2 Which wall are you looking at](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CGTsinghua/PA_3/problem_2/Main.java) |
+
+Related articles:
+
+- [点定位：如何拆分更新梯形图和二分搜索结构 · (一)：总思路分析](https://fengkeyleaf.com/blog/0/article/23)
+- [CG2017 PA3-2 Which wall are you looking at （你在看哪面墙）](https://fengkeyleaf.com/blog/0/article/7)
 
 #### 1.1.8 Orthogonal Range Query
 
@@ -95,6 +128,10 @@ Only support 2-dimensional scenario.
 | Build layered range tree with fractional cascading, | [List<LayerNode\> build( RangeNode n )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/LayeredRangeTree.java#L64) |
 | 2D Range Query in Layered  Range Tree               | [List<Vector\> query( String[] R )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/LayeredRangeTree.java#L126) |
 | Program ( including visualization )                 | [CG2017 PA4-1 Planar Range Query](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CGTsinghua/PA_4/problem_1/Main.java) |
+
+Related articles:
+
+- [CG2017 PA4-1 Planar Range Query （平面区域查询）](https://fengkeyleaf.com/blog/0/article/8)
 
 #### 1.1.9 Orthogonal Windowing Query
 
@@ -112,6 +149,10 @@ Only support 2-dimensional scenario.
 | Windowing query in Segment Range Tree            | [List<Line\> query( List<Vector\> R )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/SegmentRangeTree.java#L237) |
 | Program ( including visualization )              | [CG2017 PA4-2 Orthogonal Windowing Query](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CGTsinghua/PA_4/problem_2/Main.java) |
 
+Related articles:
+
+- [CG2017 PA4-2 Orthogonal Windowing Query （正交矩形窗口查询）](https://fengkeyleaf.com/blog/0/article/9)
+
 #### 1.1.10 MapOverlay & Boolean Operations
 
 | Description                                            | Entry method\File                                            |
@@ -121,6 +162,10 @@ Only support 2-dimensional scenario.
 | Compute the union of two subdivisions, P1 ∪ P2,        | [List<Face\> union( Face s1, Face s2 )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/BooleanOperations.java#L95) |
 | Compute the difference of two subdivisions, P1 \ P2.   | [List<Face\> difference( Face s1, Face s2 )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/BooleanOperations.java#L117) |
 
+Related articles:
+
+- [MapOverlay & Boolean Operations 实现讲解](https://fengkeyleaf.com/blog/0/article/15)
+
 #### 1.1.11 Half-plane Intersection
 
 | Description                         | Entry method\File                                            |
@@ -128,6 +173,10 @@ Only support 2-dimensional scenario.
 | Compute half-plane intersection.    | [void intersect( List<HalfPlane\> H )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/HalfPlaneIntersection.java#L420) |
 | Get current result type.            | [Type getResultType()](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/HalfPlaneIntersection.java#L478) |
 | Program ( including visualization ) | [CG2017 PA5-2 FruitNinja](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CGTsinghua/PA_5/problem_2/Main.java) |
+
+Related articles:
+
+- [CG2017 PA5-2 FruitNinja（水果忍者）· 上](https://fengkeyleaf.com/blog/0/article/2)
 
 #### 1.1.12 Duality
 
@@ -143,6 +192,11 @@ Only support 2-dimensional scenario.
 | --------------------------- | :-------------------------------------- | ------------------------------------------------------------ |
 | Subsequence(ID 3061)        | Two approaches, binary search and ruler | [Subsequence.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/coding/POJ/ID_3061/Subsequence.java) |
 | Face The Right Way(ID 3276) | One approach, switch                    | [FaceTheRightWay.java](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/coding/POJ/ID_3276/FaceTheRightWay.java) |
+
+Related articles:
+
+- [挑战程序设计竞赛：尺取法](https://blog.csdn.net/fengkeyleaf/article/details/119565572)
+- [挑战程序设计竞赛：反转法](https://blog.csdn.net/fengkeyleaf/article/details/119679040)
 
 ### 1.3 Sorting
 

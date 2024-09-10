@@ -81,7 +81,7 @@ Related articles:
 | :----------------------------------------------------------- | ------------------------------------------------------------ |
 | Build Voronoi Diagrams                                       | [BoundingBox voronoiDiagrams( List<Vector\> P )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/VoronoiDiagrams.java#L228) |
 | Find on which cell ( Voronoi Face ) the query point is.      | [List<Face\> findCell( SearchVertex v, Vector p )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/VoronoiDiagrams.java#L63) |
-| Generate segments from Voronoi edges to compute the trapezoidal Map of the Voronoi Diagrams. | [List<Line\> getSegments( BoundingBox b )]()                 |
+| Generate segments from Voronoi edges to compute the trapezoidal Map of the Voronoi Diagrams. | [List<Line\> getSegments( BoundingBox b )](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/com/fengkeyleaf/util/geom/VoronoiDiagrams.java#L129)                 |
 | Program ( including visualization )                          | [CG2017 PA2-2 Find Dancing Partners](https://github.com/fengkeyleaf/Algorithm/blob/main/Java/CGTsinghua/PA_2/problem_2/Main.java) |
 
 Related articles:
